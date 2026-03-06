@@ -26,7 +26,9 @@ function JobCard({ job }) {
           </div>
         </div>
 
-        <span className ={`rounded-full bg-blue-600/10 px-3 py-1 text-xs font-bold ${job.iconBg} ${job.textColor}`}>
+        <span
+          className={`rounded-full bg-blue-600/10 px-3 py-1 text-xs font-bold ${job.iconBg} ${job.textColor}`}
+        >
           {job.type}
         </span>
       </div>
@@ -54,12 +56,11 @@ function JobCard({ job }) {
         <div className="text-sm font-bold text-slate-900 dark:text-white">
           {job.salaryLabel}
         </div>
-        <Link to="/viewdetailpage" >
-           <button className="rounded-lg bg-blue-600 px-3 py-1 text-sm font-bold text-white hover:opacity-90">
-          View Details
-        </button>
+        <Link to="/viewdetailpage">
+          <button className="rounded-lg bg-blue-600 px-3 py-1 text-sm font-bold text-white hover:opacity-90">
+            View Details
+          </button>
         </Link>
-     
       </div>
     </div>
   );

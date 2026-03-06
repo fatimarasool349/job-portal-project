@@ -1,25 +1,15 @@
 import { useRef, useState, useEffect } from "react";
 import skillIcon from "./../../assets/svg/skill.svg";
 import close from "./../../assets/svg/close.svg";
+import { initialSkills,colors} from "../../constant/data";
+import SkillModel from "../../model/SkillModel";
 
 function SkillsSection() {
-  const [skills, setSkills] = useState([
-    { name: "JavaScript", color: "primary" },
-    { name: "React", color: "primary" },
-    { name: "Project Management", color: "primary" },
-    { name: "UI Design", color: "primary" },
-    { name: "TypeScript", color: "primary" },
-    { name: "Figma", color: "primary" },
-  ]);
+ const [skills, setSkills] = useState(initialSkills);
 
   const [showModal, setShowModal] = useState(false);
   const [newSkill, setNewSkill] = useState("");
-  const inputRef = useRef(null);
-  useEffect(() => {
-    if (showModal && inputRef.current) {
-      inputRef.current.focus();
-    }
-  }, [showModal]);
+ 
   // Add new skill
   const handleAddSkill = () => {
     const trimmedSkill = newSkill.trim();
@@ -34,7 +24,7 @@ function SkillsSection() {
       return;
     }
 
-    setSkills([...skills, { name: trimmedSkill, color: "primary" }]);
+    setSkills([...skills, { name: trimmedSkill, color: "text-blue-600" }]);
     setNewSkill("");
     setShowModal(false);
   };
@@ -51,7 +41,7 @@ function SkillsSection() {
           Skills
         </h3>
         <button
-          className="text-primary text-sm font-semibold hover:underline"
+          className="text-blue-600 text-sm font-semibold hover:underline"
           onClick={() => setShowModal(true)}
         >
           Add New
@@ -64,8 +54,8 @@ function SkillsSection() {
             key={index}
             className={`flex items-center gap-2 px-3 py-1.5 rounded-full text-sm font-medium
               ${
-                skill.color === "primary"
-                  ? "bg-primary/10 text-primary border border-primary/20"
+                skill.colors === "text-blue-600"
+                  ? "bg-blue-600/10 text-blue-600 border border-blue-600/20"
                   : "bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-700"
               }`}
           >
@@ -80,41 +70,13 @@ function SkillsSection() {
         ))}
       </div>
       {/* Modal */}
-      {showModal && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black/30 z-50">
-          <div className="bg-white dark:bg-slate-900 p-6 rounded-xl shadow-lg w-80">
-            <h3 className="text-lg font-bold mb-4">Add New Skill</h3>
-            {/* Input field */}
-            <input
-              ref={inputRef} 
-              type="text"
-              value={newSkill}
-              onChange={(e) => setNewSkill(e.target.value)}
-              placeholder="Enter skill name"
-              className="w-full p-2 mb-4 border rounded-lg dark:bg-slate-800 dark:text-white"
-              onKeyDown={(e) => {
-                if (e.key === "Enter") handleAddSkill();
-              }}
-            />
-
-            {/* Buttons */}
-            <div className="flex justify-end gap-2">
-              <button
-                className="px-4 py-2 rounded-lg bg-gray-200 dark:bg-slate-700"
-                onClick={() => setShowModal(false)}
-              >
-                Cancel
-              </button>
-              <button
-                className="px-4 py-2 rounded-lg bg-blue-600 text-white hover:bg-primary-hover transition-colors"
-                onClick={handleAddSkill}
-              >
-                Add
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+      <SkillModel
+        show={showModal}
+        onClose={() => setShowModal(false)}
+        onAdd={handleAddSkill}
+        newSkill={newSkill}
+        setNewSkill={setNewSkill}
+      />
     </section>
   );
 }

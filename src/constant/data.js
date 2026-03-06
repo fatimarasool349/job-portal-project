@@ -6,7 +6,13 @@ import ReactEngineer from "./../assets/icons/reactEngineer.png";
 import Marking from "./../assets/icons/Marketing.png";
 import heroImage from "./../assets/Images/HeroImage.png";
 import { IoRocketOutline, IoCode } from "react-icons/io5";
-import { MdOutlineQueryStats, MdOutlineSecurity } from "react-icons/md";
+import {
+  MdOutlineQueryStats,
+  MdOutlineSecurity,
+  MdOutlineDiversity3,
+} from "react-icons/md";
+import { SlEnergy } from "react-icons/sl";
+import { FaBalanceScale } from "react-icons/fa";
 
 //Colors
 export const colors = {
@@ -195,6 +201,35 @@ export const clearFilters = () => {
   });
 };
 
+// initialUserData
+export const initialUserData = {
+  name: "Alex Johnson",
+  location: "New York, NY",
+  email: "alex.johnson@email.com",
+  phone: "+1 (555) 012-3456",
+  profilePic:
+    "https://lh3.googleusercontent.com/aida-public/AB6AXuBvOSpRgpt9qTDLeiRbTxevb51ThEyAaeRCDF2iUcAqPk8BNY0ytvrmhXxj5UNGN1dKc7K1FE7Y-VCw7WRGb5WVCV6fBIEV4FrSQJEZRx6xUHA7lrAnuaF94_FzwfDR3L9tyCZtqP_IuoBeFaUNccVao0K3ZKC6fM7SqTH2DsEctSnTCeSvRwlaGpDYzkQkh-DadaAeOp2bcC7jLzMJTRqoa_m3faCfM39GBEaU61Svz2PDYaYDogLXcbKc3iCdVmS0bI8JUSkPPhU",
+};
+
+// filter
+export const initialFilterData = {
+  keyword: "",
+  location: "",
+  jobType: ["Full-time"],
+  experience: "All levels",
+  salary: 80,
+};
+
+// Skills
+export const initialSkills = [
+  { name: "JavaScript", color: "primary" },
+  { name: "React", color: "primary" },
+  { name: "Project Management", color: "primary" },
+  { name: "UI Design", color: "primary" },
+  { name: "TypeScript", color: "primary" },
+  { name: "Figma", color: "primary" },
+];
+
 // job Listing
 export const jobsDataDescription = [
   {
@@ -290,13 +325,46 @@ export const jobData = {
     name: "TechNova Solutions",
     about1:
       "TechNova Solutions is a pioneer in the cloud infrastructure space, dedicated to building tools that empower developers to create the next generation of digital experiences. Founded with a vision of simplifying complex systems, we have grown into a global leader serving millions of users.",
-    about2: "Our team is composed of passionate engineers, designers, and problem-solvers who believe in the power of open-source and collaborative innovation. We pride ourselves on our technical excellence and our commitment to building a more connected world",
+    about2:
+      "Our team is composed of passionate engineers, designers, and problem-solvers who believe in the power of open-source and collaborative innovation. We pride ourselves on our technical excellence and our commitment to building a more connected world",
     postedDate: "2026-03-04",
+    locations:[
+    {
+      image: "https://lh3.googleusercontent.com/aida-public/AB6AXuDsStc6gQU3fQqil7f-iEz_rb1H2Zmwr5E6c3Ugmn8X9E_fG32s57zdE2G0xz_uFYCi5H3ZxUc649bsz_OFNaNYcaD4kn375aneqRo-59DHRsZKC4Bh5uybkT9veUJJuAvvn-NFUEI7R63uSPtouNc7eQJ5SHId21u_y7Axnyl_q9C81XJVn6In-jg1Oa8_tu-Z2Ydlu3REUjB7F6YOdnEsGm3VSvJmuXDWJiHAKZF1FAjvqH2mGA-Jn4fRNrYQ8c3zCLsQdFt_7Y7a",
+      title: "TechNova HQ",
+      address: "123 Innovation Drive, SF"
+    }
+  ],
     stats: [
       { label: "Founded", value: "2012" },
       { label: "Employees", value: "1k-5k" },
       { label: "Headquarters", value: "San Francisco, CA" },
       { label: "Website", value: "technova.io" },
+    ],
+    culture: [
+      {
+        icon: SlEnergy,
+        title: "Innovation First",
+        description:
+          "We push the boundaries of what's possible in cloud computing every day.",
+      },
+      {
+        icon: FaBalanceScale,
+        title: "Work-Life Harmony",
+        description:
+          "We believe great work happens when people live balanced lives.",
+      },
+      {
+        icon: MdOutlineDiversity3,
+        title: "Inclusive Diversity",
+        description:
+          "Our strength comes from diverse perspectives and collaboration.",
+      },
+    ],
+    photos: [
+      "https://placeholder.pics/svg/300",
+      "https://placeholder.pics/svg/300",
+      "https://placeholder.pics/svg/300",
     ],
     logo: "https://lh3.googleusercontent.com/aida-public/AB6AXuAZagT5FnsvLCeduh1NObArGSQNCU4xZ6FkKSuLQc7_xVa7DR3TDn4idwQIoebpdSa8DSmUWDmFmuT_xYZJtRCvYap8ZVIwu2Tz64Qg_20Vz0ZU8BjhKfvEbYMYy5rsKZVnjUl_xgeTvjlYogD8yEMO3y-dwZX-EXAxJUhPBzUxCeg_nsHLfJMfXGgSdMaAnO-WI3StcjOjBmClWF7PmY729lxGWOQ68C0SI8Z7BqE4PfsSiYHiuQf0VZLMC5_TnUa140RlNEerdeX9",
     industry: "Cloud Computing",
@@ -310,19 +378,20 @@ export const jobData = {
   reviews: {
     overallRating: 4.2,
     total: 124,
-    breakdown: {
-      "Work/Life Balance": 4.5,
-      "Culture & Values": 4.8,
-      "Career Opportunities": 4.0,
-      "Senior Mgmt": 3.8,
-    },
+    ratingBar: [
+      { title: "Work/Life Balance", rating: 4.5, percent: 85 },
+      { title: "Culture & Values", rating: 4.8, percent: 92 },
+      { title: "Career Opportunities", rating: 4.0, percent: 78 },
+      { title: "Senior Mgmt", rating: 3.8, percent: 70 },
+    ],
     list: [
       {
         rating: 5,
         title: "Great place",
+        date: "2026-02-20",
         role: "Developer",
-        pros: "Flexible",
-        cons: "Deadlines",
+        pros: "The tech stack is modern and they actually care about code quality. Great mentorship from senior staff",
+        cons: "Can be fast-paced during release cycles, but it's manageable.",
       },
       {
         rating: 4,
@@ -339,3 +408,62 @@ export const jobData = {
       "You match 12 out of 14 skills required for this role based on your profile.",
   },
 };
+
+// view detail tabs
+export const tabs = [
+  { id: "description", label: "Job Description" },
+  { id: "company", label: "Company" },
+  { id: "reviews", label: `Reviews (${jobData.reviews.total})` },
+];
+
+// Apply form data
+export const contactFields = [
+  {
+    name: "firstName",
+    label: "First Name",
+    type: "text",
+    placeholder: "e.g. John",
+    required: true,
+
+  },
+  {
+    name: "lastName",
+    label: "Last Name",
+    type: "text",
+    placeholder: "e.g. Doe",
+    required: true,
+  },
+  {
+    name: "email",
+    label: "Email Address",
+    type: "email",
+    placeholder: "john.doe@example.com",
+    required: true,
+    pattern: {
+      value: /^\S+@\S+$/i,
+      message: "Invalid email address",
+    },
+  },
+  {
+    name: "phone",
+    label: "Phone Number",
+    type: "tel",
+    placeholder: "+1 (555) 000-0000",
+    
+  },
+];
+
+export const professionalLinks = [
+  {
+    name: "linkedin",
+    label: "LinkedIn Profile",
+    placeholder: "linkedin.com/in/username",
+    icon: "share",
+  },
+  {
+    name: "github",
+    label: "GitHub URL",
+    placeholder: "github.com/username",
+    icon: "code",
+  },
+];

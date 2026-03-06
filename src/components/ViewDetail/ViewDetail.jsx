@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Description from "./Description";
 import Company from "./Company";
 import Reviews from "./Review";
-import {jobData} from "./../../constant/data.js"
+import {jobData,tabs} from "./../../constant/data.js"
 import JobSidebar from "./JobSideBar.jsx";
 
 function ViewDetail() {
@@ -14,11 +14,7 @@ function ViewDetail() {
       <div className="lg:col-span-2 space-y-8">
         {/* Tabs */}
         <div className="border-b border-slate-200 dark:border-slate-800 flex gap-8">
-          {[
-            { id: "description", label: "Job Description" },
-            { id: "company", label: "Company" },
-            { id: "reviews", label: `Reviews (${jobData.reviews.total})` },
-          ].map((tab) => (
+          {tabs.map((tab) => (
             <button
               key={tab.id}
               className={`pb-4 border-b-2 font-semibold text-sm transition-colors ${
@@ -36,7 +32,7 @@ function ViewDetail() {
         {/* Tab Content */}
         {activeTab === "description" && <Description job={jobData} />}
         {activeTab === "company" && <Company company={jobData.company} />}
-        {activeTab === "reviews" && <Reviews reviews={jobData.reviews} />}
+        {activeTab === "reviews" && <Reviews reviews={jobData.reviews} company={jobData.company} />}
       </div>
 
       {/* Right Column */}

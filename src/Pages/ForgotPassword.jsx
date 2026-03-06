@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import  { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link , useLocation} from "react-router-dom";
 import forgotPassword from "./../assets/svg/forgotPassword.svg"

@@ -3,23 +3,16 @@ import {
   jobTypes,
   experienceLevels,
   clearFilters,
+  initialFilterData,
 } from "./../../constant/data.js";
 
 function AsideFilters() {
-  const [filters, setFilters] = useState({
-    keyword: "",
-    location: "",
-    jobType: ["Full-time"], 
-    experience: "All levels",
-    salary: 80,
-  });
-  // Handle text inputs
+  const [filters, setFilters] = useState(initialFilterData);
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFilters((prev) => ({ ...prev, [name]: value }));
   };
 
-  // Handle checkbox toggle
   const handleJobType = (type) => {
     setFilters((prev) => {
       const exists = prev.jobType.includes(type);

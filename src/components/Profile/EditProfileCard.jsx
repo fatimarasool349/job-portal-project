@@ -4,6 +4,7 @@ import "aos/dist/aos.css";
 import save from "./../../assets/icons/save.png";
 import editButton from "./../../assets/svg/camra.svg";
 import { FaEnvelope, FaPhone } from "react-icons/fa";
+import { initialUserData } from "../../constant/data.js";
 
 function UserProfileCard({ initialData }) {
   useEffect(() => {
@@ -14,15 +15,13 @@ function UserProfileCard({ initialData }) {
     });
   }, []);
 
-  const [user, setUser] = useState({
-    name: initialData?.name || "Alex Johnson",
-    location: initialData?.location || "New York, NY",
-    email: initialData?.email || "alex.johnson@email.com",
-    phone: initialData?.phone || "+1 (555) 012-3456",
-    profilePic:
-      initialData?.profilePic ||
-      "https://lh3.googleusercontent.com/aida-public/AB6AXuBvOSpRgpt9qTDLeiRbTxevb51ThEyAaeRCDF2iUcAqPk8BNY0ytvrmhXxj5UNGN1dKc7K1FE7Y-VCw7WRGb5WVCV6fBIEV4FrSQJEZRx6xUHA7lrAnuaF94_FzwfDR3L9tyCZtqP_IuoBeFaUNccVao0K3ZKC6fM7SqTH2DsEctSnTCeSvRwlaGpDYzkQkh-DadaAeOp2bcC7jLzMJTRqoa_m3faCfM39GBEaU61Svz2PDYaYDogLXcbKc3iCdVmS0bI8JUSkPPhU",
-  });
+ const [user, setUser] = useState({
+  name: initialData?.name || initialUserData.name,
+  location: initialData?.location || initialUserData.location,
+  email: initialData?.email || initialUserData.email,
+  phone: initialData?.phone || initialUserData.phone,
+  profilePic: initialData?.profilePic || initialUserData.profilePic,
+});
 
   const fileInputRef = useRef(null);
 

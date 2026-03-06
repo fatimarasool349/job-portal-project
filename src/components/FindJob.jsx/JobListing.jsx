@@ -60,10 +60,7 @@ function JobListing() {
       {/* Job Listings */}
       <div className="grid gap-4">
         {paginatedJobs.map((job) => (
-          <JobCard
-            key={job.id}
-            job={job}
-          />
+          <JobCard key={job.id} job={job} />
         ))}
       </div>
 

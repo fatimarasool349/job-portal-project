@@ -7,7 +7,6 @@ function ResumeSection() {
   const [resumeFile, setResumeFile] = useState(null);
   const [uploadDate, setUploadDate] = useState(null); // store date
 
-
   const handleFileUpload = (event) => {
     const file = event.target.files[0];
     if (file) {
@@ -42,8 +41,10 @@ function ResumeSection() {
           <img src={resumeIcon} alt="resume" />
           Resume
         </h3>
-         <span className="text-xs text-slate-400 italic">
-          {uploadDate ? `Last updated: ${formatDate(uploadDate)}` : "No file uploaded"}
+        <span className="text-xs text-slate-400 italic">
+          {uploadDate
+            ? `Last updated: ${formatDate(uploadDate)}`
+            : "No file uploaded"}
         </span>
       </div>
 

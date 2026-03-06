@@ -1,17 +1,22 @@
-export default function Reviews({ reviews }) {
+import Star from "./../../components/ViewDetail/Star"
+import RatingBar from "./../../components/ViewDetail/RatingBar"
+export default function Reviews({ reviews, company }) {
   return (
     <section className="mt-10 pt-10 border-t border-slate-100 dark:border-slate-800">
-      <h3 className="text-2xl font-bold text-slate-900 dark:text-white mb-6">
+      <div className="flex ">
+      <h3 className="flex-1 text-2xl font-bold text-slate-900 dark:text-white mb-6">
         Employee Reviews
       </h3>
+      <button className="flex-1 text-md text-blue-600 border-2 border-r-2 border-blue-600">write a review</button>
+      </div>
 
-      {/* Overall Rating */}
+
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-10">
-        <div className="bg-primary/5 border border-primary/10 rounded-xl p-6 flex flex-col items-center justify-center text-center">
-          <p className="text-5xl font-black text-primary mb-2">
+        <div className="bg-blue-600/5 border border-blue-600/10 rounded-xl p-6 flex flex-col items-center justify-center text-center">
+          <p className="text-5xl font-black text-blue-600 mb-2">
             {reviews.overallRating}
           </p>
-          <div className="flex text-yellow-400 mb-2">
+          {/* <div className="flex text-yellow-400 mb-2">
             {[...Array(5)].map((_, i) => (
               <span
                 key={i}
@@ -26,11 +31,13 @@ export default function Reviews({ reviews }) {
                     : "star_outline"}
               </span>
             ))}
-          </div>
+          </div> */}
+          <Star stars ={reviews.overallRating}/>
           <p className="text-sm font-semibold text-slate-700 dark:text-slate-300">
             {reviews.total} Total Reviews
           </p>
         </div>
+        <RatingBar bar={reviews.ratingBar}/>
       </div>
 
       {/* Review List */}
@@ -42,22 +49,16 @@ export default function Reviews({ reviews }) {
           >
             <div className="flex justify-between items-start mb-4">
               <div>
-                <div className="flex text-yellow-400 mb-1">
-                  {[...Array(5)].map((_, i) => (
-                    <span
-                      key={i}
-                      className={`material-symbols-outlined text-sm ${
-                        i < rev.rating ? "fill-1" : ""
-                      }`}
-                    >
-                      star
-                    </span>
-                  ))}
-                </div>
+                <Star stars={rev.rating}/>
                 <h5 className="font-bold text-slate-900 dark:text-white">
                   {rev.title}
                 </h5>
-                <p className="text-xs text-slate-500">{rev.role}</p>
+                <div className="flex text-xs text-slate-500 gap-2">
+                  <p>{rev.role}</p>
+                  <p>{company.name}</p>
+                  <p>{rev.date}</p>
+
+                  </div>
               </div>
             </div>
             <div className="space-y-3">

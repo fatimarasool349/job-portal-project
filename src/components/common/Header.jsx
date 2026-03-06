@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
-import logo from "./../assets/svg/logo.svg";
-import profile from "./../assets/icons/profile.jpg"
+import logo from "../../assets/svg/logo.svg";
+import profile from "../../assets/icons/profile.jpg"
 function Header() {
   return (
     <div className="font-sans bg-gray-50">
