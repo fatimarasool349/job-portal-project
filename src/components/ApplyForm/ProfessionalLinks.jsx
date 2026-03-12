@@ -26,7 +26,7 @@ function ProfessionalLinks({ register }) {
               {...register("linkedin")}
               placeholder="linkedin.com/in/username"
               type="url"
-              className="w-full rounded-lg border border-slate-300 dark:border-slate-700 dark:bg-slate-800 focus:border-primary focus:ring-primary h-12 pl-10"
+              className="w-full rounded-lg border border-slate-300 dark:border-slate-700 dark:bg-slate-800 focus:border-blue-600 focus:ring-blue-600 h-12 pl-10"
             />
           </div>
         </div>

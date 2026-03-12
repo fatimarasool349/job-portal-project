@@ -4,11 +4,13 @@ import { useNavigate} from "react-router-dom";
 
 function JobSidebar({ job }) {
     const navigate = useNavigate();
+      if (!job) return null; // safety
+
 
   return (
     <div className="bg-white dark:bg-slate-900 rounded-xl p-6 border border-slate-200 dark:border-slate-800 shadow-sm sticky top-24">
       <div className="space-y-4">
-        <button onClick={()=>navigate("/applyform")} className="w-full py-3 px-4 bg-blue-600 hover:bg-blue-600/90 text-white font-bold rounded-lg transition-all flex items-center justify-center gap-2">
+        <button onClick={() => navigate(`/jobs/${job.id}/apply`)} className="w-full py-3 px-4 bg-blue-600 hover:bg-blue-600/90 text-white font-bold rounded-lg transition-all flex items-center justify-center gap-2">
           Apply Now
           <IoMdArrowRoundForward />
         </button>

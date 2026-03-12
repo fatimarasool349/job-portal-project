@@ -33,10 +33,8 @@ function Company({ company }) {
         {company.culture?.map((item, index) => {
           const Icon = item.icon;
           return (
-            <>
               <div key={index} className="flex flex-col gap-3">
-                <Icon className={`${item.icon} text-blue-600 text-2xl`} />
-                <span className="text-primary text-3xl">{item.icon}</span>
+                <Icon className={` text-blue-600 text-2xl`} />
                 <h5 className="font-bold text-slate-900 dark:text-white">
                   {item.title}
                 </h5>
@@ -44,7 +42,6 @@ function Company({ company }) {
                   {item.description}
                 </p>
               </div>
-            </>
           );
         })}
       </div>

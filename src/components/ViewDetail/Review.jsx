@@ -1,13 +1,16 @@
 import Star from "./../../components/ViewDetail/Star"
 import RatingBar from "./../../components/ViewDetail/RatingBar"
-export default function Reviews({ reviews, company }) {
+import { Link } from "react-router-dom";
+export default function Reviews({ reviews, company, job }) {
   return (
     <section className="mt-10 pt-10 border-t border-slate-100 dark:border-slate-800">
       <div className="flex ">
       <h3 className="flex-1 text-2xl font-bold text-slate-900 dark:text-white mb-6">
         Employee Reviews
       </h3>
-      <button className="flex-1 text-md text-blue-600 border-2 border-r-2 border-blue-600">write a review</button>
+      <Link to={`/review/${job.id}`}>
+      <button  className="flex-1 text-md text-blue-600 border-2 border-r-2 border-blue-600">write a review</button>
+      </Link>
       </div>
 
 
@@ -16,22 +19,6 @@ export default function Reviews({ reviews, company }) {
           <p className="text-5xl font-black text-blue-600 mb-2">
             {reviews.overallRating}
           </p>
-          {/* <div className="flex text-yellow-400 mb-2">
-            {[...Array(5)].map((_, i) => (
-              <span
-                key={i}
-                className={`material-symbols-outlined ${
-                  i < Math.floor(reviews.overallRating) ? "fill-1" : ""
-                }`}
-              >
-                {i < Math.floor(reviews.overallRating)
-                  ? "star"
-                  : i < reviews.overallRating
-                    ? "star_half"
-                    : "star_outline"}
-              </span>
-            ))}
-          </div> */}
           <Star stars ={reviews.overallRating}/>
           <p className="text-sm font-semibold text-slate-700 dark:text-slate-300">
             {reviews.total} Total Reviews

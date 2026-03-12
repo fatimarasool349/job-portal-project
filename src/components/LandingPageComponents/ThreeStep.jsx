@@ -31,11 +31,11 @@ function ThreeStep() {
           {steps.map((step) => (
             <div
               key={step.id}
-              className="bg-white dark:bg-slate-800 p-8 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-700 hover:border-primary/50 transition-colors"
+              className="bg-white dark:bg-slate-800 p-8 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-700 hover:border-blue-600/50 transition-colors"
               data-aos="fade-up"
-              data-aos-delay={step.id * 200} // stagger animation
+              data-aos-delay={step.id * 200}
             >
-              <div className="w-14 h-14 bg-primary/10 text-primary rounded-xl flex items-center justify-center mb-6">
+              <div className="w-14 h-14 bg-blue-600/10 text-blue-600 rounded-xl flex items-center justify-center mb-6">
                 <img
                   src={step.icon}
                   alt={step.title}

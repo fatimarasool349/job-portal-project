@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from "react";
+import { useRef, useEffect } from "react";
 function SkillModel({ show, onClose, onAdd, newSkill, setNewSkill }) {
   const inputRef = useRef(null);
   useEffect(() => {

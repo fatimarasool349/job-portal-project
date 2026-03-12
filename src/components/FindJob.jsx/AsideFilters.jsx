@@ -34,7 +34,7 @@ function AsideFilters() {
           </h3>
           <button
             onClick={clearFilters}
-            className="text-xs font-semibold text-primary hover:underline"
+            className="text-xs font-semibold text-blue-600 hover:underline"
           >
             Clear all
           </button>
@@ -52,7 +52,7 @@ function AsideFilters() {
               value={filters.keyword}
               onChange={handleChange}
               placeholder="Job title, skills..."
-              className="w-full rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 px-3 py-2 text-sm focus:border-primary focus:ring-primary dark:text-white"
+              className="w-full rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 px-3 py-2 text-sm focus:border-blue-600 focus:ring-blue-600 dark:text-white"
             />
           </div>
 
@@ -67,7 +67,7 @@ function AsideFilters() {
               value={filters.location}
               onChange={handleChange}
               placeholder="City, state, or remote"
-              className="w-full rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 px-3 py-2 text-sm focus:border-primary focus:ring-primary dark:text-white"
+              className="w-full rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 px-3 py-2 text-sm focus:border-blue-600 focus:ring-blue-600 dark:text-white"
             />
           </div>
 
@@ -86,7 +86,7 @@ function AsideFilters() {
                     type="checkbox"
                     checked={filters.jobType.includes(type)}
                     onChange={() => handleJobType(type)}
-                    className="size-4 rounded border-slate-300 text-primary focus:ring-primary"
+                    className="size-4 rounded border-slate-300 text-blue-600 focus:ring-blue-600"
                   />
                   <span className="text-sm text-slate-600 dark:text-slate-400">
                     {type}
@@ -105,7 +105,7 @@ function AsideFilters() {
               name="experience"
               value={filters.experience}
               onChange={handleChange}
-              className="w-full rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-sm px-3 py-2 focus:border-primary focus:ring-primary dark:text-white"
+              className="w-full rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-sm px-3 py-2 focus:border-blue-600 focus:ring-blue-600 dark:text-white"
             >
               {experienceLevels.map((level) => (
                 <option key={level}>{level}</option>
@@ -130,7 +130,7 @@ function AsideFilters() {
                     salary: e.target.value,
                   }))
                 }
-                className="h-1.5 w-full cursor-pointer appearance-none rounded-lg bg-slate-200 dark:bg-slate-700 accent-primary"
+                className="h-1.5 w-full cursor-pointer appearance-none rounded-lg bg-slate-200 dark:bg-slate-700 accent-blue-600"
               />
               <div className="mt-2 flex justify-between text-xs font-medium text-slate-500">
                 <span>$0k</span>

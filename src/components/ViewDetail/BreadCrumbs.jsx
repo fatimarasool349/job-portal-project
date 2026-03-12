@@ -2,11 +2,15 @@ import { Link } from "react-router-dom";
 import {breadcrumbItems} from "./../../constant/data.js"
 
 
-function BreadCrumbs() {
+function BreadCrumbs({jobTitle}) {
+   const itemsToRender = [
+    ...breadcrumbItems,            
+    { label: jobTitle || "Job Title" }, 
+  ]
   return (
         <nav className="flex items-center gap-2 mb-6 text-sm font-medium text-slate-500 dark:text-slate-400">
-      {breadcrumbItems.map((item, index) => {
-        const isLast = index === breadcrumbItems.length - 1;
+      {itemsToRender.map((item, index) => {
+        const isLast = index === itemsToRender.length - 1;
         return (
           <span key={index} className="flex items-center gap-2">
             {isLast ? (

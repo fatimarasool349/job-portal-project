@@ -1,6 +1,4 @@
-import React from 'react'
-
-function RatingBar({bar}) {
+function RatingBar({ bar, setBar }) {
   return (
     <div className="md:col-span-2 space-y-3">
       {bar.map((item, index) => (
@@ -9,10 +7,23 @@ function RatingBar({bar}) {
             {item.title}
           </span>
 
-          <div className="flex-1 h-2 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
+          <div
+            className={`flex-1 h-2 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden ${
+              setBar ? "cursor-pointer" : ""
+            }`}
+            onClick={(e) => {
+              if (!setBar) return; // do nothing if read-only
+
+              const rect = e.currentTarget.getBoundingClientRect();
+              const percent = (e.clientX - rect.left) / rect.width;
+              const rating = Math.round(percent * 5 * 10) / 10;
+
+              setBar(index, rating);
+            }}
+          >
             <div
               className="h-full bg-blue-600"
-              style={{ width: `${item.rating*20}%` }}
+              style={{ width: `${item.rating * 20}%` }}
             />
           </div>
 
@@ -22,7 +33,7 @@ function RatingBar({bar}) {
         </div>
       ))}
     </div>
-  )
+  );
 }
 
-export default RatingBar
+export default RatingBar;

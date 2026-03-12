@@ -1,10 +1,12 @@
-import React from "react";
 import { useNavigate } from "react-router-dom";
 import { IoMdArrowRoundBack } from "react-icons/io";
 import { FaLocationDot } from "react-icons/fa6";
 import { FaBuilding, FaRegClock } from "react-icons/fa";
+
 function JobHeader({ job }) {
   const navigate = useNavigate();
+
+  if (!job) return null; // safety check
 
   return (
     <div className="mb-8">
@@ -26,23 +28,24 @@ function JobHeader({ job }) {
           {/* Company Name */}
           <span className="flex text-slate-500 items-center gap-1">
             <FaBuilding />
-            {job.company.name}
+            {job.company?.name || "Unknown Company"}
           </span>
 
           {/* Location */}
-          <span className="flex  text-slate-500 items-center gap-1">
+          <span className="flex text-slate-500 items-center gap-1">
             <FaLocationDot />
-            {job.company.location || "Remote"}
+            {job.company?.location || "Remote"}
           </span>
 
           {/* Job Type */}
-          <span className="flex  text-slate-500 items-center gap-1">
+          <span className="flex text-slate-500 items-center gap-1">
             <FaRegClock />
-            {job.type}
+            {job.type || "Full-time"}
           </span>
         </div>
       </div>
     </div>
   );
 }
+
 export default JobHeader;

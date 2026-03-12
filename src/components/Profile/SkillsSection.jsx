@@ -2,7 +2,7 @@ import { useRef, useState, useEffect } from "react";
 import skillIcon from "./../../assets/svg/skill.svg";
 import close from "./../../assets/svg/close.svg";
 import { initialSkills,colors} from "../../constant/data";
-import SkillModel from "../../model/SkillModel";
+import SkillModel from "../../modal/SkillModal";
 
 function SkillsSection() {
  const [skills, setSkills] = useState(initialSkills);

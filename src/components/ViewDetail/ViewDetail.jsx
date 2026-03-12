@@ -2,11 +2,17 @@ import React, { useState } from "react";
 import Description from "./Description";
 import Company from "./Company";
 import Reviews from "./Review";
-import {jobData,tabs} from "./../../constant/data.js"
 import JobSidebar from "./JobSideBar.jsx";
+import { getTabs } from "./../../constant/data.js";
 
-function ViewDetail() {
+function ViewDetail({ job }) {
   const [activeTab, setActiveTab] = useState("description");
+
+  if (!job) {
+    return <div className="text-center py-10 text-gray-500">No job data available</div>;
+  }
+
+  const tabs = getTabs(job);
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -30,17 +36,17 @@ function ViewDetail() {
         </div>
 
         {/* Tab Content */}
-        {activeTab === "description" && <Description job={jobData} />}
-        {activeTab === "company" && <Company company={jobData.company} />}
-        {activeTab === "reviews" && <Reviews reviews={jobData.reviews} company={jobData.company} />}
+        {activeTab === "description" && <Description job={job} />}
+        {activeTab === "company" && <Company company={job.company} />}
+        {activeTab === "reviews" && <Reviews reviews={job.reviews} company={job.company} job={job} />}
       </div>
 
       {/* Right Column */}
       <div className="space-y-6">
-        <JobSidebar job={jobData}/>
-        
+        <JobSidebar job={job} />
       </div>
     </div>
   );
 }
+
 export default ViewDetail;

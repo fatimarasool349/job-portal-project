@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 import {
@@ -25,7 +25,7 @@ export default function SignUp({ role = "Job Seeker" }) {
   const [showConfirm, setShowConfirm] = useState(false);
 
   const onSubmit = (data) => {
-    console.log(...data,role);
+    console.log(...data, role);
   };
 
   return (
@@ -39,23 +39,6 @@ export default function SignUp({ role = "Job Seeker" }) {
             Join thousands of professionals today
           </p>
         </div>
-
-        {/* Role Toggle */}
-        {/* <div className="flex justify-between mb-4 bg-gray-100 rounded-lg p-1">
-          {["Job Seeker", "Recruiter"].map((r) => (
-            <button
-              key={r}
-              type="button"
-              onClick={() => setRole(r)}
-              className={`flex-1 py-2 rounded-lg ${
-                role === r ? "bg-white text-blue-600" : "text-gray-600"
-              }`}
-            >
-              {r}
-            </button>
-          ))}
-        </div> */}
-
         {/* Form */}
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <div>
@@ -223,7 +206,10 @@ export default function SignUp({ role = "Job Seeker" }) {
 
         <p className="text-center text-gray-500 text-sm mt-6">
           Already have an account?{" "}
-          <Link to={`/login/${role.toLowerCase().replace(" ", "")}`} className="text-blue-600  cursor-pointer hover:underline">
+          <Link
+            to={`/login/${role.toLowerCase().replace(" ", "")}`}
+            className="text-blue-600  cursor-pointer hover:underline"
+          >
             Log In
           </Link>
         </p>

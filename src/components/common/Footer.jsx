@@ -21,13 +21,13 @@ function Footer() {
               <div className="flex gap-4">
                 <Link
                   to="/"
-                  className="w-10 h-10 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center hover:bg-primary hover:text-white transition-all"
+                  className="w-10 h-10 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center hover:bg-blue-600 hover:text-white transition-all"
                 >
                   <span className="material-symbols-outlined text-lg">public</span>
                 </Link>
                 <Link
                   to="/"
-                  className="w-10 h-10 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center hover:bg-primary hover:text-white transition-all"
+                  className="w-10 h-10 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center hover:bg-blue-600 hover:text-white transition-all"
                 >
                   <span className="material-symbols-outlined text-lg">share</span>
                 </Link>

@@ -1,5 +1,5 @@
 import { useState, useMemo } from "react";
-import { jobsDataDescription } from "./../../constant/data.js";
+import { jobData } from "./../../constant/data.js";
 import JobCard from "./JobCard";
 
 function JobListing() {
@@ -8,7 +8,7 @@ function JobListing() {
 
   const jobsPerPage = 4;
   const sortedJobs = useMemo(() => {
-    let sorted = [...jobsDataDescription];
+    let sorted = [...jobData];
 
     if (sortBy === "Highest Salary") {
       sorted.sort((a, b) => b.salary - a.salary);

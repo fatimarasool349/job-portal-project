@@ -6,6 +6,8 @@ import ReactEngineer from "./../assets/icons/reactEngineer.png";
 import Marking from "./../assets/icons/Marketing.png";
 import heroImage from "./../assets/Images/HeroImage.png";
 import { IoRocketOutline, IoCode } from "react-icons/io5";
+import profile from "./../assets/icons/profile.jpg";
+
 import {
   MdOutlineQueryStats,
   MdOutlineSecurity,
@@ -16,7 +18,7 @@ import { FaBalanceScale } from "react-icons/fa";
 
 //Colors
 export const colors = {
-  primary: "#1D4ED8",
+  primary: "1D4ED8#",
   primaryHover: "#1E40AF",
   secondary: "#10B981",
   backgroundLight: "#F9FAFB",
@@ -207,8 +209,7 @@ export const initialUserData = {
   location: "New York, NY",
   email: "alex.johnson@email.com",
   phone: "+1 (555) 012-3456",
-  profilePic:
-    "https://lh3.googleusercontent.com/aida-public/AB6AXuBvOSpRgpt9qTDLeiRbTxevb51ThEyAaeRCDF2iUcAqPk8BNY0ytvrmhXxj5UNGN1dKc7K1FE7Y-VCw7WRGb5WVCV6fBIEV4FrSQJEZRx6xUHA7lrAnuaF94_FzwfDR3L9tyCZtqP_IuoBeFaUNccVao0K3ZKC6fM7SqTH2DsEctSnTCeSvRwlaGpDYzkQkh-DadaAeOp2bcC7jLzMJTRqoa_m3faCfM39GBEaU61Svz2PDYaYDogLXcbKc3iCdVmS0bI8JUSkPPhU",
+  profilePic: profile,
 };
 
 // filter
@@ -296,124 +297,754 @@ export const jobsDataDescription = [
 // BreadCrumbs
 export const breadcrumbItems = [
   { label: "Jobs", path: "/findjob" },
-  { label: "Senior Software Engineer" }, // Last item, no path
 ];
 
 //View Detail
-export const jobData = {
-  title: "Senior UI/UX Designer",
-  type: "Full-time",
-  icon: ProductDesign,
-  skillMatchPercentage: 85,
-  skillsMatched: 12,
-  skillsRequired: 14,
-  description:
-    "TechNova Solutions is looking for a Senior Software Engineer to join our Core UI team. You will be responsible for building high-performance, accessible, and scalable user interfaces that power our industry-leading analytics platform. We are looking for someone who is passionate about modern JavaScript/TypeScript, React, and building seamless user experiences",
-  responsibilities: [
-    "Architect and develop complex UI features using React, TypeScript, and Tailwind CSS.",
-    "Collaborate with designers and product managers to translate Figma mockups into interactive components.",
-    "Optimize application performance for maximum speed and scalability across various devices.",
-    "Lead the implementation of our new internal Design System components.",
-  ],
-  requirements: [
-    "5+ years of experience in frontend software engineering.",
-    "Strong proficiency in JavaScript (ES6+), TypeScript, and React ecosystems.",
-    "Expertise with CSS-in-JS or modern utility-first frameworks like Tailwind CSS.",
-    "Familiarity with state management libraries (Redux, Zustand, or TanStack Query).",
-  ],
-  company: {
-    name: "TechNova Solutions",
-    about1:
-      "TechNova Solutions is a pioneer in the cloud infrastructure space, dedicated to building tools that empower developers to create the next generation of digital experiences. Founded with a vision of simplifying complex systems, we have grown into a global leader serving millions of users.",
-    about2:
-      "Our team is composed of passionate engineers, designers, and problem-solvers who believe in the power of open-source and collaborative innovation. We pride ourselves on our technical excellence and our commitment to building a more connected world",
-    postedDate: "2026-03-04",
-    locations:[
-    {
-      image: "https://lh3.googleusercontent.com/aida-public/AB6AXuDsStc6gQU3fQqil7f-iEz_rb1H2Zmwr5E6c3Ugmn8X9E_fG32s57zdE2G0xz_uFYCi5H3ZxUc649bsz_OFNaNYcaD4kn375aneqRo-59DHRsZKC4Bh5uybkT9veUJJuAvvn-NFUEI7R63uSPtouNc7eQJ5SHId21u_y7Axnyl_q9C81XJVn6In-jg1Oa8_tu-Z2Ydlu3REUjB7F6YOdnEsGm3VSvJmuXDWJiHAKZF1FAjvqH2mGA-Jn4fRNrYQ8c3zCLsQdFt_7Y7a",
-      title: "TechNova HQ",
-      address: "123 Innovation Drive, SF"
-    }
-  ],
-    stats: [
-      { label: "Founded", value: "2012" },
-      { label: "Employees", value: "1k-5k" },
-      { label: "Headquarters", value: "San Francisco, CA" },
-      { label: "Website", value: "technova.io" },
+export const jobData = [
+  {
+    id: 1,
+    title: "Senior UI/UX Designer",
+    type: "Full-time",
+    typeColor: "green",
+    salary: "$60k - $90k",
+    icon: ProductDesign,
+    skillMatchPercentage: 85,
+    skillsMatched: 12,
+    skillsRequired: 14,
+    description:
+      "TechNova Solutions is looking for a Senior Software Engineer to join our Core UI team. You will be responsible for building high-performance, accessible, and scalable user interfaces that power our industry-leading analytics platform. We are looking for someone who is passionate about modern JavaScript/TypeScript, React, and building seamless user experiences",
+    responsibilities: [
+      "Architect and develop complex UI features using React, TypeScript, and Tailwind CSS.",
+      "Collaborate with designers and product managers to translate Figma mockups into interactive components.",
+      "Optimize application performance for maximum speed and scalability across various devices.",
+      "Lead the implementation of our new internal Design System components.",
     ],
+    requirements: [
+      "5+ years of experience in frontend software engineering.",
+      "Strong proficiency in JavaScript (ES6+), TypeScript, and React ecosystems.",
+      "Expertise with CSS-in-JS or modern utility-first frameworks like Tailwind CSS.",
+      "Familiarity with state management libraries (Redux, Zustand, or TanStack Query).",
+    ],
+    company: {
+      name: "TechNova Solutions",
+      about1:
+        "TechNova Solutions is a pioneer in the cloud infrastructure space, dedicated to building tools that empower developers to create the next generation of digital experiences. Founded with a vision of simplifying complex systems, we have grown into a global leader serving millions of users.",
+      about2:
+        "Our team is composed of passionate engineers, designers, and problem-solvers who believe in the power of open-source and collaborative innovation. We pride ourselves on our technical excellence and our commitment to building a more connected world",
+      postedDate: "2026-03-04",
+      businessHours: "10:00 am - 4:00 pm",
+      locations: [
+        {
+          image:
+            "https://lh3.googleusercontent.com/aida-public/AB6AXuDsStc6gQU3fQqil7f-iEz_rb1H2Zmwr5E6c3Ugmn8X9E_fG32s57zdE2G0xz_uFYCi5H3ZxUc649bsz_OFNaNYcaD4kn375aneqRo-59DHRsZKC4Bh5uybkT9veUJJuAvvn-NFUEI7R63uSPtouNc7eQJ5SHId21u_y7Axnyl_q9C81XJVn6In-jg1Oa8_tu-Z2Ydlu3REUjB7F6YOdnEsGm3VSvJmuXDWJiHAKZF1FAjvqH2mGA-Jn4fRNrYQ8c3zCLsQdFt_7Y7a",
+          title: "TechNova HQ",
+          address: "123 Innovation Drive, SF",
+        },
+      ],
+      stats: [
+        { label: "Founded", value: "2012" },
+        { label: "Employees", value: "1k-5k" },
+        { label: "Headquarters", value: "San Francisco, CA" },
+        { label: "Website", value: "technova.io" },
+      ],
+      culture: [
+        {
+          icon: SlEnergy,
+          title: "Innovation First",
+          description:
+            "We push the boundaries of what's possible in cloud computing every day.",
+        },
+        {
+          icon: FaBalanceScale,
+          title: "Work-Life Harmony",
+          description:
+            "We believe great work happens when people live balanced lives.",
+        },
+        {
+          icon: MdOutlineDiversity3,
+          title: "Inclusive Diversity",
+          description:
+            "Our strength comes from diverse perspectives and collaboration.",
+        },
+      ],
+      photos: [
+        "https://placeholder.pics/svg/300",
+        "https://placeholder.pics/svg/300",
+        "https://placeholder.pics/svg/300",
+      ],
+      logo: "https://lh3.googleusercontent.com/aida-public/AB6AXuAZagT5FnsvLCeduh1NObArGSQNCU4xZ6FkKSuLQc7_xVa7DR3TDn4idwQIoebpdSa8DSmUWDmFmuT_xYZJtRCvYap8ZVIwu2Tz64Qg_20Vz0ZU8BjhKfvEbYMYy5rsKZVnjUl_xgeTvjlYogD8yEMO3y-dwZX-EXAxJUhPBzUxCeg_nsHLfJMfXGgSdMaAnO-WI3StcjOjBmClWF7PmY729lxGWOQ68C0SI8Z7BqE4PfsSiYHiuQf0VZLMC5_TnUa140RlNEerdeX9",
+      industry: "Cloud Computing",
+      size: "1k-5k Emp",
+      description:
+        "TechNova is a global leader in cloud infrastructure and developer tools. We empower over 2 million developers worldwide.",
+      website: "https://technova.io",
+      location: "F Block Lahore",
+    },
+    recruiterResponseTime: "48 hours",
+    reviews: {
+      overallRating: 4.2,
+      total: 124,
+      ratingBar: [
+        { title: "Work/Life Balance", rating: 4.5, percent: 85 },
+        { title: "Culture & Values", rating: 4.8, percent: 92 },
+        { title: "Career Opportunities", rating: 4.0, percent: 78 },
+        { title: "Senior Mgmt", rating: 3.8, percent: 70 },
+      ],
+      list: [
+        {
+          rating: 5,
+          title: "Great place",
+          date: "2026-02-20",
+          role: "Developer",
+          pros: "The tech stack is modern and they actually care about code quality. Great mentorship from senior staff",
+          cons: "Can be fast-paced during release cycles, but it's manageable.",
+        },
+        {
+          rating: 4,
+          title: "Good culture",
+          role: "Manager",
+          pros: "Teamwork",
+          cons: "Long hours",
+        },
+      ],
+    },
+    skillMatch: {
+      percentage: 85,
+      message:
+        "You match 12 out of 14 skills required for this role based on your profile.",
+    },
+  },
+  {
+    id: 2,
+    title: "Frontend React Developer",
+    type: "Remote",
+    typeColor: "blue",
+    salary: "$60k - $90k",
+    icon: ReactEngineer,
+    skillMatchPercentage: 78,
+    skillsMatched: 10,
+    skillsRequired: 13,
+    description:
+      "PixelSoft Technologies is looking for a passionate React Developer to build modern and scalable web applications used by thousands of users worldwide.",
+    responsibilities: [
+      "Develop reusable UI components using React and Tailwind CSS.",
+      "Integrate REST APIs with frontend applications.",
+      "Optimize applications for maximum performance.",
+      "Collaborate with backend developers and designers.",
+    ],
+    requirements: [
+      "3+ years experience with React.",
+      "Strong JavaScript ES6 knowledge.",
+      "Experience with Tailwind CSS.",
+      "Understanding of REST APIs and Git.",
+    ],
+
+    company: {
+      name: "PixelSoft Technologies",
+
+      about1:
+        "PixelSoft Technologies builds modern SaaS products and scalable web applications for global clients.",
+      about2:
+        "Our team focuses on performance, clean architecture, and user-friendly design to create impactful digital solutions.",
+
+      postedDate: "2026-03-10",
+      businessHours: "9:00 am - 5:00 pm",
+
+      locations: [
+        {
+          image: "https://placeholder.pics/svg/300",
+          title: "PixelSoft HQ",
+          address: "Johar Town Lahore",
+        },
+      ],
+
+      stats: [
+        { label: "Founded", value: "2018" },
+        { label: "Employees", value: "200+" },
+        { label: "Headquarters", value: "Lahore, Pakistan" },
+        { label: "Website", value: "pixelsoft.io" },
+      ],
+
+      culture: [
+        {
+          icon: SlEnergy,
+          title: "Innovation",
+          description: "We encourage developers to experiment and innovate.",
+        },
+        {
+          icon: FaBalanceScale,
+          title: "Work Life Balance",
+          description: "Flexible schedules and remote friendly culture.",
+        },
+        {
+          icon: MdOutlineDiversity3,
+          title: "Diverse Team",
+          description: "We believe diverse teams build better products.",
+        },
+      ],
+
+      photos: [
+        "https://placeholder.pics/svg/300",
+        "https://placeholder.pics/svg/300",
+        "https://placeholder.pics/svg/300",
+      ],
+
+      logo: "https://placeholder.pics/svg/100",
+
+      industry: "Software Development",
+      size: "200+ Emp",
+
+      description:
+        "PixelSoft builds scalable software platforms used by businesses around the world.",
+
+      website: "https://pixelsoft.io",
+
+      location: "Johar Town Lahore",
+    },
+
+    recruiterResponseTime: "24 hours",
+
+    reviews: {
+      overallRating: 4.4,
+      total: 86,
+
+      ratingBar: [
+        { title: "Work/Life Balance", rating: 4.6, percent: 88 },
+        { title: "Culture & Values", rating: 4.5, percent: 85 },
+        { title: "Career Opportunities", rating: 4.2, percent: 80 },
+        { title: "Senior Mgmt", rating: 4.0, percent: 76 },
+      ],
+
+      list: [
+        {
+          rating: 5,
+          title: "Excellent workplace",
+          date: "2026-02-15",
+          role: "Frontend Developer",
+          pros: "Friendly team and modern tech stack.",
+          cons: "Sometimes tight deadlines.",
+        },
+        {
+          rating: 4,
+          title: "Good learning environment",
+          role: "Junior Developer",
+          pros: "Great mentorship and learning opportunities.",
+          cons: "Project timelines can be strict.",
+        },
+      ],
+    },
+
+    skillMatch: {
+      percentage: 78,
+      message:
+        "You match 10 out of 13 skills required for this role based on your profile.",
+    },
+  },
+  {
+    id: 3,
+    title: "Backend Node.js Developer",
+    type: "Contract",
+    typeColor: "purple",
+    salary: "$80k - $100k",
+    icon: Marking,
+    skillMatchPercentage: 72,
+    skillsMatched: 9,
+    skillsRequired: 12,
+    description:
+      "DataCore Systems is looking for a Backend Node.js Developer to build scalable APIs and maintain high-performance server infrastructure for our data platforms.",
+    responsibilities: [
+      "Develop scalable REST APIs using Node.js and Express.",
+      "Design and optimize MySQL database queries.",
+      "Integrate frontend applications with backend services.",
+      "Ensure security and performance of backend systems.",
+    ],
+    requirements: [
+      "3+ years experience in Node.js development.",
+      "Strong knowledge of Express.js framework.",
+      "Experience with MySQL or PostgreSQL.",
+      "Understanding of REST APIs and authentication systems.",
+    ],
+
+    company: {
+      name: "DataCore Systems",
+
+      about1:
+        "DataCore Systems builds enterprise data platforms and cloud-based analytics tools used by organizations worldwide.",
+      about2:
+        "Our engineering teams focus on reliability, security, and scalable architectures that power modern businesses.",
+
+      postedDate: "2026-03-08",
+      businessHours: "9:30 am - 6:00 pm",
+
+      locations: [
+        {
+          image: "https://placeholder.pics/svg/300",
+          title: "DataCore Office",
+          address: "Gulberg Lahore",
+        },
+      ],
+
+      stats: [
+        { label: "Founded", value: "2015" },
+        { label: "Employees", value: "500+" },
+        { label: "Headquarters", value: "Lahore, Pakistan" },
+        { label: "Website", value: "datacore.io" },
+      ],
+
+      culture: [
+        {
+          icon: SlEnergy,
+          title: "Engineering Excellence",
+          description: "We prioritize clean architecture and scalable systems.",
+        },
+        {
+          icon: FaBalanceScale,
+          title: "Healthy Work Culture",
+          description: "Balanced workloads and supportive leadership.",
+        },
+        {
+          icon: MdOutlineDiversity3,
+          title: "Team Collaboration",
+          description: "Engineers collaborate closely across departments.",
+        },
+      ],
+
+      photos: [
+        "https://placeholder.pics/svg/300",
+        "https://placeholder.pics/svg/300",
+        "https://placeholder.pics/svg/300",
+      ],
+
+      logo: "https://placeholder.pics/svg/100",
+
+      industry: "Software & Data Platforms",
+      size: "500+ Emp",
+
+      description:
+        "DataCore provides enterprise-grade backend platforms for modern digital businesses.",
+
+      website: "https://datacore.io",
+
+      location: "Gulberg Lahore",
+    },
+
+    recruiterResponseTime: "36 hours",
+
+    reviews: {
+      overallRating: 4.1,
+      total: 95,
+
+      ratingBar: [
+        { title: "Work/Life Balance", rating: 4.3, percent: 82 },
+        { title: "Culture & Values", rating: 4.2, percent: 80 },
+        { title: "Career Opportunities", rating: 4.0, percent: 76 },
+        { title: "Senior Mgmt", rating: 3.9, percent: 72 },
+      ],
+
+      list: [
+        {
+          rating: 5,
+          title: "Great backend team",
+          date: "2026-02-18",
+          role: "Backend Developer",
+          pros: "Strong engineering culture and modern tech stack.",
+          cons: "Sometimes heavy workload during deployments.",
+        },
+        {
+          rating: 4,
+          title: "Good learning experience",
+          role: "Software Engineer",
+          pros: "Opportunity to work on large-scale systems.",
+          cons: "Limited remote options.",
+        },
+      ],
+    },
+
+    skillMatch: {
+      percentage: 72,
+      message:
+        "You match 9 out of 12 skills required for this role based on your profile.",
+    },
+  },
+  {
+    id: 4,
+    title: "Data Analyst",
+    type: "Full-time",
+    typeColor: "green",
+    icon: Marking,
+    salary: "$80k - $100k",
+    skillMatchPercentage: 80,
+    skillsMatched: 8,
+    skillsRequired: 10,
+    description:
+      "Insight Analytics is seeking a Data Analyst who can transform raw data into meaningful insights that help businesses make informed decisions. You will work with large datasets and create reports and dashboards for stakeholders.",
+    responsibilities: [
+      "Analyze large datasets using SQL and Python.",
+      "Create data visualizations and dashboards.",
+      "Generate reports for business stakeholders.",
+      "Collaborate with product and engineering teams to identify trends.",
+    ],
+    requirements: [
+      "2+ years experience in data analysis.",
+      "Strong knowledge of SQL.",
+      "Experience with Python or R for data analysis.",
+      "Experience with visualization tools like Power BI or Tableau.",
+    ],
+
+    company: {
+      name: "Insight Analytics",
+
+      about1:
+        "Insight Analytics helps organizations unlock the power of their data through advanced analytics and visualization tools.",
+      about2:
+        "Our mission is to help companies make smarter decisions using data-driven insights and predictive analytics.",
+
+      postedDate: "2026-03-09",
+      businessHours: "9:00 am - 5:30 pm",
+
+      locations: [
+        {
+          image: "https://placeholder.pics/svg/300",
+          title: "Insight Analytics Office",
+          address: "DHA Phase 6 Lahore",
+        },
+      ],
+
+      stats: [
+        { label: "Founded", value: "2016" },
+        { label: "Employees", value: "300+" },
+        { label: "Headquarters", value: "Lahore, Pakistan" },
+        { label: "Website", value: "insightanalytics.io" },
+      ],
+
+      culture: [
+        {
+          icon: SlEnergy,
+          title: "Data Innovation",
+          description: "We push boundaries in analytics and machine learning.",
+        },
+        {
+          icon: FaBalanceScale,
+          title: "Work-Life Balance",
+          description: "Flexible schedules and supportive management.",
+        },
+        {
+          icon: MdOutlineDiversity3,
+          title: "Collaborative Teams",
+          description:
+            "Cross-functional teams work together to solve data challenges.",
+        },
+      ],
+
+      photos: [
+        "https://placeholder.pics/svg/300",
+        "https://placeholder.pics/svg/300",
+        "https://placeholder.pics/svg/300",
+      ],
+
+      logo: "https://placeholder.pics/svg/100",
+
+      industry: "Data Analytics",
+      size: "300+ Emp",
+
+      description:
+        "Insight Analytics provides data-driven solutions for modern businesses.",
+
+      website: "https://insightanalytics.io",
+
+      location: "DHA Phase 6 Lahore",
+    },
+
+    recruiterResponseTime: "30 hours",
+
+    reviews: {
+      overallRating: 4.3,
+      total: 64,
+
+      ratingBar: [
+        { title: "Work/Life Balance", rating: 4.5, percent: 86 },
+        { title: "Culture & Values", rating: 4.4, percent: 84 },
+        { title: "Career Opportunities", rating: 4.2, percent: 80 },
+        { title: "Senior Mgmt", rating: 4.1, percent: 78 },
+      ],
+
+      list: [
+        {
+          rating: 5,
+          title: "Great place for analysts",
+          date: "2026-02-10",
+          role: "Data Analyst",
+          pros: "Lots of interesting datasets and learning opportunities.",
+          cons: "Occasional tight deadlines.",
+        },
+        {
+          rating: 4,
+          title: "Supportive team",
+          role: "Junior Analyst",
+          pros: "Helpful managers and collaborative team.",
+          cons: "Limited remote options.",
+        },
+      ],
+    },
+
+    skillMatch: {
+      percentage: 80,
+      message:
+        "You match 8 out of 10 skills required for this role based on your profile.",
+    },
+  },
+  {
+    id: 5,
+    title: "Marketing Strategist",
+    type: "Full-time",
+    typeColor: "green",
+    salary: "$65k - $95k",
+    icon: ProductDesign,
+    skillMatchPercentage: 82,
+    skillsMatched: 11,
+    skillsRequired: 14,
+    description:
+      "TechNova Solutions is expanding its design team and is looking for a Senior UI/UX Designer to create intuitive and visually engaging digital products. You will collaborate with engineers and product managers to craft seamless user experiences for our global analytics platform.",
+
+    responsibilities: [
+      "Design modern user interfaces for web applications.",
+      "Create wireframes, prototypes, and high-fidelity UI designs.",
+      "Collaborate with developers to ensure pixel-perfect implementation.",
+      "Conduct user research and usability testing to improve product design.",
+    ],
+
+    requirements: [
+      "4+ years of experience in UI/UX design.",
+      "Strong knowledge of Figma, Adobe XD, or Sketch.",
+      "Experience designing responsive web applications.",
+      "Understanding of user-centered design principles.",
+    ],
+
+    company: {
+      name: "BrandLoom",
+
+about1:
+  "BrandLoom is a modern digital branding and marketing company focused on helping businesses build strong online identities. The company specializes in brand strategy, UI/UX design, digital marketing, and creative solutions that help organizations stand out in competitive markets.",
+
+about2:
+  "Our team consists of passionate designers, marketers, and strategists who believe in creativity, innovation, and collaboration. At BrandLoom, we work closely with clients to craft meaningful brand experiences that connect with audiences and drive long-term business growth.",
+
+      postedDate: "2026-03-12",
+      businessHours: "10:00 am - 4:00 pm",
+
+      locations: [
+        {
+          image:
+            "https://lh3.googleusercontent.com/aida-public/AB6AXuDsStc6gQU3fQqil7f-iEz_rb1H2Zmwr5E6c3Ugmn8X9E_fG32s57zdE2G0xz_uFYCi5H3ZxUc649bsz_OFNaNYcaD4kn375aneqRo-59DHRsZKC4Bh5uybkT9veUJJuAvvn-NFUEI7R63uSPtouNc7eQJ5SHId21u_y7Axnyl_q9C81XJVn6In-jg1Oa8_tu-Z2Ydlu3REUjB7F6YOdnEsGm3VSvJmuXDWJiHAKZF1FAjvqH2mGA-Jn4fRNrYQ8c3zCLsQdFt_7Y7a",
+          title: "TechNova HQ",
+          address: "123 Innovation Drive, SF",
+        },
+      ],
+
+      stats: [
+        { label: "Founded", value: "2012" },
+        { label: "Employees", value: "1k-5k" },
+        { label: "Headquarters", value: "San Francisco, CA" },
+        { label: "Website", value: "technova.io" },
+      ],
+
+      culture: [
+        {
+          icon: SlEnergy,
+          title: "Innovation First",
+          description:
+            "We constantly push the limits of modern technology and product design.",
+        },
+        {
+          icon: FaBalanceScale,
+          title: "Work-Life Harmony",
+          description:
+            "We encourage balance so employees can do their best work.",
+        },
+        {
+          icon: MdOutlineDiversity3,
+          title: "Inclusive Culture",
+          description: "Diversity of ideas and people drives our innovation.",
+        },
+      ],
+
+      photos: [
+        "https://placeholder.pics/svg/300",
+        "https://placeholder.pics/svg/300",
+        "https://placeholder.pics/svg/300",
+      ],
+
+      logo: "https://lh3.googleusercontent.com/aida-public/AB6AXuAZagT5FnsvLCeduh1NObArGSQNCU4xZ6FkKSuLQc7_xVa7DR3TDn4idwQIoebpdSa8DSmUWDmFmuT_xYZJtRCvYap8ZVIwu2Tz64Qg_20Vz0ZU8BjhKfvEbYMYy5rsKZVnjUl_xgeTvjlYogD8yEMO3y-dwZX-EXAxJUhPBzUxCeg_nsHLfJMfXGgSdMaAnO-WI3StcjOjBmClWF7PmY729lxGWOQ68C0SI8Z7BqE4PfsSiYHiuQf0VZLMC5_TnUa140RlNEerdeX9",
+
+      industry: "Cloud Computing",
+      size: "1k-5k Emp",
+      description:
+        "TechNova is a global leader in cloud infrastructure and developer tools.",
+      website: "https://technova.io",
+      location: "F Block Lahore",
+    },
+
+    recruiterResponseTime: "48 hours",
+
+    reviews: {
+      overallRating: 4.3,
+      total: 98,
+
+      ratingBar: [
+        { title: "Work/Life Balance", rating: 4.6, percent: 87 },
+        { title: "Culture & Values", rating: 4.7, percent: 90 },
+        { title: "Career Opportunities", rating: 4.1, percent: 80 },
+        { title: "Senior Mgmt", rating: 3.9, percent: 75 },
+      ],
+
+      list: [
+        {
+          rating: 5,
+          title: "Creative design environment",
+          date: "2026-02-22",
+          role: "UI Designer",
+          pros: "Freedom to experiment and innovate in design.",
+          cons: "Deadlines can be tight during releases.",
+        },
+      ],
+    },
+
+    skillMatch: {
+      percentage: 82,
+      message:
+        "You match 11 out of 14 skills required for this role based on your profile.",
+    },
+  },
+  {
+  id: 6,
+  title: "Machine Learning Engineer",
+  type: "Remote",
+  typeColor: "blue",
+  salary: "$80k - $120k",
+  icon: ReactEngineer,
+  skillMatchPercentage: 88,
+  skillsMatched: 14,
+  skillsRequired: 16,
+
+  description:
+    "CognitiveAI is seeking a Machine Learning Engineer to develop intelligent models and scalable AI solutions. You will work closely with data scientists and software engineers to design, train, and deploy machine learning models that power advanced analytics and automation systems.",
+
+  responsibilities: [
+    "Design and develop machine learning models for real-world applications.",
+    "Work with large datasets to train and optimize predictive models.",
+    "Deploy ML models into production environments using modern ML pipelines.",
+    "Collaborate with cross-functional teams to integrate AI capabilities into products."
+  ],
+
+  requirements: [
+    "Strong knowledge of Python and machine learning libraries such as TensorFlow or PyTorch.",
+    "Experience with data preprocessing and feature engineering.",
+    "Understanding of deep learning and neural networks.",
+    "Familiarity with cloud platforms such as AWS, Azure, or Google Cloud."
+  ],
+
+  company: {
+    name: "CognitiveAI",
+
+    about1:
+      "CognitiveAI is an artificial intelligence company focused on building smart systems that help businesses make better decisions through data. The company develops advanced machine learning platforms used in healthcare, finance, and enterprise automation.",
+
+    about2:
+      "Our team consists of AI researchers, data scientists, and engineers who are passionate about solving complex problems using intelligent algorithms. At CognitiveAI, we believe in innovation, experimentation, and building technology that transforms industries.",
+
+    postedDate: "2026-03-10",
+    businessHours: "9:00 am - 5:00 pm",
+
+    locations: [
+      {
+        image: "https://placeholder.pics/svg/300",
+        title: "CognitiveAI Lab",
+        address: "Silicon Valley, CA"
+      }
+    ],
+
+    stats: [
+      { label: "Founded", value: "2018" },
+      { label: "Employees", value: "200-500" },
+      { label: "Headquarters", value: "San Francisco, CA" },
+      { label: "Website", value: "cognitiveai.com" }
+    ],
+
     culture: [
       {
         icon: SlEnergy,
-        title: "Innovation First",
-        description:
-          "We push the boundaries of what's possible in cloud computing every day.",
+        title: "Research Driven",
+        description: "We encourage innovation and experimentation in AI research."
       },
       {
         icon: FaBalanceScale,
-        title: "Work-Life Harmony",
-        description:
-          "We believe great work happens when people live balanced lives.",
+        title: "Work-Life Balance",
+        description: "Flexible work environment focused on productivity and well-being."
       },
       {
         icon: MdOutlineDiversity3,
-        title: "Inclusive Diversity",
-        description:
-          "Our strength comes from diverse perspectives and collaboration.",
-      },
+        title: "Global Talent",
+        description: "We believe diversity drives innovation and creativity."
+      }
     ],
+
     photos: [
       "https://placeholder.pics/svg/300",
       "https://placeholder.pics/svg/300",
-      "https://placeholder.pics/svg/300",
+      "https://placeholder.pics/svg/300"
     ],
-    logo: "https://lh3.googleusercontent.com/aida-public/AB6AXuAZagT5FnsvLCeduh1NObArGSQNCU4xZ6FkKSuLQc7_xVa7DR3TDn4idwQIoebpdSa8DSmUWDmFmuT_xYZJtRCvYap8ZVIwu2Tz64Qg_20Vz0ZU8BjhKfvEbYMYy5rsKZVnjUl_xgeTvjlYogD8yEMO3y-dwZX-EXAxJUhPBzUxCeg_nsHLfJMfXGgSdMaAnO-WI3StcjOjBmClWF7PmY729lxGWOQ68C0SI8Z7BqE4PfsSiYHiuQf0VZLMC5_TnUa140RlNEerdeX9",
-    industry: "Cloud Computing",
-    size: "1k-5k Emp",
+
+    logo: "https://placeholder.pics/svg/200",
+    industry: "Artificial Intelligence",
+    size: "200-500 Emp",
     description:
-      "TechNova is a global leader in cloud infrastructure and developer tools. We empower over 2 million developers worldwide.",
-    website: "https://technova.io",
-    location: "F Block Lahore",
+      "CognitiveAI builds intelligent AI platforms that help companies automate decision making and unlock insights from complex data.",
+    website: "https://cognitiveai.com",
+    location: "Dubai, UAE"
   },
-  recruiterResponseTime: "48 hours",
+
+  recruiterResponseTime: "24 hours",
+
   reviews: {
-    overallRating: 4.2,
-    total: 124,
+    overallRating: 4.5,
+    total: 76,
+
     ratingBar: [
-      { title: "Work/Life Balance", rating: 4.5, percent: 85 },
-      { title: "Culture & Values", rating: 4.8, percent: 92 },
-      { title: "Career Opportunities", rating: 4.0, percent: 78 },
-      { title: "Senior Mgmt", rating: 3.8, percent: 70 },
+      { title: "Work/Life Balance", rating: 4.4, percent: 85 },
+      { title: "Culture & Values", rating: 4.7, percent: 92 },
+      { title: "Career Opportunities", rating: 4.5, percent: 88 },
+      { title: "Senior Mgmt", rating: 4.1, percent: 80 }
     ],
+
     list: [
       {
         rating: 5,
-        title: "Great place",
-        date: "2026-02-20",
-        role: "Developer",
-        pros: "The tech stack is modern and they actually care about code quality. Great mentorship from senior staff",
-        cons: "Can be fast-paced during release cycles, but it's manageable.",
-      },
-      {
-        rating: 4,
-        title: "Good culture",
-        role: "Manager",
-        pros: "Teamwork",
-        cons: "Long hours",
-      },
-    ],
+        title: "Great AI research environment",
+        date: "2026-02-28",
+        role: "Data Scientist",
+        pros: "Access to large datasets and cutting-edge ML infrastructure.",
+        cons: "Fast-paced projects during product launches."
+      }
+    ]
   },
+
   skillMatch: {
-    percentage: 85,
+    percentage: 88,
     message:
-      "You match 12 out of 14 skills required for this role based on your profile.",
-  },
-};
+      "You match 14 out of 16 skills required for this role based on your profile."
+  }
+}
+];
+
+
+
 
 // view detail tabs
-export const tabs = [
+// data.js
+export const getTabs = (job) => [
   { id: "description", label: "Job Description" },
   { id: "company", label: "Company" },
-  { id: "reviews", label: `Reviews (${jobData.reviews.total})` },
+  { id: "reviews", label: `Reviews (${job.reviews.total})` },
 ];
 
 // Apply form data
@@ -424,7 +1055,6 @@ export const contactFields = [
     type: "text",
     placeholder: "e.g. John",
     required: true,
-
   },
   {
     name: "lastName",
@@ -449,7 +1079,6 @@ export const contactFields = [
     label: "Phone Number",
     type: "tel",
     placeholder: "+1 (555) 000-0000",
-    
   },
 ];
 
@@ -467,3 +1096,44 @@ export const professionalLinks = [
     icon: "code",
   },
 ];
+
+// companies pages
+export const industries = ["Technology", "Finance", "Healthcare", "E-commerce"];
+
+export const ratings = [4, 3, 2];
+
+export const companySizes = [
+  "1-50 employees",
+  "51-200 employees",
+  "201-500 employees",
+  "500+ employees",
+];
+
+export const companiesData = [
+  {
+    id: 1,
+    name: "TechFlow Solutions",
+    industry: "Software Development",
+    location: "San Francisco, CA",
+    logo: "https://lh3.googleusercontent.com/aida-public/AB6AXuCEZIl0-Cxj8ykOIUej8BMXVtpNDPVoP7FrJKxDv_fxr07E7qDjycvnh7hTqTMHHtavjYtNM_xmjWjpa6gx_lES9zYKYQMdamJ35fsxqvE0JaYSBuXBhZ195h8V32krFdvT9n40R8U190g4qq3_2U9US-pZ6rVOnH4URVVtiELaHCMLwDVV3CVqy1k0TnLdCTc_DOi0ptN8ZgZlMnagfYKpq1MVJrilqA99JzhvisS3CAQ-fLAAzUME89z5K6Nnu4gKmiBvxdBeus-f",
+    logoBg: "bg-blue-50 dark:bg-blue-900/20",
+    rating: 4.8,
+    businessHours: "10:00 am - 4:00 pm",
+    teamAvatars: [
+      "https://lh3.googleusercontent.com/aida-public/AB6AXuBzhe9UHe40e3fmj0mKxJLVDiIaZttlbiIvsebOZkZrLEwG8aPJfBceVE1MO2vvehxog0j2hu4aELIAIP1qAllLzjLcjxKs9l6i0Pvv0Qaj7U4otSntA03tTYG__zktAJ-AgRPyZhOImdlaUJUAcF50VRJw603dCnfJ9zZBIEEL4gspJ76ICi-dho8U1y-VoUzLUCYyqKlycq8-ZbxzZFhxBuJNSxeFSqepdAAk3N1e1M8XJaOZSGY_beUPZOJR_tUIGy1AObrF_pmf",
+      "https://lh3.googleusercontent.com/aida-public/AB6AXuCdIIQq67SUDwe30Ke5ZPbYkjqb1-57yOEIQ05iYmRoHBjwEVQWuaNO81k_WQRtwCw8OatgP_DYD5AJ5UivEhMSymbZzL6XKGA2yNrrfUvCvOulwj42-UHE3zknavKXD5GZXNOTfYvxyhkw9_Q2aElXukNklMJqOGsvu1svVPLpSdWlGr3dF1ACJ4DZLhiWMMEhrD0EPcjMzG8fyxbD5WTPkKvIil3sVCSxOpQCL1s3LsdofrdLvqBSVseFw-f",
+      "https://via.placeholder.com/32", // remaining count
+    ],
+    employees: 2400,
+  },
+  // ... add more companies
+];
+
+//write review
+export const defaultValues = {
+  title: "",
+  review: "",
+  pros: "",
+  cons: "",
+  anonymous: false,
+};
