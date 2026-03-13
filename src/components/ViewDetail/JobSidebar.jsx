@@ -1,20 +1,46 @@
 import { IoMdArrowRoundForward } from "react-icons/io";
 import { FaRegBookmark } from "react-icons/fa";
-import { useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { companyData } from "../../constant/data";
 
 function JobSidebar({ job }) {
-    const navigate = useNavigate();
-      if (!job) return null; // safety
+  const navigate = useNavigate();
+  if (!job) return null; // safety
+  const company = companyData.find((c) => c.id === job.companyId);
+  // Function to save job to localStorage
+  const handleSaveJob = () => {
+    // Get saved jobs from localStorage, or empty array
+    const savedJobs = JSON.parse(localStorage.getItem("savedJobs")) || [];
 
+    // Check if job is already saved
+    const isAlreadySaved = savedJobs.some((j) => j.id === job.id);
+    if (isAlreadySaved) {
+      alert("Job already saved!");
+      return;
+    }
+
+    // Add the current job
+    savedJobs.push(job);
+
+    // Save back to localStorage
+    localStorage.setItem("savedJobs", JSON.stringify(savedJobs));
+    alert("Job saved successfully!");
+  };
 
   return (
     <div className="bg-white dark:bg-slate-900 rounded-xl p-6 border border-slate-200 dark:border-slate-800 shadow-sm sticky top-24">
       <div className="space-y-4">
-        <button onClick={() => navigate(`/jobs/${job.id}/apply`)} className="w-full py-3 px-4 bg-blue-600 hover:bg-blue-600/90 text-white font-bold rounded-lg transition-all flex items-center justify-center gap-2">
+        <button
+          onClick={() => navigate(`/jobs/${job.id}/apply`)}
+          className="w-full py-3 px-4 bg-blue-600 hover:bg-blue-600/90 text-white font-bold rounded-lg transition-all flex items-center justify-center gap-2"
+        >
           Apply Now
           <IoMdArrowRoundForward />
         </button>
-        <button className="w-full py-3 px-4 bg-transparent border-2 border-slate-200 dark:border-slate-700 hover:border-blue-600 hover:text-blue-600 text-slate-700 dark:text-slate-300 font-bold rounded-lg transition-all flex items-center justify-center gap-2 group">
+        <button
+          onClick={handleSaveJob}
+          className="w-full py-3 px-4 bg-transparent border-2 border-slate-200 dark:border-slate-700 hover:border-blue-600 hover:text-blue-600 text-slate-700 dark:text-slate-300 font-bold rounded-lg transition-all flex items-center justify-center gap-2 group"
+        >
           <FaRegBookmark />
           Save Job
         </button>
@@ -45,31 +71,31 @@ function JobSidebar({ job }) {
       {/* About Company */}
       <div className="mt-8 pt-8 border-t border-slate-100 dark:border-slate-800">
         <h4 className="font-bold text-slate-900 dark:text-white mb-4">
-          About {job.company.name}
+          About {company.name}
         </h4>
         <div className="flex items-center gap-4 mb-4">
           <div className="size-12 rounded-lg bg-slate-50 dark:bg-slate-800 flex items-center justify-center border border-slate-100 dark:border-slate-700">
             <img
               className="w-8 h-8 object-contain"
-              alt={`${job.company.name} logo`}
-              src={job.company.logo}
+              alt={`${company.name} logo`}
+              src={company.logo}
             />
           </div>
           <div>
             <p className="text-sm font-bold text-slate-900 dark:text-white">
-              {job.company.name}
+              {company.name}
             </p>
             <p className="text-xs text-slate-500">
-              {job.company.industry} • {job.company.size}
+              {company.industry} • {company.size}
             </p>
           </div>
         </div>
         <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed mb-4">
-          {job.company.description}
+          {job.description}
         </p>
         <a
           className="text-primary text-sm font-bold flex items-center gap-1 hover:underline"
-          href={job.company.website}
+          href={company.website}
         >
           View company profile
           <span className="material-symbols-outlined text-xs">open_in_new</span>

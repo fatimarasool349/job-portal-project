@@ -1,10 +1,32 @@
-import { useState } from "react";
-import { jobData, } from "../constant/data"; 
+import { useState, useEffect } from "react";
+import { jobData,companyData } from "../constant/data";     
 import JobCard from "../components/BookMark/JobCard";
-import CompanyCard from "../components/BookMark/CompanyCard";
 
 function BookMark() {
   const [activeTab, setActiveTab] = useState("jobs");
+  const [savedJobs, setSavedJobs] = useState(() => {
+    const stored = localStorage.getItem("savedJobs");
+    return stored ? JSON.parse(stored) : []; 
+  });
+
+  useEffect(() => {
+    localStorage.setItem("savedJobs", JSON.stringify(savedJobs));
+  }, [savedJobs]);
+
+const bookmarkedJobs = savedJobs.map((job) => {
+  const company = companyData.find((c) => c.id === job.companyId);
+  return { ...job, company };
+});    // .map((id) => {
+    //   const job = jobData.find((j) => j.id === id);
+    //   if (!job) return null;
+    //   const company = companyData.find((c) => c.id === job.companyId);
+    //   return company ? { ...job, company } : job;
+    // })
+    // .filter(Boolean);
+
+  const removeBookmark = (jobId) => {
+    setSavedJobs((prev) => prev.filter((job) => job.id !== jobId));
+  };
 
   return (
     <main className="mx-auto w-full max-w-7xl flex-grow px-4 py-8 sm:px-6 lg:px-8">
@@ -19,34 +41,41 @@ function BookMark() {
       </div>
 
       {/* Tabs */}
-      <div className="mb-8 border-b border-slate-200 dark:border-slate-800">
-        <nav className="-mb-px flex space-x-8">
-          <button
-            onClick={() => setActiveTab("jobs")}
-            className={`px-1 pb-4 text-sm font-semibold ${
-              activeTab === "jobs"
-                ? "border-b-2 border-blue-600 text-blue-600"
-                : "border-b-2 border-transparent text-slate-500 hover:text-slate-700 dark:text-slate-400"
-            }`}
-          >
-            Saved Jobs
-            <span className="ml-2 rounded-full bg-blue-600/10 px-2 py-0.5 text-xs font-medium text-blue-600">
-              {jobData.length}
-            </span>
-          </button>
-        </nav>
+      <div className="mb-8 border-b border-slate-200 dark:border-slate-800 flex justify-between items-center">
+        <button
+          onClick={() => setActiveTab("jobs")}
+          className={`px-1 pb-4 text-sm font-semibold ${
+            activeTab === "jobs"
+              ? "border-b-2 border-blue-600 text-blue-600"
+              : "border-b-2 border-transparent text-slate-500 hover:text-slate-700 dark:text-slate-400"
+          }`}
+        >
+          Saved Jobs
+          <span className="ml-2 rounded-full bg-blue-600/10 px-2 py-0.5 text-xs font-medium text-blue-600">
+            {bookmarkedJobs.length}
+          </span>
+        </button>
+        <button
+          onClick={() => setSavedJobs([])}
+          className="text-sm text-red-600 hover:underline"
+        >
+          Clear All
+        </button>
       </div>
 
       {/* Saved Jobs */}
       {activeTab === "jobs" && (
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {jobData.map((job) => (
-            <JobCard key={job.id} job={job} />
+          {bookmarkedJobs.map((job) => (
+            <JobCard
+              key={job.id}
+              job={job}
+              savedJobs={savedJobs}
+              removeBookmark={removeBookmark}
+            />
           ))}
         </div>
       )}
-
-    
     </main>
   );
 }

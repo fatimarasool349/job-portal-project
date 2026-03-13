@@ -3,7 +3,7 @@ import { IoMdArrowRoundBack } from "react-icons/io";
 import { FaLocationDot } from "react-icons/fa6";
 import { FaBuilding, FaRegClock } from "react-icons/fa";
 
-function JobHeader({ job }) {
+function JobHeader({ job,company}) {
   const navigate = useNavigate();
 
   if (!job) return null; // safety check
@@ -28,13 +28,13 @@ function JobHeader({ job }) {
           {/* Company Name */}
           <span className="flex text-slate-500 items-center gap-1">
             <FaBuilding />
-            {job.company?.name || "Unknown Company"}
+            {company?.name || "Unknown Company"}
           </span>
 
           {/* Location */}
           <span className="flex text-slate-500 items-center gap-1">
             <FaLocationDot />
-            {job.company?.location || "Remote"}
+            {company?.location || "Remote"}
           </span>
 
           {/* Job Type */}

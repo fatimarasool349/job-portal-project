@@ -11,6 +11,7 @@ import ApplyForm from "../Pages/ApplyForm";
 import CompaniesPage from "../Pages/CompaniesPage";
 import Review from "../Pages/Review";
 import BookMark from "../Pages/BookMark";
+import CompanyJobListing from "../Pages/CompanyJobListing";
 
 function AppRoutes() {
   return (
@@ -27,6 +28,10 @@ function AppRoutes() {
         {/* ViewDetailPages */}
         <Route path="/viewdetailpage/:id" element={<ViewDetailPage />}></Route>
         <Route path="/jobs/:jobId/apply" element={<ApplyForm />} />
+
+        {/* CompanyPage job listing page */}
+        <Route path="/companies/:id" element={<CompanyJobListing />} />
+
 
         {/* {BookMark} */}
         <Route path="/bookmark" element={<BookMark />}></Route>

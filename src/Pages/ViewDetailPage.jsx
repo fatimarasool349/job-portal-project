@@ -2,11 +2,14 @@ import { useParams } from "react-router-dom";
 import BreadCrumbs from "../components/ViewDetail/BreadCrumbs";
 import ViewDetail from "../components/ViewDetail/ViewDetail";
 import JobHeaderCard from "../components/ViewDetail/JobHeaderCard";
-import { jobData } from "../constant/data";
+import { jobData, companyData } from "../constant/data";
 
 function ViewDetailPage() {
   const { id } = useParams(); // get job id from URL
-  const selectedJob = jobData.find(job => job.id === parseInt(id)); // find the clicked job
+    const job = jobData.find((job) => job.id === parseInt(id));
+     const company = companyData.find((c) => c.id === job.companyId);
+  const selectedJob = { ...job, company };
+
 
   if (!selectedJob) return <div>Job not found</div>;
 

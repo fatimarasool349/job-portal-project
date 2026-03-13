@@ -1,31 +1,54 @@
-import { useState, useMemo } from "react";
-import { jobData } from "./../../constant/data.js";
+import { useState, useMemo, useEffect } from "react";
 import JobCard from "./JobCard";
+import { jobData as initialJobs , companyData } from "./../../constant/data.js"; // replace with API later
 
 function JobListing() {
+  const [jobs, setJobs] = useState([]);
   const [sortBy, setSortBy] = useState("Most Recent");
   const [currentPage, setCurrentPage] = useState(1);
-
   const jobsPerPage = 4;
+
+  // Load jobs (simulate API)
+  useEffect(() => {
+    setJobs(initialJobs);
+  }, []);
+
+function getMinSalary(salaryStr) {
+  if (!salaryStr) return 0; 
+  const cleanStr = salaryStr.replace(/[\$,]/g, "").toLowerCase();
+
+  if (cleanStr.includes("negotiable")) return 0;
+  const match = cleanStr.match(/(\d+)/);
+  if (match) return Number(match[1]);
+  return 0;
+}
+
+  // Sorting
   const sortedJobs = useMemo(() => {
-    let sorted = [...jobData];
+    let sorted = [...jobs];
 
     if (sortBy === "Highest Salary") {
-      sorted.sort((a, b) => b.salary - a.salary);
+      sorted.sort((a, b) => getMinSalary(b.salary) - getMinSalary(a.salary));
     }
 
     if (sortBy === "Most Relevant") {
       sorted.sort((a, b) => a.title.localeCompare(b.title));
     }
 
-    return sorted;
-  }, [sortBy]);
+    if (sortBy === "Most Recent") {
+      sorted.sort(
+        (a, b) => new Date(b.postedDate) - new Date(a.postedDate)
+      );
+    }
 
-  // Pagination Logic
+    return sorted;
+  }, [jobs, sortBy]);
+
+  // Pagination
   const totalPages = Math.ceil(sortedJobs.length / jobsPerPage);
   const paginatedJobs = sortedJobs.slice(
     (currentPage - 1) * jobsPerPage,
-    currentPage * jobsPerPage,
+    currentPage * jobsPerPage
   );
 
   return (
@@ -42,9 +65,7 @@ function JobListing() {
         </div>
 
         <div className="flex items-center gap-2">
-          <span className="text-sm text-slate-500 dark:text-slate-400">
-            Sort by:
-          </span>
+          <span className="text-sm text-slate-500 dark:text-slate-400">Sort by:</span>
           <select
             value={sortBy}
             onChange={(e) => setSortBy(e.target.value)}
@@ -60,7 +81,7 @@ function JobListing() {
       {/* Job Listings */}
       <div className="grid gap-4">
         {paginatedJobs.map((job) => (
-          <JobCard key={job.id} job={job} />
+          <JobCard key={job.id} job={job} company ={companyData}  />
         ))}
       </div>
 

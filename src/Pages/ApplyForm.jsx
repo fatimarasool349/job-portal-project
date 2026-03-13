@@ -9,7 +9,7 @@ import ProfessionalLinks from "../components/ApplyForm/ProfessionalLinks";
 import AdditionalInformation from "../components/ApplyForm/AdditionalInformation";
 import JobHeader from "../components/ApplyForm/JobHeader";
 
-import { jobData } from "../constant/data";
+import { jobData,companyData } from "../constant/data";
 
 function ApplyForm() {
   const { jobId } = useParams(); // get jobId from route
@@ -17,6 +17,9 @@ function ApplyForm() {
 
   // Find job from jobData array using jobId
   const job = jobData.find((j) => j.id === Number(jobId));
+  const company = companyData.find(
+  (c) => c.id === job?.companyId
+);
 
   const {
     register,
@@ -51,7 +54,7 @@ function ApplyForm() {
   return (
     <main className="max-w-4xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
       {/* Pass single job object to JobHeader */}
-      <JobHeader job={job} />
+      <JobHeader job={job} company={company} />
 
       <form
         onSubmit={handleSubmit(onSubmit)}

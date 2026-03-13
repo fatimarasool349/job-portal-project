@@ -1,4 +1,5 @@
 import { MdOutlineSchedule } from "react-icons/md";
+import { Link } from "react-router-dom";
 
 function CompanyCard({ company }) {
   return (
@@ -53,10 +54,12 @@ function CompanyCard({ company }) {
       </div>
 
       <div className="mt-auto border-t p-4">
+        <Link to={`/companies/${company.id}`}>
 
         <button className="w-full rounded-lg bg-blue-600 py-2 text-sm font-bold text-white hover:opacity-90">
           View Openings
         </button>
+        </Link>
 
       </div>
 

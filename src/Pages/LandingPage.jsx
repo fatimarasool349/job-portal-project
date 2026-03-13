@@ -1,9 +1,7 @@
 // src/App.jsx
-import Header from "../components/common/Header";
 import HeroSection from "../components/LandingPageComponents/HeroSection";
 import Stats from "../components/LandingPageComponents/Stats";
 import ThreeStep from "../components/LandingPageComponents/ThreeStep";
-import Footer from "../components/common/Footer";
 import FeaturedJobs from "../components/LandingPageComponents/JobFeatures";
 
 function LandingPage() {

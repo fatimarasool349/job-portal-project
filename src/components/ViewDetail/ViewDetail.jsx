@@ -2,11 +2,13 @@ import React, { useState } from "react";
 import Description from "./Description";
 import Company from "./Company";
 import Reviews from "./Review";
-import JobSidebar from "./JobSideBar.jsx";
-import { getTabs } from "./../../constant/data.js";
+import JobSidebar from "./JobSidebar.jsx";
+import { getTabs ,companyData} from "./../../constant/data.js";
 
 function ViewDetail({ job }) {
   const [activeTab, setActiveTab] = useState("description");
+    const company = companyData.find(c => c.id === job.companyId);
+
 
   if (!job) {
     return <div className="text-center py-10 text-gray-500">No job data available</div>;
@@ -37,8 +39,8 @@ function ViewDetail({ job }) {
 
         {/* Tab Content */}
         {activeTab === "description" && <Description job={job} />}
-        {activeTab === "company" && <Company company={job.company} />}
-        {activeTab === "reviews" && <Reviews reviews={job.reviews} company={job.company} job={job} />}
+        {activeTab === "company" && <Company company={company} />}
+        {activeTab === "reviews" && <Reviews company={company} job={job} />}
       </div>
 
       {/* Right Column */}

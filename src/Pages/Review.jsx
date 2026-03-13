@@ -1,21 +1,27 @@
 import { useParams } from "react-router-dom";
-import { jobData, defaultValues } from "../constant/data";
+import {
+  jobData,
+  companyData,
+  companyReviewData,
+  defaultValues,
+} from "../constant/data";
 import RatingBar from "../components/ViewDetail/RatingBar";
 import RatingStar from "../components/ReviewForm/RatingStar";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 
- function Review() {
+function Review() {
   const { id } = useParams();
-  const job = jobData.find((j) => j.id === parseInt(id)); 
-
+  const job = jobData.find((j) => j.id === parseInt(id));
+  const company = job ? companyData.find((c) => c.id === job.companyId) : null;
   // Safety check
-  const reviews = job?.reviews || { overallRating: 0, ratingBar: [] };
-  const company = job?.company || { name: "Company" };
-
-  const [overallRating, setOverallRating] = useState(reviews.overallRating || 0);
+  const reviews = companyReviewData.find((r) => r.companyId === company?.id) ||
+    job?.reviews || { overallRating: 0, ratingBar: [] };
+  const [overallRating, setOverallRating] = useState(
+    reviews.overallRating || 0,
+  );
   const [categoryRatings, setCategoryRatings] = useState(
-    reviews.ratingBar.map((cat) => ({ ...cat })) || []
+    reviews.ratingBar.map((cat) => ({ ...cat })) || [],
   );
 
   const { register, handleSubmit, reset } = useForm({ defaultValues });
@@ -30,13 +36,15 @@ import { useForm } from "react-hook-form";
     console.log({ ...data, overallRating, categoryRatings });
     reset();
     setOverallRating(0);
+    setCategoryRatings(reviews.ratingBar ? reviews.ratingBar.map(cat => ({ ...cat })) : []);
+
   };
 
   if (!job) return <div>Job not found</div>; // fallback if ID is wrong
 
   return (
     <main className="max-w-4xl mx-auto px-4 py-12">
-      <h1 className="text-3xl font-extrabold mb-4">{`Write a Review for ${company.name}`}</h1>
+      <h1 className="text-3xl font-extrabold mb-4">{`Write a Review for ${company?.name||"Company"}`}</h1>
 
       <section className="mb-8">
         <h2 className="text-sm font-semibold uppercase mb-2">Overall Rating</h2>
@@ -44,7 +52,11 @@ import { useForm } from "react-hook-form";
       </section>
 
       <section className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-        <RatingBar bar={categoryRatings} setBar={handleCategoryRate} size="text-3xl" />
+        <RatingBar
+          bar={categoryRatings}
+          setBar={handleCategoryRate}
+          size="text-3xl"
+        />
       </section>
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">

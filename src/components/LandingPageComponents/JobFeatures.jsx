@@ -1,13 +1,14 @@
 import  { useState } from "react";
 import { FaArrowRight} from "react-icons/fa";
 
-import { jobData} from "./../../constant/data.js"
+import { jobData, companyData} from "./../../constant/data.js"
 import JobCard from "./JobCard.jsx";
 
 
 function FeaturedJobs() {
   const [expanded, setExpanded] = useState(false);
     const visibleJobs = expanded ? jobData : jobData.slice(0, 3);
+
 
  
 
@@ -40,18 +41,24 @@ function FeaturedJobs() {
 
         {/* Grid */}
              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {visibleJobs.map((job) => (
+          {visibleJobs.map((job) => {
+          const company = companyData.find(c => c.id === job.companyId);
+          return(
             <JobCard
               key={job.id}
               icon={<img src={job.icon} alt={job.title} />}
               title={job.title}
-              company={job.company.name}
-              location={job.company.location}
+              company={company.name}
+              location={company.location}
               salary={job.salary}
               type={job.type}
               typeColor={job.typeColor}
             />
-          ))}
+          )
+
+
+            
+})}
         </div>
       </div>
     </section>
