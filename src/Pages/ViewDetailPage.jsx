@@ -4,6 +4,7 @@ import ViewDetail from "../components/ViewDetail/ViewDetail";
 import JobHeaderCard from "../components/ViewDetail/JobHeaderCard";
 import { jobData, companyData } from "../constant/data";
 
+
 function ViewDetailPage() {
   const { id } = useParams(); // get job id from URL
     const job = jobData.find((job) => job.id === parseInt(id));

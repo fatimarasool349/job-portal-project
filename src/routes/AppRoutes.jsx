@@ -12,6 +12,8 @@ import CompaniesPage from "../Pages/CompaniesPage";
 import Review from "../Pages/Review";
 import BookMark from "../Pages/BookMark";
 import CompanyJobListing from "../Pages/CompanyJobListing";
+import NotificationsPage from "../Pages/NotificationsPage";
+import MessagePage from "../Pages/MessagePage";
 
 function AppRoutes() {
   return (
@@ -31,7 +33,14 @@ function AppRoutes() {
 
         {/* CompanyPage job listing page */}
         <Route path="/companies/:id" element={<CompanyJobListing />} />
+        {/* Notification Page  */}
+        <Route path="/notifications/:tab" element={<NotificationsPage />} />
 
+          {/* Messages Page */}
+        <Route path="/messages" element={<MessagePage />} />
+
+        {/* Optional: Dynamic Chat Route */}
+        <Route path="/messages/:id" element={<MessagePage />} />
 
         {/* {BookMark} */}
         <Route path="/bookmark" element={<BookMark />}></Route>

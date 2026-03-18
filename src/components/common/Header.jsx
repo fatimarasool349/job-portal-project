@@ -30,6 +30,12 @@ function Header() {
           </div>
 
           <nav className="hidden md:flex space-x-6">
+               <Link
+              to="/"
+              className="text-gray-700 hover:text-blue-600  transition"
+            >
+              Home
+            </Link>
             <Link
               to="/findjob"
               className="text-gray-700 hover:text-blue-600  transition"
@@ -43,16 +49,16 @@ function Header() {
               Companies
             </Link>
             <Link
-              to="/"
+              to={"notifications/:tab"}
               className="text-gray-700 hover:text-blue-600  transition"
             >
-              Salaries
+            Notifications
             </Link>
             <Link
-              to="/"
+              to="/messages"
               className="text-gray-700 hover:text-blue-600  transition"
             >
-              Resources
+              Messages
             </Link>
           </nav>
 

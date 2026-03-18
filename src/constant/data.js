@@ -7,6 +7,9 @@ import Marking from "./../assets/icons/Marketing.png";
 import heroImage from "./../assets/Images/HeroImage.png";
 import { IoRocketOutline, IoCode } from "react-icons/io5";
 import profile from "./../assets/icons/profile.jpg";
+import { MdOutlineDescription } from "react-icons/md";
+import { MdEventNote } from "react-icons/md";
+
 
 import {
   MdOutlineQueryStats,
@@ -479,7 +482,7 @@ export const jobData = [
         "You match 11 out of 14 skills required for this role based on your profile.",
     },
   },
-   {
+  {
     id: 7,
     title: "Marketing Strategist",
     type: "Full-time",
@@ -1201,4 +1204,108 @@ export const defaultValues = {
   pros: "",
   cons: "",
   anonymous: false,
+};
+
+// Notification data
+export const initialNotifications = [
+  {
+    id: 1,
+    type: "application",
+    title: "Application Status Update",
+    time: "2 mins ago",
+    jobTitle: "Senior UI Designer",
+    company: "Google",
+    unread: true,
+    icon: MdOutlineDescription,
+    bgColor: "bg-blue-600/5",
+  },
+  {
+    id: 2,
+    type: "interview",
+    title: "Interview Invitation",
+    time: "4 hours ago",
+    jobTitle: "Lead Product Designer",
+    company: "Figma",
+    unread: false,
+    icon: MdEventNote,
+    bgColor: "bg-white",
+    actions: ["View Details", "Reschedule"],
+  },
+  {
+    id: 3,
+    type: "message",
+    title: "Message from Sarah Jenkins",
+    time: "Yesterday",
+    message:
+      "Hi! I loved your portfolio. Sarah from Adobe sent you a message regarding your recent application...",
+    avatar:
+      "https://lh3.googleusercontent.com/aida-public/AB6AXuChknGe8rU79LexBF2_rqO1MJX1frOCOqq4YttvjopOfcWd3hkt-_xZ-lGg74x_P3h3in1kHID9qnp1hzQQ9bNvYDxw1QVuUHNYjMpXrDRdf26Vmp-75Cfhg575NzprJAA7mm_S_4uHU6pYgZmfFYcBhQTbvNM2wktSG6EtpKFnmM6IdP2XglYJ0KlS_6NHqRHTA8GW9WQbAt7keeCCL_bHg6KDwPbOorB0y0Vu5mnTBCsXQMeviPI6PQU-tVkOjkxsmSC0kZq5xUqi",
+    unread: true,
+    icon: null,
+    bgColor: "bg-blue-600/5",
+  },
+];
+// notification tabs
+export const tabs = ["All Notifications", "Unread", "Applications", "Messages"];
+// messageing
+export const chats = [
+  {
+    id: 1,
+    name: "Sarah Wilson",
+    company: "Google",
+    message: "We've reviewed your application...",
+    time: "10:45 AM",
+    online: true,
+    avatar: profile,
+    unread: true,
+  },
+  {
+    id: 2,
+    name: "James Chen",
+    company: "Meta",
+    message: "Are you available for a quick call...",
+    time: "Yesterday",
+    avatar: profile,
+  },
+];
+
+export const messages = [
+  {
+    id: 1,
+    text: "Hello!",
+    sender: "other",
+    time: "10:12 AM",
+    senderId: 2, // James Chen
+    receiverId: 0, 
+    date: "2026-03-16",
+  },
+  { id: 2, text: "Hi 👋", sender: "me", time: "10:13 AM" ,senderId: 0, // me
+    receiverId: 2,     date: "2026-03-16",
+ },
+];
+// chat services
+// chatService.js
+
+// 👉 CURRENT (no API - mock)
+export const sendMessage = async ({ text, file, senderId, receiverId }) => {
+  const newMessage = {
+    id: Date.now(),
+    text,
+    file: file || null,
+    date: new Date().toISOString(),
+    senderId,
+    receiverId,
+  };
+
+  messages.push(newMessage); // ✅ store in array for now (mock)
+
+  return newMessage;
+};
+// get messages between current user and selected chat user
+export const getMessages = async (currentUserId, chatUserId) => {
+  return messages.filter(
+    (msg) =>
+      (msg.senderId === currentUserId && msg.receiverId === chatUserId) ||
+      (msg.senderId === chatUserId && msg.receiverId === currentUserId)
+  );
 };

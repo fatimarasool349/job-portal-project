@@ -1,9 +1,8 @@
+import { FaMapMarkerAlt, FaMoneyBillWave } from "react-icons/fa";
+import { badgeColors } from "./../../constant/data.js";
+import { Link } from "react-router";
 
-import {FaMapMarkerAlt, FaMoneyBillWave } from "react-icons/fa";
-import {badgeColors} from "./../../constant/data.js"
-
-
-function JobCard({ icon, title, company, location, salary, type, typeColor }) {
+function JobCard({ id,icon, title, company, location, salary, type, typeColor }) {
   return (
     <div className="p-6 border border-slate-100 dark:border-slate-800 rounded-2xl hover:shadow-xl transition-shadow bg-slate-50/30 dark:bg-slate-800/50">
       {/* Badge */}
@@ -32,10 +31,11 @@ function JobCard({ icon, title, company, location, salary, type, typeColor }) {
           {salary}
         </div>
       </div>
-
-      <button className="w-full mt-6 py-3 border border-blue-600 text-blue-600 font-bold rounded-xl hover:bg-blue-600 hover:text-white transition-colors">
-        Apply Now
-      </button>
+      <Link to={`/viewdetailpage/${id}`}>
+        <button className="w-full mt-6 py-3 border border-blue-600 text-blue-600 font-bold rounded-xl hover:bg-blue-600 hover:text-white transition-colors">
+          Apply Now
+        </button>
+      </Link>
     </div>
   );
 }

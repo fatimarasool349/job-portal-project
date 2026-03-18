@@ -46,6 +46,7 @@ function FeaturedJobs() {
           return(
             <JobCard
               key={job.id}
+              id= {job.id}
               icon={<img src={job.icon} alt={job.title} />}
               title={job.title}
               company={company.name}
