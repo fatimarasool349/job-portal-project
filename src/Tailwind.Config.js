@@ -13,6 +13,7 @@ module.exports = {
         backgroundDark: "#1E293B",
         error: "#EF4444",
         success: "#22C55E",
+        teal: "#008080",
       },
     },
   },

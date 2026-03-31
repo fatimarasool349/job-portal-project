@@ -3,13 +3,13 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import Swal from "sweetalert2";
 
-import ContactForm from "../components/ApplyForm/ContactForm";
-import Documents from "../components/ApplyForm/Documents";
-import ProfessionalLinks from "../components/ApplyForm/ProfessionalLinks";
-import AdditionalInformation from "../components/ApplyForm/AdditionalInformation";
-import JobHeader from "../components/ApplyForm/JobHeader";
+import ContactForm from "../../components/ApplyForm/ContactForm";
+import Documents from "../../components/ApplyForm/Documents";
+import ProfessionalLinks from "../../components/ApplyForm/ProfessionalLinks";
+import AdditionalInformation from "../../components/ApplyForm/AdditionalInformation";
+import JobHeader from "../../components/ApplyForm/JobHeader";
 
-import { jobData,companyData } from "../constant/data";
+import { jobData,companyData } from "../../constant/data";
 
 function ApplyForm() {
   const { jobId } = useParams(); // get jobId from route

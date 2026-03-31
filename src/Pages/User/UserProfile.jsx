@@ -1,10 +1,10 @@
 import React from "react";
-import ResumeSection from "../components/Profile/ResumeSection";
-import SkillsSection from "../components/Profile/SkillsSection";
-import UserProfileCard from "../components/Profile/EditProfileCard";
-import Header from "../components/common/Header";
-import ApplicationHistory from "../components/Profile/ApplicationHistory";
-import SaveChanges from "../components/Profile/SaveChanges";
+import ResumeSection from "../../components/Profile/ResumeSection";
+import SkillsSection from "../../components/Profile/SkillsSection";
+import UserProfileCard from "../../components/Profile/EditProfileCard";
+import Header from "../../components/common/Header";
+import ApplicationHistory from "../../components/Profile/ApplicationHistory";
+import SaveChanges from "../../components/Profile/SaveChanges";
 
 function UserProfile() {
   return (

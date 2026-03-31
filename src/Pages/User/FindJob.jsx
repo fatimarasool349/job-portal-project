@@ -1,5 +1,5 @@
-import AsideFilters from '../components/FindJob.jsx/AsideFilters'
-import JobListing from '../components/FindJob.jsx/JobListing'
+import AsideFilters from '../../components/FindJob.jsx/AsideFilters'
+import JobListing from '../../components/FindJob.jsx/JobListing'
 
 function FindJob() {
   return (

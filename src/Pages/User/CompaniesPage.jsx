@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
-import { companyData } from "../constant/data";
-import CompanyGrid from "../components/companies/CompanyGrid";
-import CompanySearch from "../components/companies/CompanySearch";
-import Pagination from "../components/companies/Pagination";
+import { companyData } from "../../constant/data";
+import CompanyGrid from "../../components/companies/CompanyGrid";
+import CompanySearch from "../../components/companies/CompanySearch";
+import Pagination from "../../components/companies/Pagination";
 
 function CompaniesPage() {
   const [search, setSearch] = useState("");

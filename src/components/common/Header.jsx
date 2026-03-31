@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { Link } from "react-router-dom";
+import { useNavigate,Link, useLocation } from "react-router-dom";
 import logo from "../../assets/svg/logo.svg";
 import { CiLogout, CiBookmark } from "react-icons/ci";
 import { MdArrowDropDown } from "react-icons/md";
@@ -10,6 +10,11 @@ import { initialUserData } from "../../constant/data";
 function Header() {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef();
+  const navigate = useNavigate();
+  const location = useLocation();
+
+
+  const role = localStorage.getItem("userRole") || "jobseeker";
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -20,6 +25,7 @@ function Header() {
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
+ 
   return (
     <div className="font-sans bg-gray-50">
       <header className="bg-white shadow">
@@ -30,7 +36,7 @@ function Header() {
           </div>
 
           <nav className="hidden md:flex space-x-6">
-               <Link
+            <Link
               to="/"
               className="text-gray-700 hover:text-blue-600  transition"
             >
@@ -52,7 +58,7 @@ function Header() {
               to={"notifications/:tab"}
               className="text-gray-700 hover:text-blue-600  transition"
             >
-            Notifications
+              Notifications
             </Link>
             <Link
               to="/messages"
@@ -125,10 +131,15 @@ function Header() {
 
                   {/* Logout button */}
                   <div className="p-2 border-t border-slate-100 dark:border-slate-800">
-                    <button className="flex w-full items-center gap-3 px-3 py-2 text-sm text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors">
+                    <Link
+                      to={`/logout/${role.toLowerCase()}`} // Dynamic based on role
+                        state={{ from: location.pathname }} // <-- pass current page
+
+                      className="flex w-full items-center gap-3 px-3 py-2 text-sm text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors"
+                    >
                       <CiLogout className="text-lg" />
                       Log Out
-                    </button>
+                    </Link>
                   </div>
                 </div>
               )}

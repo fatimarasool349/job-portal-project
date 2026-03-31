@@ -1,7 +1,7 @@
 import { useState } from "react";
-import Sidebar from "../components/MessagePageComponents/Sidebar/Sidebar";
-import ChatWindow from "../components/MessagePageComponents/ChatWindow/ChatWindow";
-import { chats } from "../constant/data";
+import Sidebar from "../../components/MessagePageComponents/Sidebar/Sidebar";
+import ChatWindow from "../../components/MessagePageComponents/ChatWindow/ChatWindow";
+import { chats } from "../../constant/data";
 
 function MessagePage() {
   const [activeChat, setActiveChat] = useState(chats[0]);

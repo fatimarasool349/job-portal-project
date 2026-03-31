@@ -3,21 +3,25 @@ import SignUp from "../Pages/SignUp";
 import LoginPage from "../Pages/Login";
 import LandingPage from "../Pages/LandingPage";
 import ForgotPassword from "../Pages/ForgotPassword";
-import UserProfile from "../Pages/UserProfile";
-import FindJob from "../Pages/FindJob";
-import ViewDetailPage from "../Pages/ViewDetailPage";
+import UserProfile from "../Pages/User/UserProfile";
+import FindJob from "../Pages/User/FindJob";
+import ViewDetailPage from "../Pages/User/ViewDetailPage";
 import AppLayout from "../components/layout/AppLayout";
-import ApplyForm from "../Pages/ApplyForm";
-import CompaniesPage from "../Pages/CompaniesPage";
-import Review from "../Pages/Review";
-import BookMark from "../Pages/BookMark";
-import CompanyJobListing from "../Pages/CompanyJobListing";
-import NotificationsPage from "../Pages/NotificationsPage";
-import MessagePage from "../Pages/MessagePage";
+import ApplyForm from "../Pages/User/ApplyForm";
+import CompaniesPage from "../Pages/User/CompaniesPage";
+import Review from "../Pages/User/Review";
+import BookMark from "../Pages/User/BookMark";
+import CompanyJobListing from "../Pages/User/CompanyJobListing";
+import NotificationsPage from "../Pages/User/NotificationsPage";
+import MessagePage from "../Pages/User/MessagePage";
+import AdminLayout from "../components/layout/AdminLayout";
+import Dashboard from "../Pages/Admin/Dashboard";
+import Logout from "../Pages/Logout"
 
 function AppRoutes() {
   return (
     <Routes>
+      {/* for user */}
       <Route path="/" element={<AppLayout />}>
         <Route path="/" element={<LandingPage />} />
 
@@ -45,6 +49,10 @@ function AppRoutes() {
         {/* {BookMark} */}
         <Route path="/bookmark" element={<BookMark />}></Route>
       </Route>
+      {/* for admin */}
+      <Route path= "/dashboard" element = {<AdminLayout/>}>
+      <Route path = "" element = {<Dashboard/>} />
+      </Route>
       {/* Apply form */}
       <Route
         path="/login/jobseeker"
@@ -57,6 +65,7 @@ function AppRoutes() {
       <Route path="/signup/recruiter" element={<SignUp role="Recruiter" />} />
       <Route path="/signup/admin" element={<SignUp role="Admin" />} />
 
+<Route path = "/logout/jobseeker" element = {<Logout role ="Job Seeker"/>}/>
       {/* forgetPassword */}
       <Route path="/forgotPassword" element={<ForgotPassword />} />
       {/* review page */}
@@ -64,5 +73,7 @@ function AppRoutes() {
     </Routes>
   );
 }
+
+
 
 export default AppRoutes;
