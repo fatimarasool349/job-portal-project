@@ -1,7 +1,7 @@
 import { useParams } from "react-router-dom";
-import BreadCrumbs from "../../components/ViewDetail/BreadCrumbs";
-import ViewDetail from "../../components/ViewDetail/ViewDetail";
-import JobHeaderCard from "../../components/ViewDetail/JobHeaderCard";
+import BreadCrumbs from "../../components/viewDetail/BreadCrumbs";
+import ViewDetail from "../../components/viewDetail/ViewDetail";
+import JobHeaderCard from "../../components/viewDetail/JobHeaderCard";
 import { jobData, companyData } from "../../constant/data";
 
 

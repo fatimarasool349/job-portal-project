@@ -1,14 +1,14 @@
-import { Outlet,useLocation } from "react-router-dom";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import AdminSidebar from "../AdminComponents/common/AdminSidebar.jsx";
 import Navbar from "../AdminComponents/common/Navbar.jsx";
 import AdminFooter from "../AdminComponents/common/AdminFooter.jsx";
 import { titles } from "../../constant/admindata.js";
 
-
 function AdminLayout() {
-      const location = useLocation();
-    const currentTitle =
-    titles[location.pathname] || "Dashboard Overview";
+  const navigate = useNavigate();
+  const location = useLocation();
+  const currentTitle = titles[location.pathname] || "Dashboard Overview";
+  const role = localStorage.getItem("role"); // "admin" | "recruiter"
   return (
     <div className="flex">
       <AdminSidebar />
@@ -19,10 +19,10 @@ function AdminLayout() {
           userName="Admin"
           role="Super Admin"
           notifications={2}
-          onLogout={() => alert("Logout")}
+          onLogout={() => navigate(`/logout/${role}`)}
         />
         {/* Page Content */}
-          <Outlet />
+        <Outlet />
         <AdminFooter />
       </main>
     </div>

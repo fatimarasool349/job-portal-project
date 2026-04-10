@@ -1,10 +1,12 @@
 import { useForm } from "react-hook-form";
 import github from "./../assets/icons/github-logo.png";
 import google from "./../assets/icons/google.png";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate , useParams} from "react-router-dom";
 import { FaEnvelope, FaLock } from "react-icons/fa";
 
-function LoginPage({ role = "Job Seeker" }) {
+function LoginPage() {
+const { role: rawRole } = useParams();
+const role = rawRole?.trim().toLowerCase();
   const navigate = useNavigate();
   const {
     register,
@@ -12,10 +14,48 @@ function LoginPage({ role = "Job Seeker" }) {
     formState: { errors },
   } = useForm();
 
-  const onSubmit = (data) => {
-    console.log("Form Data:", { ...data, role });
-    navigate("/");
-  };
+const onSubmit = (data) => {
+  console.log("Form Data:", { ...data, role });
+  console.log("Role:", role);
+console.log("Type:", typeof role);
+console.log("Equal recruiter?", role === "recruiter");
+
+
+  // 🔥 Save role in localStorage
+  localStorage.setItem("role", role);
+
+  // Optional: save email too
+  localStorage.setItem("email", data.email);
+ if (role === "recruiter") {
+    localStorage.setItem("recruiter_id", 101); // mock recruiter ID
+  }
+  // Role-based redirection
+  if (role === "admin"||role === "recruiter") {
+    navigate("/dashboard");
+  }
+  else navigate("/"); // Job Seeker
+};
+
+  // Role-based placeholders and validation
+  const emailPlaceholder =
+    role === "recruiter"
+      ? "recruiter@company.com"
+      : role === "admin"
+      ? "admin@yourdomain.com"
+      : "abc@email.com";
+
+  const emailPattern =
+    role === "recruiter"
+      ? /^[a-zA-Z0-9._%+-]+@(?!yourdomain\.com|email\.com|yahoo\.com|hotmail\.com)[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
+      : role === "admin"
+      ? /^[a-zA-Z0-9._%+-]+@yourdomain\.com$/ // only allow your domain for admin
+    : /^[a-zA-Z0-9._%+-]+@(?!yourdomain\.com$)[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+  const emailErrorMessage =
+    role === "recruiter"
+      ? "Please use a company email address"
+      : role === "admin"
+      ? "Admin email must be @yourdomain.com"
+      : "Invalid Email Address";
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
@@ -25,57 +65,31 @@ function LoginPage({ role = "Job Seeker" }) {
           <p className="text-gray-500">Access your professional dashboard</p>
         </div>
 
-        {/* <div className="flex justify-between mb-4 bg-gray-100 rounded-lg p-1">
-          {["Job Seeker", "Recruiter", "Admin"].map((r) => (
-            <button
-              key={r}
-              type="button"
-              onClick={() => setRole(r)}
-              className={`flex-1 py-2 rounded-lg ${
-                role === r ? "bg-white text-blue-600" : "text-gray-600"
-              }`}
-            >
-              {r}
-            </button>
-          ))}
-        </div> */}
-
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+          {/* Email */}
           <div>
             <label className="block text-gray-700 mb-1">Email Address</label>
             <div className="relative mt-1">
               <FaEnvelope className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
-
               <input
                 type="email"
-                placeholder={
-                  role === "Recruiter"
-                    ? "recruiter@company.com"
-                    : "abc@email.com"
-                }
+                placeholder={emailPlaceholder}
                 {...register("email", {
                   required: "Email is required",
                   pattern: {
-                    value:
-                      role === "Recruiter"
-                        ? /^[a-zA-Z0-9._%+-]+@(?!email\.com|yahoo\.com|hotmail\.com)[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
-                        : /^[^@ ]+@[^@ ]+\.[^@ .]{2,}$/,
-                    message:
-                      role === "Recruiter"
-                        ? "Please use a company email address"
-                        : "Invalid Email Address",
+                    value: emailPattern,
+                    message: emailErrorMessage,
                   },
                 })}
                 className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
               />
             </div>
             {errors.email && (
-              <p className="text-red-500 text-sm mt-1">
-                {errors.email.message}
-              </p>
+              <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>
             )}
           </div>
 
+          {/* Password */}
           <div>
             <label className="block text-gray-700 mb-1">Password</label>
             <div className="relative mt-1">
@@ -99,9 +113,7 @@ function LoginPage({ role = "Job Seeker" }) {
               />
             </div>
             {errors.password && (
-              <p className="text-red-500 text-sm mt-1">
-                {errors.password.message}
-              </p>
+              <p className="text-red-500 text-sm mt-1">{errors.password.message}</p>
             )}
             <div className="text-right mt-1">
               <Link
@@ -113,12 +125,9 @@ function LoginPage({ role = "Job Seeker" }) {
             </div>
           </div>
 
+          {/* Remember Me */}
           <div className="flex items-center">
-            <input
-              type="checkbox"
-              {...register("rememberMe")}
-              className="mr-2"
-            />
+            <input type="checkbox" {...register("rememberMe")} className="mr-2" />
             <label>Remember me</label>
           </div>
 
@@ -130,6 +139,7 @@ function LoginPage({ role = "Job Seeker" }) {
           </button>
         </form>
 
+        {/* Social Login */}
         <div className="flex items-center my-4">
           <hr className="flex-1 border-gray-300" />
           <span className="mx-2 text-gray-400 text-sm">OR CONTINUE WITH</span>
@@ -141,7 +151,7 @@ function LoginPage({ role = "Job Seeker" }) {
             <img src={google} className="w-5 h-5" />
             <span>Google</span>
           </button>
-          <button className="flex  flex-1 flex-row items-center justify-center  py-2 border border-gray-300 rounded-lg hover:bg-gray-100 transition">
+          <button className="flex flex-1 flex-row items-center justify-center py-2 border border-gray-300 rounded-lg hover:bg-gray-100 transition">
             <img src={github} className="w-5 h-5" />
             GitHub
           </button>

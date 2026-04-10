@@ -1,22 +1,31 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import SignUp from "../Pages/SignUp";
-import LoginPage from "../Pages/Login";
-import LandingPage from "../Pages/LandingPage";
-import ForgotPassword from "../Pages/ForgotPassword";
-import UserProfile from "../Pages/User/UserProfile";
-import FindJob from "../Pages/User/FindJob";
-import ViewDetailPage from "../Pages/User/ViewDetailPage";
+import ProtectedRoute from "./ProtectedRoute";
+import SignUp from "../pages/SignUp";
+import LoginPage from "../pages/Login";
+import LandingPage from "../pages/LandingPage";
+import ForgotPassword from "../pages/ForgotPassword";
+import UserProfile from "../pages/user/UserProfile";
+import FindJob from "../pages/user/FindJob";
+import ViewDetailPage from "../pages/user/ViewDetailPage";
 import AppLayout from "../components/layout/AppLayout";
-import ApplyForm from "../Pages/User/ApplyForm";
-import CompaniesPage from "../Pages/User/CompaniesPage";
-import Review from "../Pages/User/Review";
-import BookMark from "../Pages/User/BookMark";
-import CompanyJobListing from "../Pages/User/CompanyJobListing";
-import NotificationsPage from "../Pages/User/NotificationsPage";
-import MessagePage from "../Pages/User/MessagePage";
+import ApplyForm from "../pages/user/ApplyForm";
+import CompaniesPage from "../pages/user/CompaniesPage";
+import Review from "../pages/user/Review";
+import BookMark from "../pages/user/BookMark";
+import CompanyJobListing from "../pages/user/CompanyJobListing";
+import NotificationsPage from "../pages/user/NotificationsPage";
+import MessagePage from "../pages/user/MessagePage";
 import AdminLayout from "../components/layout/AdminLayout";
-import Dashboard from "../Pages/Admin/Dashboard";
-import Logout from "../Pages/Logout"
+import Dashboard from "../pages/admin/Dashboard";
+import Logout from "../pages/Logout";
+import ManageRecruiter from "../pages/admin/ManageRecuiter";
+import ManageCandidate from "../pages/admin/ManageCandidate";
+import ManageJobs from "../pages/admin/ManageJob";
+import SystemAnalysis from "../pages/admin/SystemAnaylsis";
+import ProfilePage from "../pages/admin/ProfilePage";
+import JobApplications from "../pages/admin/JobApplications";
+import ApplicationDetail from "../pages/admin/ApplicationDetail";
+import ReviewsDashboard from "../pages/admin/ReviewsDashboard";
 
 function AppRoutes() {
   return (
@@ -31,7 +40,7 @@ function AppRoutes() {
         <Route path="/findjob" element={<FindJob />} />
         <Route path="/companies" element={<CompaniesPage />} />
 
-        {/* ViewDetailPages */}
+        {/* ViewDetailpages */}
         <Route path="/viewdetailpage/:id" element={<ViewDetailPage />}></Route>
         <Route path="/jobs/:jobId/apply" element={<ApplyForm />} />
 
@@ -40,7 +49,7 @@ function AppRoutes() {
         {/* Notification Page  */}
         <Route path="/notifications/:tab" element={<NotificationsPage />} />
 
-          {/* Messages Page */}
+        {/* Messages Page */}
         <Route path="/messages" element={<MessagePage />} />
 
         {/* Optional: Dynamic Chat Route */}
@@ -50,22 +59,114 @@ function AppRoutes() {
         <Route path="/bookmark" element={<BookMark />}></Route>
       </Route>
       {/* for admin */}
-      <Route path= "/dashboard" element = {<AdminLayout/>}>
-      <Route path = "" element = {<Dashboard/>} />
+      <Route
+        path="/dashboard"
+        element={
+          <ProtectedRoute allowedRoles={["admin", "recruiter"]}>
+            <AdminLayout />
+          </ProtectedRoute>
+        }
+      >
+        <Route index element={<Dashboard />} />
+
+        <Route
+          path="recruiters"
+          element={
+            <ProtectedRoute allowedRoles={["admin"]}>
+              <ManageRecruiter />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="messages/:id"
+          element={
+            <ProtectedRoute allowedRoles={["recruiter"]}>
+              <MessagePage />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="candidates"
+          element={
+            <ProtectedRoute allowedRoles={["admin", "recruiter"]}>
+              <ManageCandidate />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="applications/:id"
+          element={
+            <ProtectedRoute allowedRoles={["admin", "recruiter"]}>
+              <ApplicationDetail />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="reviews"
+          element={
+            <ProtectedRoute allowedRoles={["admin", "recruiter"]}>
+              <ReviewsDashboard />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="jobs"
+          element={
+            <ProtectedRoute allowedRoles={["admin", "recruiter"]}>
+              <ManageJobs />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="analytics"
+          element={
+            <ProtectedRoute allowedRoles={["admin"]}>
+              <SystemAnalysis />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route path="settings" element={<ProfilePage />} />
+
+        <Route
+          path="job-applications"
+          element={
+            <ProtectedRoute allowedRoles={["admin", "recruiter"]}>
+              <JobApplications />
+            </ProtectedRoute>
+          }
+        />
+        {/* <Route path="" element={<Dashboard />} />
+        <Route path="recruiters" element={<ManageRecruiter />} />
+        <Route path="candidates" element={<ManageCandidate />} />
+        <Route path="jobs" element={<ManageJobs />} />
+        <Route path="analytics" element={<SystemAnalysis />} />
+        <Route path="settings" element={<ProfilePage />} />
+        <Route path="job-applications" element={<JobApplications />} /> */}
       </Route>
       {/* Apply form */}
-      <Route
+      {/* <Route
         path="/login/jobseeker"
         element={<LoginPage role="Job Seeker" />}
       />
       <Route path="/login/recruiter" element={<LoginPage role="Recruiter" />} />
+      <Route path="/login/admin" element={<LoginPage role="Admin" />} /> */}
 
       {/* SIGNUP */}
-      <Route path="/signup/jobseeker" element={<SignUp role="Job Seeker" />} />
-      <Route path="/signup/recruiter" element={<SignUp role="Recruiter" />} />
-      <Route path="/signup/admin" element={<SignUp role="Admin" />} />
+      {/* <Route path="/signup/jobseeker" element={<SignUp role="Job Seeker" />} />
+      <Route path="/signup/recruiter" element={<SignUp role="Recruiter" />} /> */}
+      {/* <Route path="/signup/admin" element={<SignUp role="Admin" />} /> */}
+      {/* 
+      <Route path="/logout/jobseeker" element={<Logout role="Job Seeker" />} />
+      <Route path="/logout/admin" element={<Logout role="Admin" />} /> */}
 
-<Route path = "/logout/jobseeker" element = {<Logout role ="Job Seeker"/>}/>
+      <Route path="/login/:role" element={<LoginPage />} />
+      <Route path="/signup/:role" element={<SignUp />} />
+      <Route path="/logout/:role" element={<Logout />} />
+
       {/* forgetPassword */}
       <Route path="/forgotPassword" element={<ForgotPassword />} />
       {/* review page */}
@@ -73,7 +174,5 @@ function AppRoutes() {
     </Routes>
   );
 }
-
-
 
 export default AppRoutes;

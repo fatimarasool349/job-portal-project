@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { useNavigate,Link, useParams} from "react-router-dom";
 import {
   FaUser,
   FaBuilding,
@@ -13,20 +13,41 @@ import {
 import github from "./../assets/icons/github-logo.png";
 import google from "./../assets/icons/google.png";
 
-export default function SignUp({ role = "Job Seeker" }) {
+export default function SignUp() {
+      const { role } = useParams(); // role = "jobseeker" | "recruiter" | "admin"
+
   const {
     register,
     handleSubmit,
     watch,
     formState: { errors },
   } = useForm();
+  const navigate = useNavigate();
 
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
 
   const onSubmit = (data) => {
-    console.log(...data, role);
-  };
+  console.log({ ...data, role });
+
+  // Save role in localStorage for session
+  localStorage.setItem("role", role);
+
+  // Redirect based on role
+  if (role === "jobseeker") {
+    navigate("/");
+  } else if (role === "recruiter") {
+    navigate("/dashboard");
+  } 
+   else {
+    navigate("/"); // fallback
+  }
+};
+    const emailPattern =
+    role === "recruiter"
+      ? /^[a-zA-Z0-9._%+-]+@(?!email\.com|yahoo\.com|hotmail\.com)[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
+
+      : /^[^@ ]+@[^@ ]+\.[^@ .]{2,}$/;
 
   return (
     <div className="min-h-screen bg-gray-100 flex items-center justify-center px-4">
@@ -59,7 +80,7 @@ export default function SignUp({ role = "Job Seeker" }) {
               </p>
             )}
           </div>
-          {role === "Recruiter" && (
+          {role === "recruiter" && (
             <div>
               <label className="text-sm font-medium text-gray-700">
                 Company Name
@@ -71,7 +92,7 @@ export default function SignUp({ role = "Job Seeker" }) {
                   placeholder="Enter your company name"
                   {...register("companyName", {
                     required:
-                      role === "Recruiter" ? "Company name is required" : false,
+                      role === "recruiter" ? "Company name is required" : false,
                   })}
                   className="w-full pl-10 pr-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-600 focus:outline-none"
                 />
@@ -92,7 +113,11 @@ export default function SignUp({ role = "Job Seeker" }) {
               <FaEnvelope className="absolute left-3 top-3 text-gray-400" />
               <input
                 type="email"
-                {...register("email", { required: "Email is required" })}
+                {...register("email", { required: "Email is required" ,pattern: {
+                    value: emailPattern,
+                    message: "Please enter a valid email address",
+                  }})}
+
                 className="w-full pl-10 pr-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-600 focus:outline-none"
                 placeholder="john@example.com"
               />
@@ -127,9 +152,14 @@ export default function SignUp({ role = "Job Seeker" }) {
                 type={showPassword ? "text" : "password"}
                 {...register("password", {
                   required: "Password is required",
-                  minLength: {
-                    value: 8,
-                    message: "Minimum 8 characters required",
+                 validate: (value) => {
+                    if (value.length < 8)
+                      return "Password must be at least 8 characters";
+                    if (!/[A-Z]/.test(value))
+                      return "Password must include at least one uppercase letter";
+                    if (!/[@$!%*?&]/.test(value))
+                      return "Password must include at least one special character";
+                    return true;
                   },
                 })}
                 className="w-full pl-10 pr-10 py-2 border rounded-lg focus:ring-2 focus:ring-blue-600 focus:outline-none"

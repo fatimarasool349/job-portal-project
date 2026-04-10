@@ -1,8 +1,12 @@
 import { useState } from "react";
 
-const tabs = ["All", "Unread", "Recruiters"];
 
-function FilterTabs() {
+
+function FilterTabs( { role }) {
+  const tabs =
+  role === "recruiter"
+    ? ["All", "Candidates", "Unread"]
+    : ["All", "Unread", "Recruiters"];
   const [activeTab, setActiveTab] = useState("All");
 
   return (

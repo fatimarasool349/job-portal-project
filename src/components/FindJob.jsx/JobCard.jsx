@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { badgeColors } from "../../constant/data";
 
-function JobCard({ job, company}) {
+function JobCard({ job}) {
 
   return (
     <div className="group relative flex flex-col gap-4 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-6 transition-all hover:border-blue-600 hover:shadow-xl">
@@ -21,10 +21,10 @@ function JobCard({ job, company}) {
             <h3 className="text-lg font-bold text-slate-900 dark:text-white group-hover:text-blue-600 transition-colors">
               {job.title}
             </h3>
-            <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-slate-500 dark:text-slate-400">
+            {/* <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-slate-500 dark:text-slate-400">
               <span>{company.name}</span>
               <span>{company.location}</span>
-            </div>
+            </div> */}
           </div>
         </div>
 

@@ -1,8 +1,8 @@
 // src/App.jsx
-import HeroSection from "../components/LandingPageComponents/HeroSection";
-import Stats from "../components/LandingPageComponents/Stats";
-import ThreeStep from "../components/LandingPageComponents/ThreeStep";
-import FeaturedJobs from "../components/LandingPageComponents/JobFeatures";
+import HeroSection from "../components/landingPageComponents/HeroSection";
+import Stats from "../components/landingPageComponents/Stats";
+import ThreeStep from "../components/landingPageComponents/ThreeStep";
+import FeaturedJobs from "../components/landingPageComponents/JobFeatures";
 
 function LandingPage() {
   return (
