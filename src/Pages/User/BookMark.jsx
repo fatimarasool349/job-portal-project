@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { jobData,companyData } from "../../constant/data";     
-import JobCard from "../../components/BookMark/JobCard";
+import JobCard from "../../components/bookMark/JobCard";
 
 function BookMark() {
   const [activeTab, setActiveTab] = useState("jobs");

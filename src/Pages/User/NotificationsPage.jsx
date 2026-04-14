@@ -1,6 +1,6 @@
-import NotificationHeader from "../../components/Notifications/NotificationHeader";
-import NotificationTabs from "../../components/Notifications/NotificationTabs";
-import NotificationList from "../../components/Notifications/NotificationList";
+import NotificationHeader from "../../components/notifications/NotificationHeader";
+import NotificationTabs from "../../components/notifications/NotificationTabs";
+import NotificationList from "../../components/notifications/NotificationList";
 import { initialNotifications } from "../../constant/data";
 import { useParams } from "react-router-dom";
 import { useState } from "react";

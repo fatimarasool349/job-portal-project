@@ -1123,6 +1123,10 @@ export const contactFields = [
     type: "text",
     placeholder: "e.g. John",
     required: true,
+     pattern: {
+      value: /^[A-Za-z]+$/,
+      message: "First name must contain only letters",
+    },
   },
   {
     name: "lastName",
@@ -1130,6 +1134,10 @@ export const contactFields = [
     type: "text",
     placeholder: "e.g. Doe",
     required: true,
+    pattern: {
+      value: /^[A-Za-z]+$/,
+      message: "Last name must contain only letters",
+    },
   },
   {
     name: "email",
@@ -1147,6 +1155,11 @@ export const contactFields = [
     label: "Phone Number",
     type: "tel",
     placeholder: "+1 (555) 000-0000",
+    required: true,
+    pattern: {
+      value: /^[0-9]{10,15}$/,
+      message: "Phone number must be 10-15 digits",
+    },
   },
 ];
 

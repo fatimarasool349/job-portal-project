@@ -1,11 +1,16 @@
 import { Link, useLocation } from "react-router-dom";
-
-import { menuItems } from "../../../constant/admindata";
+import { sidebarItems } from "../../../constant/admindata";
 
 function AdminSidebar() {
   const location = useLocation();
 
+const role = localStorage.getItem("role")?.trim().toLowerCase();
+  const filteredItems = sidebarItems.filter((item) =>
+    item.roles.includes(role),
+  );
+
   return (
+
     <aside className="w-64 bg-white border-r border-gray-200 flex flex-col fixed h-full">
       {/* Logo */}
       <div className="p-6 border-b border-gray-100">
@@ -13,29 +18,32 @@ function AdminSidebar() {
           JobPortal
         </h1>
         <p className="text-xs text-gray-500 uppercase font-semibold mt-1">
-          Admin Panel
+          {role === "admin" ? "Super Admin Panel" : "Recruiter Panel"}
         </p>
       </div>
 
       {/* Menu */}
       <nav className="flex-1 px-4 py-6 space-y-1 overflow-y-auto">
-        {menuItems.map((item) => {
+        {filteredItems.map((item) => {
           const Icon = item.icon;
-            const isActive = location.pathname === `${item.path}`;
-
+          const isActive = location.pathname === item.path;
+          let displayName = item.name;
+          if (role === "recruiter" && item.name === "Manage Users") {
+            displayName = "Candidates";
+          }
 
           return (
             <Link
-              to={`${item.path}`}
+              to={item.path}
               key={item.path}
-              className={`flex items-center w-full text-left px-4 py-3 rounded-xl transition-colors ${
+              className={`flex items-center px-4 py-3 rounded-xl transition-colors ${
                 isActive
                   ? "bg-blue-50 text-blue-600"
                   : "text-gray-600 hover:bg-gray-50"
               }`}
             >
               <Icon className="w-5 h-5 mr-3" />
-              {item.name}
+              {displayName}
             </Link>
           );
         })}
@@ -58,4 +66,5 @@ function AdminSidebar() {
     </aside>
   );
 }
+
 export default AdminSidebar;

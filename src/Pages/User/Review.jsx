@@ -6,7 +6,7 @@ import {
   defaultValues,
 } from "../../constant/data";
 import RatingBar from "../../components/ViewDetail/RatingBar";
-import RatingStar from "../../components/ReviewForm/RatingStar";
+import RatingStar from "../../components/reviewForm/RatingStar";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 

@@ -1,17 +1,20 @@
 import { useState, useMemo, useEffect } from "react";
-import JobCard from "./JobCard";
-import { jobData as initialJobs , companyData } from "./../../constant/data.js"; // replace with API later
+import JobCard from "./JobCard.jsx";
+import { jobData as initialJobs , companyData } from "../../constant/data.js"; // replace with API later
 
-function JobListing() {
-  const [jobs, setJobs] = useState([]);
-  const [sortBy, setSortBy] = useState("Most Recent");
+function JobListing({ jobs }) {
+  const [sortBy, setSortBy] = useState("Most Relevant");
   const [currentPage, setCurrentPage] = useState(1);
   const jobsPerPage = 4;
 
   // Load jobs (simulate API)
+  // useEffect(() => {
+  //   setJobs(initialJobs);
+  // }, []);
+
   useEffect(() => {
-    setJobs(initialJobs);
-  }, []);
+  setCurrentPage(1);
+}, [jobs]);
 
 function getMinSalary(salaryStr) {
   if (!salaryStr) return 0; 
@@ -32,7 +35,7 @@ function getMinSalary(salaryStr) {
     }
 
     if (sortBy === "Most Relevant") {
-      sorted.sort((a, b) => a.title.localeCompare(b.title));
+  sorted.sort((a, b) => (b.score || 0) - (a.score || 0));
     }
 
     if (sortBy === "Most Recent") {
@@ -81,7 +84,7 @@ function getMinSalary(salaryStr) {
       {/* Job Listings */}
       <div className="grid gap-4">
         {paginatedJobs.map((job) => (
-          <JobCard key={job.id} job={job} company ={companyData}  />
+          <JobCard key={job.id} job={job}   />
         ))}
       </div>
 

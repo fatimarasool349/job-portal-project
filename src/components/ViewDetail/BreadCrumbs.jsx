@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import {breadcrumbItems} from "./../../constant/data.js"
+import {breadcrumbItems} from "../../constant/data.js"
 
 
 function BreadCrumbs({jobTitle}) {

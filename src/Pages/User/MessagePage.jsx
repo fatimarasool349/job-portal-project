@@ -1,9 +1,11 @@
 import { useState } from "react";
-import Sidebar from "../../components/MessagePageComponents/Sidebar/Sidebar";
-import ChatWindow from "../../components/MessagePageComponents/ChatWindow/ChatWindow";
+import Sidebar from "../../components/messagePageComponents/sidebar/Sidebar";
+import ChatWindow from "../../components/messagePageComponents/chatWindow/ChatWindow";
 import { chats } from "../../constant/data";
 
 function MessagePage() {
+    const role = localStorage.getItem("role") || "jobSeeker";
+
   const [activeChat, setActiveChat] = useState(chats[0]);
 
   return (
@@ -12,8 +14,9 @@ function MessagePage() {
         chats={chats}
         activeChat={activeChat}
         setActiveChat={setActiveChat}
+        role={role}
       />
-      <ChatWindow activeChat={activeChat} setActiveChat={setActiveChat} />
+      <ChatWindow activeChat={activeChat} setActiveChat={setActiveChat} role={role} />
     </main>
   );
 }
