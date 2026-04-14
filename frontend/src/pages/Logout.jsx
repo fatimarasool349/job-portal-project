@@ -1,0 +1,33 @@
+import { useNavigate, useParams } from "react-router-dom";
+import LogoutCard from "../components/Logout/LogoutCard";
+
+function Logout() {
+  const navigate = useNavigate();
+  const { role } = useParams();
+  const urlRole = role?.trim().toLowerCase();
+  const handleLogout = () => {
+    console.log(`${urlRole} logged out`);
+
+    localStorage.removeItem("authToken");
+    localStorage.removeItem("role");
+
+    navigate(`/login/${urlRole}`);
+  };
+
+  // Function to handle cancel
+  const handleCancel = () => {
+    console.log(`${urlRole} canceled logout`);
+    navigate(-1); // just go back
+  };
+
+  return (
+    <LogoutCard
+      title={`${urlRole} Logout Confirmation`}
+      description={`Are you sure you want to log out as a ${urlRole}? Any unsaved changes will be lost.`}
+      onLogout={handleLogout}
+      onCancel={handleCancel}
+    />
+  );
+}
+
+export default Logout;
