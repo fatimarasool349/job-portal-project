@@ -23,7 +23,7 @@ const authSlice = createSlice({
     loginSuccess: (state, action) => {
       state.user = action.payload.user;
       state.token = action.payload.token;
-  state.role = action.payload.role?.trim().toLowerCase(); // ✅ FIX
+  state.role = action.payload.user?.role?.trim().toLowerCase(); // ✅ FIXED
       state.isAuthenticated = true;
     },
 

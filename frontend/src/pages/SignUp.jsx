@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { useNavigate,Link, useParams} from "react-router-dom";
+import { useNavigate, Link, useParams } from "react-router-dom";
+import axios from "axios";
 import {
   FaUser,
   FaBuilding,
@@ -10,45 +11,74 @@ import {
   FaEye,
   FaEyeSlash,
 } from "react-icons/fa";
-import github from "./../assets/icons/github-logo.png";
-import google from "./../assets/icons/google.png";
-
+import { useDispatch } from "react-redux";
+import { loginSuccess } from "../redux/slices/authSlice";
 export default function SignUp() {
-      const { role } = useParams(); // role = "jobseeker" | "recruiter" | "admin"
+  const { role } = useParams();
+  const dispatch = useDispatch();
 
   const {
     register,
     handleSubmit,
     watch,
     formState: { errors },
+    setError,
   } = useForm();
   const navigate = useNavigate();
 
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
 
-  const onSubmit = (data) => {
-  console.log({ ...data, role });
+  const onSubmit = async (data) => {
+    try {
+      const response = await axios.post(
+        "http://localhost:5000/api/auth/register",
+        { ...data, role },
+      );
+      console.log("ROLE FROM PARAMS:", role);
+      console.log("USER FROM BACKEND:", response.data.user);
 
-  // Save role in localStorage for session
-  localStorage.setItem("role", role);
+      const user = response.data?.user;
+      const token = response.data?.token;
 
-  // Redirect based on role
-  if (role === "jobseeker") {
-    navigate("/");
-  } else if (role === "recruiter") {
-    navigate("/dashboard");
-  } 
-   else {
-    navigate("/"); // fallback
-  }
-};
-    const emailPattern =
+      console.log("Signup success:", user);
+
+      dispatch(
+        loginSuccess({
+          user,
+          token,
+        }),
+      );
+
+      if (user?.role === "admin" || user?.role === "recruiter") {
+        navigate("/dashboard");
+      } else {
+        navigate("/");
+      }
+    } catch (error) {
+      console.log("Signup error:", error.response?.data);
+
+      const res = error.response;
+
+      if (res?.data?.errors) {
+        Object.keys(res.data.errors).forEach((field) => {
+          setError(field, {
+            type: "manual",
+            message: res.data.errors[field],
+          });
+        });
+      } else {
+        setError("root", {
+          type: "manual",
+          message: res?.data?.message || "Something went wrong",
+        });
+      }
+    }
+  };
+  const emailPattern =
     role === "recruiter"
-      ? /^[a-zA-Z0-9._%+-]+@(?!email\.com|yahoo\.com|hotmail\.com)[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
-
-      : /^[^@ ]+@[^@ ]+\.[^@ .]{2,}$/;
-
+      ? /^[a-zA-Z0-9._%+-]+@(?!email\.com|gmail\.com|yahoo\.com|hotmail\.com)[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
+      : /^[a-zA-Z0-9._%+-]+@(?!gmail\.com|yahoo\.com|hotmail\.com|outlook\.com)[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
   return (
     <div className="min-h-screen bg-gray-100 flex items-center justify-center px-4">
       <div className="bg-white w-full max-w-md rounded-2xl shadow-xl p-8">
@@ -70,7 +100,7 @@ export default function SignUp() {
               <FaUser className="absolute left-3 top-3 text-gray-400" />
               <input
                 {...register("fullName", { required: "Full name is required" })}
-                className="w-full pl-10 pr-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-600 focus:outline-none"
+                className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
                 placeholder="John Doe"
               />
             </div>
@@ -94,7 +124,7 @@ export default function SignUp() {
                     required:
                       role === "recruiter" ? "Company name is required" : false,
                   })}
-                  className="w-full pl-10 pr-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-600 focus:outline-none"
+                  className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
                 />
               </div>
               {errors.companyName && (
@@ -113,12 +143,14 @@ export default function SignUp() {
               <FaEnvelope className="absolute left-3 top-3 text-gray-400" />
               <input
                 type="email"
-                {...register("email", { required: "Email is required" ,pattern: {
+                {...register("email", {
+                  required: "Email is required",
+                  pattern: {
                     value: emailPattern,
                     message: "Please enter a valid email address",
-                  }})}
-
-                className="w-full pl-10 pr-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-600 focus:outline-none"
+                  },
+                })}
+                className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
                 placeholder="john@example.com"
               />
             </div>
@@ -136,7 +168,7 @@ export default function SignUp() {
               <FaPhone className="absolute left-3 top-3 text-gray-400" />
               <input
                 {...register("phone")}
-                className="w-full pl-10 pr-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-600 focus:outline-none"
+                className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
                 placeholder="+1 555 000 0000"
               />
             </div>
@@ -152,7 +184,7 @@ export default function SignUp() {
                 type={showPassword ? "text" : "password"}
                 {...register("password", {
                   required: "Password is required",
-                 validate: (value) => {
+                  validate: (value) => {
                     if (value.length < 8)
                       return "Password must be at least 8 characters";
                     if (!/[A-Z]/.test(value))
@@ -162,7 +194,7 @@ export default function SignUp() {
                     return true;
                   },
                 })}
-                className="w-full pl-10 pr-10 py-2 border rounded-lg focus:ring-2 focus:ring-blue-600 focus:outline-none"
+                className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
                 placeholder="********"
               />
               <span
@@ -192,7 +224,7 @@ export default function SignUp() {
                   validate: (value) =>
                     value === watch("password") || "Passwords do not match",
                 })}
-                className="w-full pl-10 pr-10 py-2 border rounded-lg focus:ring-2 focus:ring-blue-600 focus:outline-none"
+                className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
                 placeholder="********"
               />
               <span
@@ -223,21 +255,10 @@ export default function SignUp() {
           <hr className="flex-1 border-gray-300" />
         </div>
 
-        <div className="flex gap-4">
-          <button className="flex flex-1 flex-row gap-x-2 items-center justify-center py-2 border border-gray-300 rounded-lg hover:bg-gray-100 transition">
-            <img src={google} className="w-5 h-5" />
-            <span>Google</span>
-          </button>
-          <button className="flex  flex-1 flex-row items-center justify-center  py-2 border border-gray-300 rounded-lg hover:bg-gray-100 transition">
-            <img src={github} className="w-5 h-5" />
-            GitHub
-          </button>
-        </div>
-
         <p className="text-center text-gray-500 text-sm mt-6">
           Already have an account?{" "}
           <Link
-            to={`/login/${role.toLowerCase().replace(" ", "")}`}
+            to={`/login/${role?.toLowerCase()?.replace(" ", "") || ""}`}
             className="text-blue-600  cursor-pointer hover:underline"
           >
             Log In

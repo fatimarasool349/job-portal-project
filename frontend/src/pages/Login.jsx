@@ -1,11 +1,10 @@
 import { useForm } from "react-hook-form";
-import github from "./../assets/icons/github-logo.png";
-import google from "./../assets/icons/google.png";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { FaEnvelope, FaLock } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 
 import { loginSuccess } from "../redux/slices/authSlice";
+import axios from "axios";
 
 function LoginPage() {
   const navigate = useNavigate();
@@ -16,44 +15,68 @@ function LoginPage() {
   const {
     register,
     handleSubmit,
+    setError,
     formState: { errors },
   } = useForm();
-  const onSubmit = (data) => {
-    console.log("Form Data:", { ...data, role });
+  const onSubmit = async (data) => {
+    try {
+      const res = await axios.post("http://localhost:5000/api/auth/login", {
+        email: data.email,
+        password: data.password,
+      });
 
-    const fakeToken = "demo-token-123";
+      const { token, user } = res.data;
 
-    dispatch(
-  loginSuccess({
-    user: {
-      email: data.email,
-      role: role?.trim().toLowerCase(),
-    },
-    role: role?.trim().toLowerCase(),
-    token: fakeToken,
-  })
-);
+      dispatch(
+        loginSuccess({
+          user: user,
+          token: token,
+          role: user.role,
+        }),
+      );
 
-    localStorage.setItem(
-      "auth",
-      JSON.stringify({
-        user: { email: data.email, role: role?.trim().toLowerCase() },
-        token: fakeToken,
-        role: role?.trim().toLowerCase(),
-        isAuthenticated: true,
-      }),
-    );
+      localStorage.setItem(
+        "auth",
+        JSON.stringify({
+          user: {
+            _id: user._id,
+            fullName: user.fullName,
+            email: user.email,
+            phone: user.phone,
+            role: user.role,
+          },
+          token,
+          role: user.role,
+          isAuthenticated: true,
+        }),
+      );
 
-    localStorage.setItem("role", role);
-    localStorage.setItem("email", data.email);
+      localStorage.setItem("role", user.role);
+      localStorage.setItem("email", user.email);
 
-    if (role === "recruiter") {
-      localStorage.setItem("recruiter_id", 101);
-    }
-    if (role === "admin" || role === "recruiter") {
-      navigate("/dashboard");
-    } else {
-      navigate("/");
+      if (user.role === "recruiter") {
+        localStorage.setItem("recruiter_id", user._id);
+        navigate("/dashboard");
+      } else if (user.role === "admin") {
+        navigate("/dashboard");
+      } else {
+        navigate("/");
+      }
+    } catch (error) {
+      const backendErrors = error.response?.data?.errors;
+
+      console.log("ERROR:", error.response?.data);
+
+      if (backendErrors) {
+        Object.keys(backendErrors).forEach((field) => {
+          setError(field, {
+            type: "server",
+            message: backendErrors[field],
+          });
+        });
+      } else {
+        alert(error.response?.data?.message || "Something went wrong");
+      }
     }
   };
 
@@ -166,24 +189,6 @@ function LoginPage() {
             Sign In
           </button>
         </form>
-
-        {/* Social Login */}
-        <div className="flex items-center my-4">
-          <hr className="flex-1 border-gray-300" />
-          <span className="mx-2 text-gray-400 text-sm">OR CONTINUE WITH</span>
-          <hr className="flex-1 border-gray-300" />
-        </div>
-
-        <div className="flex gap-4">
-          <button className="flex flex-1 flex-row gap-x-2 items-center justify-center py-2 border border-gray-300 rounded-lg hover:bg-gray-100 transition">
-            <img src={google} className="w-5 h-5" />
-            <span>Google</span>
-          </button>
-          <button className="flex flex-1 flex-row items-center justify-center py-2 border border-gray-300 rounded-lg hover:bg-gray-100 transition">
-            <img src={github} className="w-5 h-5" />
-            GitHub
-          </button>
-        </div>
 
         <p className="text-center text-gray-500 text-sm mt-6">
           Don't have an account?{" "}

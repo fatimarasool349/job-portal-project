@@ -7,7 +7,16 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
+package-lock.json
+package.json
+
+backend/.env
+frontend/.env
+
+
+
 node_modules
+.env
 dist
 dist-ssr
 *.local

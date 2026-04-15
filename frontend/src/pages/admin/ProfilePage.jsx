@@ -3,19 +3,30 @@ import ProfileInfoCard from "../../components/adminComponents/profilePage/Profil
 import ChangePasswordCard from "../../components/adminComponents/profilePage/ChangePasswordCard";
 import DangerZone from "../../components/adminComponents/profilePage/DangerZone";
 import { useState } from "react";
-import { adminProfileData } from "../../constant/index.js";
+import { useSelector } from "react-redux";
+import { useEffect } from "react";
+import axios from "axios";
+import { useDispatch } from "react-redux";
+import { loginSuccess } from "../../redux/slices/authSlice";
 
 export default function ProfilePage() {
   const [deactivated, setDeactivated] = useState(false);
-  const { register, handleSubmit, watch } = useForm({
-    defaultValues: {
-      fullName: adminProfileData.fullName,
-      email: adminProfileData.email,
-      phone: adminProfileData.phone,
-    },
-  });
+  const user = useSelector((state) => state.auth.user);
+  const { register, handleSubmit, reset, watch } = useForm();
+  const avatarFile = watch("avatar");
 
-  const [avatar, setAvatar] = useState(adminProfileData.avatar);
+  console.log("USER FROM REDUX:", user);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (user) {
+      reset({
+        fullName: user.fullName,
+        email: user.email,
+        phone: user.phone,
+      });
+    }
+  }, [user, reset]);
 
   const handleDeactivate = () => {
     if (!deactivated) {
@@ -33,25 +44,58 @@ export default function ProfilePage() {
 
   const handleAvatarChange = (e) => {
     const file = e.target.files[0];
-    if (file) setAvatar(URL.createObjectURL(file));
+    if (file) {
+      setAvatar(file);
+    }
   };
 
-  const onSubmit = (data) => {
-    console.log("Profile Data Submitted:", data);
-    console.log("Avatar URL:", avatar);
+  const onSubmit = async (data) => {
+    try {
+      const formData = new FormData();
 
-    if (deactivated) {
-      alert("Your account is deactivated. Changes won't be saved until reactivation.");
+      formData.append("fullName", data.fullName);
+      formData.append("email", data.email);
+      formData.append("phone", data.phone);
+
+      if (data.avatar && data.avatar[0]) {
+        formData.append("avatar", data.avatar[0]);
+      }
+
+      const res = await axios.put(
+        `http://localhost:5000/api/auth/update-profile/${user._id}`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        },
+      );
+
+      console.log("Updated:", res.data.user);
+
+      dispatch(
+        loginSuccess({
+          user: res.data.user,
+          token: localStorage.getItem("token"),
+        }),
+      );
+
+      alert("Profile updated!");
+    } catch (error) {
+      console.log(error.response?.data);
     }
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="p-8 max-w-4xl mx-auto w-full space-y-8">
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      className="p-8 max-w-4xl mx-auto w-full space-y-8"
+    >
       <ProfileInfoCard
         register={register}
-        avatar={avatar}
-        onAvatarChange={handleAvatarChange}
-        disabled={deactivated} // pass to disable inputs
+        avatarPreview={
+          avatarFile?.[0] ? URL.createObjectURL(avatarFile[0]) : user?.avatar
+        }
       />
       <ChangePasswordCard register={register} disabled={deactivated} />
       <DangerZone onDeactivate={handleDeactivate} deactivated={deactivated} />
