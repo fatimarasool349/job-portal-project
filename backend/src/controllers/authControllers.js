@@ -118,18 +118,14 @@ export const profileUpdate = async (req, res) => {
       phone: req.body.phone,
     };
 
-    // -------------------------
-    // IMAGE UPDATE
-    // -------------------------
+ 
     if (req.file) {
       updateData.profileImage = req.file.filename;
     }
 
     console.log("FILE:", req.file);
 
-    // -------------------------
-    // PASSWORD UPDATE
-    // -------------------------
+  
     if (newPassword) {
       if (!currentPassword) {
         return res.status(400).json({
@@ -148,12 +144,10 @@ export const profileUpdate = async (req, res) => {
       updateData.password = await bcrypt.hash(newPassword, 10);
     }
 
-    // -------------------------
-    // UPDATE USER
-    // -------------------------
+    
     const updatedUser = await Users.findByIdAndUpdate(id, updateData, {
       new: true,
-      runValidators: true, // IMPORTANT
+      runValidators: true
     }).select("-password");
 
     return res.status(200).json({
