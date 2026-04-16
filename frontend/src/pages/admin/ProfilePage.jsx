@@ -100,7 +100,6 @@ export default function ProfilePage() {
 
       if (!message) return;
 
-      // current password error
       if (message.toLowerCase().includes("current password")) {
         setError("currentPassword", {
           type: "manual",
@@ -108,7 +107,6 @@ export default function ProfilePage() {
         });
       }
 
-      // email error
       else if (message.toLowerCase().includes("email")) {
         setError("email", {
           type: "manual",
@@ -116,7 +114,6 @@ export default function ProfilePage() {
         });
       }
 
-      // fallback
       else {
         setError("root", {
           type: "manual",
