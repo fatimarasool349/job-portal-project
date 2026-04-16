@@ -4,11 +4,15 @@ import Navbar from "../adminComponents/common/Navbar.jsx";
 import AdminFooter from "../AdminComponents/common/AdminFooter.jsx";
 import { titles } from "../../constant/index.js";
 import { useRole } from "../../hooks/useRole.js";
+import { useSelector } from "react-redux";
+import defaultImage from "/src/assets/Images/default_img.png";
+import { getImageUrl } from "../../utils/getImageUrl.js";
 
 function AdminLayout() {
   const navigate = useNavigate();
   const location = useLocation();
   const { role } = useRole();
+  const { user } = useSelector((state) => state.auth);
   const notificationCount = role === "admin" ? 2 : 0;
 
   const currentTitle = titles[location.pathname] || "Dashboard Overview";
@@ -21,11 +25,13 @@ function AdminLayout() {
           userName="Admin"
           role="Super Admin"
           notifications={notificationCount}
-          profileImage = {"https://lh3.googleusercontent.com/aida-public/AB6AXuBs0h0p0JxvaWG_ZWzL_bxgMtP1Wpwaj-w08SKllyyfD7Jxn-QioB3udjNGimRl6D4MHfEU--r8B8vMN6ncAUE9HO57rFs3mvL2I5r8hGeJajjYKqNyLaVxQmxqGjDDk1ga6Zb4o3ABkHh6k_S-Huf8qW7f-gqfny9ICQ6FLhcE5Z5Z9owaT-rdcF0ZHbvku9nZLwQkodUx2b-6qyJhBB454cUq8DGyF0t-trdWfRPCWuJ9EzFo6ghW_bOthveteZjEuanYqCv8MnQv"}
-
-          onLogout={() =>{ 
-             localStorage.clear();
-             navigate(`/logout/${role}`)}}
+          profileImage={
+            user?.profileImage ? getImageUrl(user.profileImage) : defaultImage
+          }
+          onLogout={() => {
+            localStorage.clear();
+            navigate(`/logout/${role}`);
+          }}
         />
         {/* Page Content */}
         <Outlet />

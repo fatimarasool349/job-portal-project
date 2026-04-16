@@ -10,7 +10,7 @@ const userSchema = new mongoose.Schema({
     unique: true,
   },
   phone: {
-    type: String,
+    type: Number,
   
   },
   role: {
@@ -21,6 +21,10 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  profileImage: {
+    type: String,
+    default: ""
+  }
 });
 
 const Users = mongoose.model("Users", userSchema);

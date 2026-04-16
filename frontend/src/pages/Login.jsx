@@ -20,12 +20,15 @@ function LoginPage() {
   } = useForm();
   const onSubmit = async (data) => {
     try {
+      console.log("Sending login request...");
       const res = await axios.post("http://localhost:5000/api/auth/login", {
         email: data.email,
         password: data.password,
       });
+      console.log("Response:", res.data);
 
       const { token, user } = res.data;
+      console.log("LOGIN USER:", res.data.user);
 
       dispatch(
         loginSuccess({
@@ -44,6 +47,7 @@ function LoginPage() {
             email: user.email,
             phone: user.phone,
             role: user.role,
+            profileImage: user.profileImage,
           },
           token,
           role: user.role,

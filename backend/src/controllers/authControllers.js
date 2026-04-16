@@ -25,11 +25,16 @@ export const register = async (req, res) => {
       password: hashedPassword,
     });
 
-    res.json({ message: "User registered", user:{_id: user._id,
-    fullName: user.fullName,
-    email: user.email,
-    phone: user.phone,
-    role: user.role} });
+    res.json({
+      message: "User registered",
+      user: {
+        _id: user._id,
+        fullName: user.fullName,
+        email: user.email,
+        phone: user.phone,
+        role: user.role,
+      },
+    });
   } catch (err) {
     if (err.name === "ValidationError") {
       const errors = {};
@@ -54,6 +59,8 @@ export const login = async (req, res) => {
   try {
     const { email, password } = req.body;
     const user = await Users.findOne({ email });
+      console.log("LOGIN IMAGE:", user.profileImage);
+
 
     if (!user) {
       return res.status(404).json({
@@ -65,7 +72,7 @@ export const login = async (req, res) => {
 
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
-      return res.status(401).json({ errors:{password: "Invalid password" }});
+      return res.status(401).json({ errors: { password: "Invalid password" } });
     }
 
     const token = jwt.sign(
@@ -77,19 +84,33 @@ export const login = async (req, res) => {
       { expiresIn: "1d" },
     );
 
-    res.json({ message: "Login successful", token, user:{  _id: user._id,
-    fullName: user.fullName,
-    email: user.email,
-    phone: user.phone,
-    role: user.role} });
+    res.json({
+      message: "Login successful",
+      token,
+      user: {
+        _id: user._id,
+        fullName: user.fullName,
+        email: user.email,
+        phone: user.phone,
+        role: user.role,
+        profileImage: user.profileImage
+      },
+    });
   } catch (err) {
     return res.status(500).json({ error: err.message });
   }
 };
-// profile Update
+
 export const profileUpdate = async (req, res) => {
   try {
     const { id } = req.params;
+    const { currentPassword, newPassword } = req.body;
+
+    const user = await Users.findById(id);
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
 
     const updateData = {
       fullName: req.body.fullName,
@@ -97,23 +118,63 @@ export const profileUpdate = async (req, res) => {
       phone: req.body.phone,
     };
 
-    // ✅ handle image
+    // -------------------------
+    // IMAGE UPDATE
+    // -------------------------
     if (req.file) {
-      updateData.avatar = `http://localhost:5000/uploads/${req.file.filename}`;
+      updateData.profileImage = req.file.filename;
     }
 
-    const updatedUser = await Users.findByIdAndUpdate(
-      id,
-      updateData,
-      { new: true }
-    );
+    console.log("FILE:", req.file);
 
-    res.json({
+    // -------------------------
+    // PASSWORD UPDATE
+    // -------------------------
+    if (newPassword) {
+      if (!currentPassword) {
+        return res.status(400).json({
+          message: "Current password is required",
+        });
+      }
+
+      const isMatch = await bcrypt.compare(currentPassword, user.password);
+
+      if (!isMatch) {
+        return res.status(400).json({
+          message: "Current password is incorrect",
+        });
+      }
+
+      updateData.password = await bcrypt.hash(newPassword, 10);
+    }
+
+    // -------------------------
+    // UPDATE USER
+    // -------------------------
+    const updatedUser = await Users.findByIdAndUpdate(id, updateData, {
+      new: true,
+      runValidators: true, // IMPORTANT
+    }).select("-password");
+
+    return res.status(200).json({
       message: "Profile updated successfully",
-      user: updatedUser,
+      user: {
+        ...updatedUser._doc,
+        profileImage: updatedUser.profileImage || null,
+      },
     });
-
-  } catch (err) {
-    res.status(500).json({ message: err.message });
+  } catch (error) {
+    return res.status(500).json({
+      message: error.message || "Server Error",
+    });
   }
+};
+export const getUserById = async (req, res) => {
+  const user = await Users.findById(req.params.id).select("-password");
+
+  if (!user) {
+    return res.status(404).json({ message: "User not found" });
+  }
+
+  res.json({ user });
 };

@@ -1,6 +1,7 @@
  import { MdOutlineCameraAlt } from "react-icons/md";
 
- function ProfileInfoCard({ register, avatar,  }) {
+
+ function ProfileInfoCard({ register, avatarPreview,  }) {
   return (
     <section className="bg-white dark:bg-slate-900 rounded-xl shadow-md border border-slate-100 dark:border-slate-800 overflow-hidden">
       <div className="p-6 border-b border-slate-100 dark:border-slate-800">
@@ -12,7 +13,7 @@
         {/* Avatar */}
         <div className="flex flex-col items-center gap-4 shrink-0">
           <div className="relative group">
-            <img src={avatar} alt="Profile Preview" className="w-32 h-32 rounded-full object-cover ring-4 ring-slate-50 dark:ring-slate-800" />
+            <img src={avatarPreview} alt="Profile Preview" className="w-32 h-32 rounded-full object-cover ring-4 ring-slate-50 dark:ring-slate-800" />
             <label className="absolute inset-0 flex items-center justify-center bg-black/40 rounded-full opacity-0 group-hover:opacity-100 cursor-pointer transition-opacity">
               <MdOutlineCameraAlt className="text-white" />
               <input type="file" {...register("avatar")} className="hidden" />

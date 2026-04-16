@@ -8,11 +8,20 @@ import { useEffect } from "react";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import { loginSuccess } from "../../redux/slices/authSlice";
+import { getImageUrl } from "../../utils/getImageUrl.js";
+import  defaultImage  from "../../assets/Images/default_img.png";
 
 export default function ProfilePage() {
   const [deactivated, setDeactivated] = useState(false);
   const user = useSelector((state) => state.auth.user);
-  const { register, handleSubmit, reset, watch } = useForm();
+  const {
+    register,
+    handleSubmit,
+    reset,
+    watch,
+    setError,
+    formState: { errors },
+  } = useForm();
   const avatarFile = watch("avatar");
 
   console.log("USER FROM REDUX:", user);
@@ -42,12 +51,7 @@ export default function ProfilePage() {
     }
   };
 
-  const handleAvatarChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      setAvatar(file);
-    }
-  };
+  console.log(user._id);
 
   const onSubmit = async (data) => {
     try {
@@ -59,6 +63,16 @@ export default function ProfilePage() {
 
       if (data.avatar && data.avatar[0]) {
         formData.append("avatar", data.avatar[0]);
+      }
+      if (data.newPassword && data.newPassword.length > 0) {
+        formData.append("currentPassword", data.currentPassword);
+        formData.append("newPassword", data.newPassword);
+      }
+      if (data.newPassword?.length > 0 && !data.currentPassword) {
+        setError("currentPassword", {
+          message: "Current password required to change password",
+        });
+        return;
       }
 
       const res = await axios.put(
@@ -82,7 +96,33 @@ export default function ProfilePage() {
 
       alert("Profile updated!");
     } catch (error) {
-      console.log(error.response?.data);
+      const message = error.response?.data?.message;
+
+      if (!message) return;
+
+      // current password error
+      if (message.toLowerCase().includes("current password")) {
+        setError("currentPassword", {
+          type: "manual",
+          message,
+        });
+      }
+
+      // email error
+      else if (message.toLowerCase().includes("email")) {
+        setError("email", {
+          type: "manual",
+          message,
+        });
+      }
+
+      // fallback
+      else {
+        setError("root", {
+          type: "manual",
+          message,
+        });
+      }
     }
   };
 
@@ -94,11 +134,24 @@ export default function ProfilePage() {
       <ProfileInfoCard
         register={register}
         avatarPreview={
-          avatarFile?.[0] ? URL.createObjectURL(avatarFile[0]) : user?.avatar
+          avatarFile && avatarFile.length > 0
+            ? URL.createObjectURL(avatarFile[0])
+            : user?.profileImage
+              ? getImageUrl(user.profileImage)
+              : defaultImage
         }
       />
-      <ChangePasswordCard register={register} disabled={deactivated} />
+      <ChangePasswordCard
+        register={register}
+        errors={errors}
+        disabled={deactivated}
+      />
       <DangerZone onDeactivate={handleDeactivate} deactivated={deactivated} />
+      {errors.root && (
+        <p className="text-red-500 text-sm mt-2 text-center">
+          {errors.root.message}
+        </p>
+      )}
       <div className="flex justify-end">
         <button
           type="submit"

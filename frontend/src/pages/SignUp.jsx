@@ -50,7 +50,10 @@ export default function SignUp() {
         }),
       );
 
-      if (user?.role === "admin" || user?.role === "recruiter") {
+      if (user.role === "recruiter") {
+        localStorage.setItem("recruiter_id", user._id);
+        navigate("/dashboard");
+      } else if (user.role === "admin") {
         navigate("/dashboard");
       } else {
         navigate("/");
