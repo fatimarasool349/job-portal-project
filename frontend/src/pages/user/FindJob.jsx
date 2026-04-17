@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import AsideFilters from "../../components/findJob/AsideFilters";
 import JobListing from "../../components/findJob/JobListing";
 import { jobData, companyData } from "../../constant";
+import { getAllJobs } from "../../api/jobApi";
 
 function FindJob() {
   const locationObj = useLocation();
@@ -14,40 +15,38 @@ function FindJob() {
   const [results, setResults] = useState([]);
   // 👉 🔥 PUT YOUR CODE HERE
   useEffect(() => {
-    const searchJob = jobQuery.toLowerCase().trim();
-    const searchLocation = locationQuery.toLowerCase().trim();
+    const fetchJobs = async () => {
+      const jobs = await getAllJobs();
 
-    if (!searchJob && !searchLocation) {
-      const allJobs = jobData.map((job) => {
-        const company = companyData.find((c) => c.id === job.companyId);
-        return { ...job, company };
-      });
+      const searchJob = jobQuery.toLowerCase().trim();
+      const searchLocation = locationQuery.toLowerCase().trim();
 
-      setResults(allJobs);
-      return;
-    }
+      if (!searchJob && !searchLocation) {
+        setResults(jobs);
+        return;
+      }
 
-    const filteredJobs = jobData
-      .map((job) => {
-        const company = companyData.find((c) => c.id === job.companyId);
+      const filteredJobs = jobs
+        .map((job) => {
+          const title = job.title?.toLowerCase() || "";
+          const loc = job.location?.toLowerCase() || "";
+          const companyName = job.company?.name?.toLowerCase() || "";
 
-        const title = job.title?.toLowerCase() || "";
-        const loc = job.location?.toLowerCase() || "";
-        const companyName = company?.name?.toLowerCase() || "";
+          let score = 0;
 
-        let score = 0;
+          if (title === searchJob) score += 3;
+          if (title.includes(searchJob)) score += 2;
+          if (companyName.includes(searchJob)) score += 2;
+          if (searchLocation && loc.includes(searchLocation)) score += 1;
+          return { ...job, score };
+        })
+        .filter((item) => item.score > 0)
+        .sort((a, b) => b.score - a.score);
 
-        // 🎯 scoring system
-        if (title === searchJob) score += 3; // exact match
-        if (title.includes(searchJob)) score += 2;
-        if (companyName.includes(searchJob)) score += 2;
-        if (loc.includes(searchLocation)) score += 1;
+      setResults(filteredJobs);
+    };
 
-        return { ...job, company, score };
-      })
-      .filter((item) => item.score > 0)
-      .sort((a, b) => b.score - a.score); // 🔥 most relevant first
-    setResults(filteredJobs);
+    fetchJobs();
   }, [jobQuery, locationQuery]);
 
   return (

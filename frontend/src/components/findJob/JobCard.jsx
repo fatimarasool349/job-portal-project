@@ -1,8 +1,7 @@
 import { Link } from "react-router-dom";
 import { badgeColors } from "../../constant";
 
-function JobCard({ job}) {
-
+function JobCard({ job }) {
   return (
     <div className="group relative flex flex-col gap-4 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-6 transition-all hover:border-blue-600 hover:shadow-xl">
       <div className="flex items-start justify-between gap-4">
@@ -10,7 +9,7 @@ function JobCard({ job}) {
           <div className="flex size-14 shrink-0 items-center justify-center rounded-lg border border-slate-100 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 p-2">
             <div className="flex size-14 shrink-0 items-center justify-center rounded-lg border border-slate-100 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 p-2">
               <img
-                src={job.icon}
+                src={job.company?.logo || "/default-company.png"}
                 alt={job.title}
                 className="w-8 h-8 object-contain"
               />
@@ -31,7 +30,7 @@ function JobCard({ job}) {
         <span
           className={`rounded-full bg-blue-600/10 px-3 py-1 text-xs font-bold  ${badgeColors[job.typeColor]}`}
         >
-          {job.type}
+          {job.jobType}
         </span>
       </div>
 
@@ -39,13 +38,12 @@ function JobCard({ job}) {
       <p className="text-sm leading-relaxed text-slate-500 dark:text-slate-400 mt-2">
         {job.description}
       </p>
-      
 
       <div className="mt-2 flex items-center justify-between">
         <div className="text-sm font-bold text-slate-900 dark:text-white">
-          {job.salary}
+          {job.salary ? `Rs ${job.salary}` : "Negotiable"}
         </div>
-        <Link to={`/viewdetailpage/${job.id}`}>
+        <Link to={`/viewdetailpage/${job._id}`}>
           <button className="rounded-lg bg-blue-600 px-3 py-1 text-sm font-bold text-white hover:opacity-90">
             View Details
           </button>

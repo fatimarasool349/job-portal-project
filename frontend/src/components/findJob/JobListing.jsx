@@ -40,7 +40,7 @@ function getMinSalary(salaryStr) {
 
     if (sortBy === "Most Recent") {
       sorted.sort(
-        (a, b) => new Date(b.postedDate) - new Date(a.postedDate)
+        (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
       );
     }
 
@@ -84,7 +84,7 @@ function getMinSalary(salaryStr) {
       {/* Job Listings */}
       <div className="grid gap-4">
         {paginatedJobs.map((job) => (
-          <JobCard key={job.id} job={job}   />
+          <JobCard key={job._id} job={job}   />
         ))}
       </div>
 

@@ -1,12 +1,14 @@
 import { useState, useEffect } from "react";
 
-function AddJobModal({ onClose, setData, existingData }) {
+function AddJobModal({ onClose, onSave, existingData }) {
   const [form, setForm] = useState({
     title: "",
     company: "",
     location: "",
-    type: "Full-time",
+    jobType: "Full-time",
     status: "Active",
+    description: "",
+    salary: "",
     recruiterId: localStorage.getItem("recruiter_id") || null,
   });
 
@@ -14,39 +16,49 @@ function AddJobModal({ onClose, setData, existingData }) {
   useEffect(() => {
     if (existingData) {
       setForm({
-        title: existingData.title,
-        company: existingData.company,
-        location: existingData.location,
-        type: existingData.type || "Full-time",
+        title: existingData.title || "",
+        company: existingData.company || "",
+        location: existingData.location || "",
+        jobType: existingData.jobType || "Full-time",
         status: existingData.status || "Active",
+        description: existingData.description || "",
+        salary: existingData.salary || "",
         recruiterId:
-          existingData.recruiter_id || localStorage.getItem("recruiter_id"),
+          existingData.recruiterId ||
+          localStorage.getItem("recruiter_id") ||
+          null,
       });
     }
   }, [existingData]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
     const recruiterId = localStorage.getItem("recruiter_id");
 
     if (existingData) {
       // UPDATE job
-      setData((prev) =>
+      onSave((prev) =>
         prev.map((job) =>
           job.id === existingData.id
-            ? { ...job, ...form, recruiter_id: recruiterId }
-            : job,
-        ),
+            ? {
+                ...job,
+                ...form,
+                recruiterId,
+              }
+            : job
+        )
       );
     } else {
       // ADD job
       const newJob = {
         id: Date.now(),
         ...form,
-        recruiter_id: recruiterId,
+        recruiterId,
         createdAt: new Date().toISOString(),
       };
-      setData((prev) => [...prev, newJob]);
+
+      onSave((prev) => [...prev, newJob]);
     }
 
     onClose();
@@ -60,6 +72,7 @@ function AddJobModal({ onClose, setData, existingData }) {
         </h2>
 
         <form onSubmit={handleSubmit} className="space-y-3">
+
           {/* Job Title */}
           <input
             type="text"
@@ -92,8 +105,8 @@ function AddJobModal({ onClose, setData, existingData }) {
 
           {/* Job Type */}
           <select
-            value={form.type}
-            onChange={(e) => setForm({ ...form, type: e.target.value })}
+            value={form.jobType}
+            onChange={(e) => setForm({ ...form, jobType: e.target.value })}
             className="w-full border p-2 rounded"
           >
             <option value="Full-time">Full-time</option>
@@ -101,6 +114,27 @@ function AddJobModal({ onClose, setData, existingData }) {
             <option value="Remote">Remote</option>
             <option value="Contract">Contract</option>
           </select>
+
+          {/* Salary */}
+          <input
+            type="text"
+            placeholder="Salary (e.g. 50000 - 80000)"
+            value={form.salary}
+            onChange={(e) => setForm({ ...form, salary: e.target.value })}
+            className="w-full border p-2 rounded"
+          />
+
+          {/* Description */}
+          <textarea
+            placeholder="Job Description"
+            value={form.description}
+            onChange={(e) =>
+              setForm({ ...form, description: e.target.value })
+            }
+            className="w-full border p-2 rounded"
+            rows="3"
+            required
+          />
 
           {/* Status */}
           <select
@@ -131,6 +165,7 @@ function AddJobModal({ onClose, setData, existingData }) {
               Save
             </button>
           </div>
+
         </form>
       </div>
     </div>

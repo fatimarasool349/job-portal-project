@@ -37,6 +37,7 @@ function LoginPage() {
           role: user.role,
         }),
       );
+      localStorage.setItem("token", token);
 
       localStorage.setItem(
         "auth",
@@ -56,7 +57,6 @@ function LoginPage() {
       );
 
       localStorage.setItem("role", user.role);
-      localStorage.setItem("email", user.email);
 
       if (user.role === "recruiter") {
         localStorage.setItem("recruiter_id", user._id);

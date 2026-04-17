@@ -12,6 +12,7 @@ function JobTable({ jobs, onDeleteJob, onEditJob }) {
             <th className="px-6 py-4 text-xs font-semibold text-white">Company</th>
             <th className="px-6 py-4 text-xs font-semibold text-white">Location</th>
             <th className="px-6 py-4 text-xs font-semibold text-white">Status</th>
+            <th className="px-6 py-4 text-xs font-semibold text-white">Salary</th>
             <th className="px-6 py-4 text-xs font-semibold text-white">Posted Date</th>
             <th className="px-6 py-4 text-xs font-semibold text-white text-right">Actions</th>
           </tr>
