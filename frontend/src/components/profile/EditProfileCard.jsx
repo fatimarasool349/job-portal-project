@@ -1,8 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
 import AOS from "aos";
 import "aos/dist/aos.css";
-import save from "./../../assets/icons/save.png";
-import editButton from "./../../assets/svg/camra.svg";
+import save from "./../../assets/Images/save.png";
+import editButton from "./../../assets/icons/camra.svg";
 import { FaEnvelope, FaPhone } from "react-icons/fa";
 import { initialUserData } from "../../constant/index.js";
 

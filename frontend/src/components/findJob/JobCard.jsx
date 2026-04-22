@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
-import { badgeColors } from "../../constant";
+import { getBadgeColor } from "../../constant";
+import { FaBuilding, FaMapMarkerAlt } from "react-icons/fa";
 
 function JobCard({ job }) {
   return (
@@ -9,7 +10,7 @@ function JobCard({ job }) {
           <div className="flex size-14 shrink-0 items-center justify-center rounded-lg border border-slate-100 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 p-2">
             <div className="flex size-14 shrink-0 items-center justify-center rounded-lg border border-slate-100 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 p-2">
               <img
-                src={job.company?.logo || "/default-company.png"}
+                src={job.company.logo || "/default-company.png"}
                 alt={job.title}
                 className="w-8 h-8 object-contain"
               />
@@ -20,15 +21,22 @@ function JobCard({ job }) {
             <h3 className="text-lg font-bold text-slate-900 dark:text-white group-hover:text-blue-600 transition-colors">
               {job.title}
             </h3>
-            {/* <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-slate-500 dark:text-slate-400">
-              <span>{company.name}</span>
-              <span>{company.location}</span>
-            </div> */}
+            <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-slate-500 dark:text-slate-400">
+              <span className="flex items-center gap-1">
+                <FaBuilding className="text-xs" />
+                {job.company.name}
+              </span>
+
+              <span className="flex items-center gap-1">
+                <FaMapMarkerAlt className="text-xs" />
+                {job.company.location}
+              </span>
+            </div>
           </div>
         </div>
 
         <span
-          className={`rounded-full bg-blue-600/10 px-3 py-1 text-xs font-bold  ${badgeColors[job.typeColor]}`}
+          className={`rounded-full bg-blue-600/10 px-3 py-1 text-xs font-bold  ${getBadgeColor(job.jobType)}`}
         >
           {job.jobType}
         </span>

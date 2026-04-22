@@ -2,9 +2,13 @@ import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import connectDB from "./src/config/db.js";
-import router from "./src/routes/authRoutes.js";
+import router from "./src/routes/auth.routes.js";
 import path from "path";
-import jobRoutes from "./src/routes/jobRoutes.js";
+import jobRoutes from "./src/routes/job.routes.js";
+import candidateRoutes from "./src/routes/candidate.routes.js"
+import companyRoutes from "./src/routes/company.routes.js";
+import userRoutes from "./src/routes/user.routes.js"
+
 
 
 
@@ -22,6 +26,9 @@ console.log("AUTH ROUTES MOUNTING");
 app.use("/api/auth", router);
 
 app.use("/api/job", jobRoutes);
+app.use("/api/candidate", candidateRoutes);
+app.use("/api/company", companyRoutes)
+app.use("/api/users", userRoutes);
 
 app.listen(5000, () => {
 

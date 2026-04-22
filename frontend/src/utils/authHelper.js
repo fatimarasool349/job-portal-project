@@ -5,11 +5,17 @@ export const loadAuth = () => {
 
     const parsed = JSON.parse(data);
 
+    // 🚨 safety check (VERY IMPORTANT)
+    if (!parsed || typeof parsed !== "object") return null;
+    if (!parsed.user || typeof parsed.user !== "object") return null;
+
     return {
-      ...parsed,
-      role: parsed.role?.trim().toLowerCase(), // ✅ FIX HERE
+      user: parsed.user,
+      token: parsed.token,
+      role: parsed.role?.trim().toLowerCase() || null,
     };
-  } catch {
+  } catch (err) {
+    console.log("Auth parse error:", err);
     return null;
   }
 };

@@ -1,4 +1,4 @@
-import { useState, useMemo, useCallback } from "react";
+import { useState, useMemo, useCallback, useEffect } from "react";
 import CandidateTable from "../../components/adminComponents/candidate/CandidateTable";
 import CandidateFilters from "../../components/adminComponents/candidate/CandidateFilters";
 import Pagination from "../../components/adminComponents/common/Pagination";
@@ -6,38 +6,55 @@ import { initialCandidates } from "../../constant/index.js";
 import AddCandidateModal from "../../modal/AddCandidateModal";
 import { useRole } from "../../hooks/useRole";
 import { usePagination } from "../../hooks/usePagination";
+import { getAllJobseekers, deleteJobseeker, updateJobseeker } from "../../api/userApi";
+
 function ManageCandidate() {
   const [statusFilter, setStatusFilter] = useState("All");
-  const [search, setSearch] = useState(""); // search input state
-  const [candidates, setCandidates] = useState([...initialCandidates]);
+  const [search, setSearch] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [candidates, setCandidates] = useState([]);
   const { role, recruiterId, canAdd, canEdit, canDelete, canViewAll } =
     useRole();
 
-  const roleFilteredCandidates = useMemo(() => {
-    return canViewAll
-      ? candidates
-      : candidates.filter((c) => c.recruiter_id == recruiterId);
-  }, [candidates, canViewAll, recruiterId]);
+  const fetchCandidates = useCallback(async () => {
+    try {
+      setLoading(true);
+      const res = await getAllJobseekers();
+      setCandidates(res.data.users);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchCandidates();
+  }, [fetchCandidates]);
+
+  // const roleFilteredCandidates = useMemo(() => {
+  //   return canViewAll
+  //     ? candidates
+  //     : candidates.filter((c) => c.recruiter_id.toString() === recruiterId);
+  // }, [candidates, canViewAll, recruiterId]);
 
   const filteredCandidates = useMemo(() => {
-    return roleFilteredCandidates.filter((c) => {
+    return candidates.filter((c) => {
       const matchesStatus = statusFilter === "All" || c.status === statusFilter;
 
       const matchesSearch =
-        c.name.toLowerCase().includes(search.toLowerCase()) ||
-        c.email.toLowerCase().includes(search.toLowerCase()) ||
-        c.position.toLowerCase().includes(search.toLowerCase());
+        c.fullName?.toLowerCase().includes(search.toLowerCase()) ||
+        c.email?.toLowerCase().includes(search.toLowerCase());
 
       return matchesStatus && matchesSearch;
     });
-  }, [roleFilteredCandidates, statusFilter, search]);
-  
+  }, [candidates, statusFilter, search]);
+
   const pageSize = 10;
   const { currentPage, paginatedData, setCurrentPage } = usePagination(
     filteredCandidates,
-    pageSize
+    pageSize,
   );
-
 
   const [showModal, setShowModal] = useState(false);
   const [editingCandidate, setEditingCandidate] = useState(null);
@@ -47,23 +64,29 @@ function ManageCandidate() {
     setShowModal(true);
   }, []);
 
-  const handleEditCandidate = useCallback((candidate) => {
-    setEditingCandidate(candidate);
+  const handleEditCandidate = useCallback((user) => {
+    setEditingCandidate(user);
     setShowModal(true);
   }, []);
   const handleDeleteCandidate = useCallback(
-    (id) => {
+    async (id) => {
       if (!canDelete) return;
 
       const confirmDelete = window.confirm(
         "Are you sure you want to delete this candidate?",
       );
 
-      if (confirmDelete) {
-        setCandidates((prev) => prev.filter((c) => c.id !== id));
+      if (!confirmDelete) return;
+
+      try {
+        await deleteJobseeker(id);
+
+        setCandidates((prev) => prev.filter((user) => user._id !== id));
+      } catch (err) {
+        console.error(err);
       }
     },
-    [canDelete],
+    [canDelete, deleteJobseeker],
   );
   return (
     <section className="p-8 flex-1">
@@ -75,24 +98,28 @@ function ManageCandidate() {
         onAddCandidate={canAdd ? handleAddCandidate : null}
         role={role}
       />
-      <CandidateTable
-        filteredCandidates={paginatedData}
-        candidates={candidates}
-        setCandidates={setCandidates}
-        onEditCandidate={canEdit ? handleEditCandidate : null}
-        onDeleteCandidate={canDelete ? handleDeleteCandidate : null}
-        role={role}
-      />{" "}
-     <Pagination
+      {loading ? (
+        <p>Loading candidates...</p>
+      ) : (
+        <CandidateTable
+          filteredCandidates={paginatedData}
+          candidates={candidates}
+          setCandidates={setCandidates}
+          onEditCandidate={canEdit ? handleEditCandidate : null}
+          onDeleteCandidate={canDelete ? handleDeleteCandidate : null}
+          role={role}
+        />
+      )}
+      <Pagination
         currentPage={currentPage}
         totalEntries={filteredCandidates.length}
         pageSize={pageSize}
         onPageChange={setCurrentPage}
       />
-      {showModal &&  canAdd && (
+      {showModal && canAdd && (
         <AddCandidateModal
           onClose={() => setShowModal(false)}
-          setData={setCandidates}
+          setData={fetchCandidates}
           existingData={editingCandidate}
         />
       )}

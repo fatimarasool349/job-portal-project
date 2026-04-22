@@ -6,8 +6,8 @@ import {
   getMyJobs,
   updateJob,
   deleteJob,
-} from "../../src/controllers/jobControllers.js";
-import { isAuthenticated } from "../../src/middleware/authMiddleware.js";
+} from "../controllers/job.controller.js";
+import { isAuthenticated } from "../middleware/authMiddleware.js";
 
 const router = express.Router();
 

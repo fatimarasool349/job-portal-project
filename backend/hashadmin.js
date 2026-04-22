@@ -1,7 +1,14 @@
 import bcrypt from "bcryptjs";
+import dotenv from "dotenv";
+dotenv.config();
 
 const hashPassword = async () => {
-  const plainPassword = "Confiz@123";
+  const plainPassword = process.env.ADMIN_PASSWORD;
+
+  if (!plainPassword) {
+    console.error("ADMIN_PASSWORD is not defined in .env");
+    return;
+  }
 
   const hashedPassword = await bcrypt.hash(plainPassword, 10);
 

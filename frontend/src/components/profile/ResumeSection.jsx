@@ -1,7 +1,7 @@
 import { useState } from "react";
-import resumeIcon from "./../../assets/svg/pdf.svg";
-import pdfIcon from "./../../assets/svg/resume.svg";
-import uploadIcon from "./../../assets/svg/upload.svg";
+import resumeIcon from "./../../assets/icons/pdf.svg";
+import pdfIcon from "./../../assets/icons/resume.svg";
+import uploadIcon from "./../../assets/icons/upload.svg";
 
 function ResumeSection() {
   const [resumeFile, setResumeFile] = useState(null);

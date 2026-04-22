@@ -31,17 +31,15 @@ function Company({ company }) {
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {company.culture?.map((item, index) => {
-          const Icon = item.icon;
           return (
-              <div key={index} className="flex flex-col gap-3">
-                <Icon className={` text-blue-600 text-2xl`} />
-                <h5 className="font-bold text-slate-900 dark:text-white">
-                  {item.title}
-                </h5>
-                <p className="text-sm text-slate-600 dark:text-slate-400">
-                  {item.description}
-                </p>
-              </div>
+            <div key={index} className="flex flex-col gap-3">
+              <h5 className="font-bold text-slate-900 dark:text-white">
+                {item.title}
+              </h5>
+              <p className="text-sm text-slate-600 dark:text-slate-400">
+                {item.description}
+              </p>
+            </div>
           );
         })}
       </div>
@@ -65,15 +63,8 @@ function Company({ company }) {
         ))}
       </div>
       <div className="grid grid-cols-1 md:grid-cols-1 mt-10 mb-6">
-      {company.locations.map((loc, idx) => (
-        <LocationCard
-          key={idx}
-          image={loc.image}
-          title={loc.title}
-          address={loc.address}
-        />
-      ))}
-    </div>
+        <p className="text-sm text-slate-600">{company.location}</p>
+      </div>
     </section>
   );
 }

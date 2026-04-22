@@ -1,16 +1,30 @@
-import  { useState } from "react";
-import { FaArrowRight} from "react-icons/fa";
+import { useState,useEffect } from "react";
+import { FaArrowRight } from "react-icons/fa";
+import { getAllJobs } from "../../api/jobApi";
 
-import { jobData, companyData} from "../../constant/index.js"
+
+import { jobData, companyData } from "../../constant/index.js";
 import JobCard from "./JobCard.jsx";
 
-
 function FeaturedJobs() {
+  const [jobs, setJobs] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [expanded, setExpanded] = useState(false);
-    const visibleJobs = expanded ? jobData : jobData.slice(0, 3);
+  const visibleJobs = expanded ? jobs : jobs.slice(0, 3);
+  useEffect(() => {
+    const fetchJobs = async () => {
+      try {
+        const res = await getAllJobs();
+        setJobs(res); // 👈 backend response
+      } catch (error) {
+        console.log("Error loading jobs:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-
- 
+    fetchJobs();
+  }, []);
 
   return (
     <section className="py-24 bg-white dark:bg-slate-900">
@@ -40,32 +54,16 @@ function FeaturedJobs() {
         </div>
 
         {/* Grid */}
-             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {visibleJobs.map((job) => {
-          const company = companyData.find(c => c.id === job.companyId);
-          return(
-            <JobCard
-              key={job.id}
-              id= {job.id}
-              icon={<img src={job.icon} alt={job.title} />}
-              title={job.title}
-              company={company.name}
-              location={company.location}
-              salary={job.salary}
-              type={job.type}
-              typeColor={job.typeColor}
-            />
-          )
-
-
-            
-})}
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {loading ? (
+            <p>Loading jobs...</p>
+          ) : (
+            visibleJobs.map((job) => <JobCard key={job._id} job={job} />)
+          )}
         </div>
       </div>
     </section>
   );
 }
-
-
 
 export default FeaturedJobs;

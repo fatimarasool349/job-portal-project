@@ -2,30 +2,47 @@ import { useParams } from "react-router-dom";
 import BreadCrumbs from "../../components/viewDetail/BreadCrumbs";
 import ViewDetail from "../../components/viewDetail/ViewDetail";
 import JobHeaderCard from "../../components/viewDetail/JobHeaderCard";
-import { jobData, companyData } from "../../constant";
-
+import { getJobById } from "../../api/jobApi";
+import { useState, useEffect } from "react";
 
 function ViewDetailPage() {
-  const { id } = useParams(); // get job id from URL
-    const job = jobData.find((job) => job.id === parseInt(id));
-     const company = companyData.find((c) => c.id === job.companyId);
-  const selectedJob = { ...job, company };
+  const { id } = useParams();
 
+  const [job, setJob] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-  if (!selectedJob) return <div>Job not found</div>;
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setLoading(true);
+
+        const res = await getJobById(id);
+        setJob(res);
+
+      } catch (error) {
+        console.log("Error fetching job detail:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [id]);
+
+  if (loading) return <div>Loading...</div>;
+  if (!job) return <div>Job not found</div>;
 
   return (
-    <div className="relative flex h-auto min-h-screen w-full flex-col group/design-root overflow-x-hidden">
+    <div className="relative flex h-auto min-h-screen w-full flex-col">
       <div className="layout-container flex h-full grow flex-col">
         <main className="px-6 lg:px-40 py-8">
-          {/* Job Header */}
-          <JobHeaderCard job={selectedJob} />
 
-          {/* Breadcrumbs */}
-          <BreadCrumbs  jobTitle={selectedJob.title}/>
+          <JobHeaderCard job={job} />
 
-          {/* Job Details */}
-          <ViewDetail job={selectedJob} />
+          <BreadCrumbs jobTitle={job.title} />
+
+          <ViewDetail job={job} company={job?.company||null} />
+
         </main>
       </div>
     </div>

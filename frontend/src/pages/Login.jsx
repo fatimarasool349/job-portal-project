@@ -30,31 +30,31 @@ function LoginPage() {
       const { token, user } = res.data;
       console.log("LOGIN USER:", res.data.user);
 
-      dispatch(
-        loginSuccess({
-          user: user,
-          token: token,
-          role: user.role,
-        }),
-      );
+   dispatch(
+  loginSuccess({
+    user: user,   // keep full object
+    token,
+    role: user.role,
+  }),
+);
       localStorage.setItem("token", token);
 
-      localStorage.setItem(
-        "auth",
-        JSON.stringify({
-          user: {
-            _id: user._id,
-            fullName: user.fullName,
-            email: user.email,
-            phone: user.phone,
-            role: user.role,
-            profileImage: user.profileImage,
-          },
-          token,
-          role: user.role,
-          isAuthenticated: true,
-        }),
-      );
+      // localStorage.setItem(
+      //   "auth",
+      //   JSON.stringify({
+      //     user: {
+      //       id: user._id || user.id,
+      //       fullName: user.fullName,
+      //       email: user.email,
+      //       phone: user.phone,
+      //       role: user.role,
+      //       profileImage: user.profileImage,
+      //     },
+      //     token,
+      //     role: user.role,
+      //     isAuthenticated: true,
+      //   }),
+      // );
 
       localStorage.setItem("role", user.role);
 

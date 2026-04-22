@@ -1,4 +1,4 @@
-import { badgeColors } from "../../constant";
+import { getBadgeColor } from "../../constant";
 import { FaRegBookmark } from "react-icons/fa";
 import { Link } from "react-router";
 
@@ -14,7 +14,6 @@ function JobCard({ job }) {
 
     savedJobs.push(job);
 
-    // Save back to localStorage
     localStorage.setItem("savedJobs", JSON.stringify(savedJobs));
     alert("Job saved successfully!");
   };
@@ -26,7 +25,7 @@ function JobCard({ job }) {
           <div className="flex items-center gap-2 mb-2">
             <span
               className={`px-2 py-1 text-xs font-bold uppercase rounded ${
-                badgeColors[job.typeColor]
+                getBadgeColor(job.jobType)
               }`}
             >
               {job.type}
@@ -48,11 +47,10 @@ function JobCard({ job }) {
           </div>
         </div>
         <div className="flex flex-row sm:flex-col gap-2 w-full sm:w-auto">
-                    <Link to={`/viewdetailpage/${job.id}`}>
-
-          <button className="flex-1 bg-blue-600 text-white px-6 py-2.5 rounded-lg font-semibold hover:bg-blue-700 transition-colors whitespace-nowrap">
-            View Details
-          </button>
+          <Link to={`/viewdetailpage/${job.id}`}>
+            <button className="flex-1 bg-blue-600 text-white px-6 py-2.5 rounded-lg font-semibold hover:bg-blue-700 transition-colors whitespace-nowrap">
+              View Details
+            </button>
           </Link>
           <button
             onClick={handleSaveJob}

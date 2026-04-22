@@ -1,4 +1,4 @@
-import logo from "./../../assets/svg/logo.svg";
+import logo from "./../../assets/icons/logo.svg";
 import { Link } from "react-router-dom";
 import { FaPhone, FaEnvelope } from "react-icons/fa";
 function Footer() {

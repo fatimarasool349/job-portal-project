@@ -2,42 +2,39 @@ import { FaEdit } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
 import { TfiEmail } from "react-icons/tfi";
 import { FaPhoneAlt } from "react-icons/fa";
-import {memo} from "react";
-import {statusColors} from "../../../constant"
+import { memo } from "react";
+import { statusColors } from "../../../constant";
 const CandidateRow = memo(({ candidate, onEdit, onDelete, role }) => {
   return (
     <tr className="hover:bg-slate-50 transition">
       <td className="px-6 py-4 font-medium text-slate-800">
         <div className="flex items-center gap-3">
+          {candidate.profileImage &&(
           <img
-            alt={candidate.name}
+            alt={candidate.fullName}
             className="w-10 h-10 rounded-full object-cover"
-            src={candidate.avatar}
+            src={candidate.profileImage}
           />
+          )}
           <span className="font-semibold text-on-surface">
-            {candidate.name}
+            {candidate.fullName}
           </span>
         </div>
       </td>
-      <td className="px-6 py-4 text-sm text-slate-600">
-        {candidate.position}
-      </td>
-      <td className="px-6 py-4 text-sm text-slate-600">
-        <div className="flex flex-col gap-1">
-          {/* Email */}
-          <div className="flex items-center gap-2">
-            <TfiEmail />
-            <span>{candidate.email}</span>
-          </div>
 
-          {/* Phone */}
-          <div className="flex items-center gap-2 text-xs text-gray-500">
-            <FaPhoneAlt />
-            <span>{candidate.phone || "N/A"}</span>
-          </div>
+      <td className="px-6 py-4 text-sm text-slate-600">
+        <div className="flex items-center gap-2">
+          <TfiEmail className="text-blue-500" />
+          <span className="break-all">{candidate.email}</span>
         </div>
       </td>
-      <td className="px-6 py-4">
+      <td className="px-6 py-4 text-sm text-slate-600">
+        <div className="flex items-center gap-2">
+          <FaPhoneAlt className="text-green-500" />
+          <span>{candidate.phone || "N/A"}</span>
+        </div>
+      </td>
+      {/* <td className="px-6 py-4">
         <span
           className={`px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-tight ${
             statusColors[candidate.status]
@@ -45,23 +42,23 @@ const CandidateRow = memo(({ candidate, onEdit, onDelete, role }) => {
         >
           {candidate.status}
         </span>
-      </td>
+      </td> */}
       <td className="px-6 py-4 text-right">
         {role === "admin" && (
-        <div className="flex justify-end gap-2">
-          <button
-            onClick={() => onEdit(candidate)}
-            className="p-2 text-on-surface-variant hover:bg-surface-container-high text-blue-600 rounded-lg transition-all"
-          >
-            <FaEdit />
-          </button>
-          <button
-            onClick={() => onDelete(candidate.id)}
-            className="p-2 text-on-surface-variant hover:bg-surface-container-high hover:text-error rounded-lg transition-all"
-          >
-            <MdDelete />
-          </button>
-        </div>
+          <div className="flex justify-end gap-2">
+            <button
+              onClick={() => onEdit(candidate)}
+              className="p-2 text-on-surface-variant hover:bg-surface-container-high text-blue-600 rounded-lg transition-all"
+            >
+              <FaEdit />
+            </button>
+            <button
+              onClick={() => onDelete(candidate._id)}
+              className="p-2 text-on-surface-variant hover:bg-surface-container-high hover:text-error rounded-lg transition-all"
+            >
+              <MdDelete />
+            </button>
+          </div>
         )}
       </td>
     </tr>

@@ -1,24 +1,23 @@
 import { useState, useEffect } from "react";
+import { addCandidate, updateCandidate } from "../api/candidateApi";
+import { updateJobseeker, createJobseeker } from "../api/userApi";
+
 
 function AddCandidateModal({ onClose, setData, existingData }) {
   const [form, setForm] = useState({
-    name: "",
+    fullName: "",
     email: "",
     phone: "",
-    position: "",
-    status: "Active",
-    avatar: "", 
+    profileImage: "",
   });
 
   useEffect(() => {
     if (existingData) {
       setForm({
-        name: existingData.name,
+        fullName: existingData.fullName,
         email: existingData.email,
         phone: existingData.phone || "",
-        position: existingData.position,
-        status: existingData.status || "Active",
-        avatar: existingData.avatar || "",
+        profileImage: existingData.profileImage || "",
       });
     }
   }, [existingData]);
@@ -29,32 +28,35 @@ function AddCandidateModal({ onClose, setData, existingData }) {
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
-        setForm((prev) => ({ ...prev, avatar: reader.result }));
+        setForm((prev) => ({ ...prev, profileImage: reader.result }));
       };
       reader.readAsDataURL(file);
     }
   };
-const fullPhone = `+92${form.phone}`;
+  const fullPhone = `+92${form.phone}`;
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (existingData) {
-      setData((prev) =>
-        prev.map((cand) =>
-          cand.id === existingData.id ? { ...cand, ...form } : cand,
-        ),
-      );
-    } else {
-      const newCandidate = {
-        id: Date.now(),
+    try {
+      const payload = {
         ...form,
-        phone: fullPhone,
+        phone: `+92${form.phone}`,
       };
-      setData((prev) => [...prev, newCandidate]);
-    }
 
-    onClose();
+      if (existingData) {
+        await updateJobseeker(existingData._id, payload);
+      } else {
+        await createJobseeker(payload);
+      }
+
+
+      // 🔥 refresh parent data
+      setData(); // we will fix this next
+      onClose();
+    } catch (error) {
+      console.error("Error saving candidate:", error);
+    }
   };
 
   return (
@@ -68,8 +70,8 @@ const fullPhone = `+92${form.phone}`;
           <input
             type="text"
             placeholder="Candidate Name"
-            value={form.name}
-            onChange={(e) => setForm({ ...form, name: e.target.value })}
+            value={form.fullName}
+            onChange={(e) => setForm({ ...form, fullName: e.target.value })}
             className="w-full border p-2 rounded"
             required
           />
@@ -94,14 +96,14 @@ const fullPhone = `+92${form.phone}`;
               required
             />
           </div>
-          <input
+          {/* <input
             type="text"
             placeholder="Position"
             value={form.position}
             onChange={(e) => setForm({ ...form, position: e.target.value })}
             className="w-full border p-2 rounded"
             required
-          />
+          /> */}
 
           {/* Image upload */}
           <div>
@@ -112,24 +114,24 @@ const fullPhone = `+92${form.phone}`;
               onChange={handleImageUpload}
               className="w-full"
             />
-            {form.avatar && (
+            {form.profileImage && (
               <img
-                src={form.avatar}
+                src={form.profileImage}
                 alt="preview"
                 className="mt-2 w-20 h-20 object-cover rounded-full"
               />
             )}
           </div>
 
-          <select
+          {/* <select
             value={form.status}
             onChange={(e) => setForm({ ...form, status: e.target.value })}
             className="w-full border p-2 rounded"
           >
-            <option value="Active">Active</option>
             <option value="Pending">Pending</option>
-            <option value="Inactive">Inactive</option>
-          </select>
+            <option value="Shortlist">Shortlist</option>
+            <option value="Rejected">Rejected</option>
+          </select> */}
 
           <div className="flex justify-end gap-2 pt-3">
             <button

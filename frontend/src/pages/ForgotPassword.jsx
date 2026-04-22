@@ -1,9 +1,9 @@
 import  { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link , useLocation} from "react-router-dom";
-import forgotPassword from "./../assets/svg/forgotPassword.svg"
-import backArrow from "./../assets/svg/backArrow.svg"
-import forwordArrow from "./../assets/svg/forwardArrow.svg"
+import forgotPassword from "./../assets/icons/forgotPassword.svg"
+import backArrow from "./../assets/icons/backArrow.svg"
+import forwordArrow from "./../assets/icons/forwardArrow.svg"
 import {FaEnvelope} from "react-icons/fa";
 
 function ForgotPassword() {

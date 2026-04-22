@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { useNavigate,Link, useLocation } from "react-router-dom";
-import logo from "../../assets/svg/logo.svg";
+import logo from "../../assets/icons/logo.svg";
 import { CiLogout, CiBookmark } from "react-icons/ci";
 import { MdArrowDropDown } from "react-icons/md";
 import { IoIosSettings } from "react-icons/io";

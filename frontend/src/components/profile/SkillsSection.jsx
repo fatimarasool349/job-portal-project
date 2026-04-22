@@ -1,6 +1,6 @@
 import { useRef, useState, useEffect } from "react";
-import skillIcon from "./../../assets/svg/skill.svg";
-import close from "./../../assets/svg/close.svg";
+import skillIcon from "./../../assets/icons/skill.svg";
+import close from "./../../assets/icons/close.svg";
 import { initialSkills,colors} from "../../constant";
 import SkillModel from "../../modal/SkillModal";
 

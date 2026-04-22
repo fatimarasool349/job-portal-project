@@ -2,6 +2,7 @@ import { FaEdit } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
 import { statusColors } from "../../../constant";
 import { formatDate } from "../../../utils/formatDate";
+import { getStatusStyle } from "../../../constant";
 
 function JobRow({ job, onDeleteJob, onEditJob }) {
   return (
@@ -13,8 +14,9 @@ function JobRow({ job, onDeleteJob, onEditJob }) {
         </div>
       </td>
 
-      <td className="px-6 py-4">{job.company}</td>
       <td className="px-6 py-4">{job.location}</td>
+      <td className="px-6 py-4">{job.description}</td>
+
 
       <td className="px-6 py-4">
         <span
@@ -39,7 +41,7 @@ function JobRow({ job, onDeleteJob, onEditJob }) {
           </button>
 
           <button
-            onClick={() => onDeleteJob(job.id)}
+            onClick={() => onDeleteJob(job._id)}
             className="p-2 text-red-600 hover:bg-red-50 rounded"
           >
             <MdDelete />

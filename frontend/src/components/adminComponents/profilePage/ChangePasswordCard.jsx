@@ -14,7 +14,6 @@ function ChangePasswordCard({ register, errors, disabled }) {
       </div>
 
       <div className="p-8 max-w-xl space-y-6">
-        {/* Current Password */}
         <div className="space-y-2">
           <label className="text-sm font-semibold text-slate-700 dark:text-slate-300">
             Current Password
@@ -42,7 +41,6 @@ function ChangePasswordCard({ register, errors, disabled }) {
           )}
         </div>
 
-        {/* New Password */}
         <div className="space-y-2">
           <label className="text-sm font-semibold text-slate-700 dark:text-slate-300">
             New Password

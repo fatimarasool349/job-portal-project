@@ -1,42 +1,41 @@
-import CandidateRow from "./CandidateRow";
+import CompanyRow from "./CompanyRow";
 
-function CandidateTable({
-  filteredCandidates,
-  setCandidates,
-  onEditCandidate,
-    onDeleteCandidate,
-    role,
-}) {
-  
+function CompanyTable({ companies, onDelete, onEdit }) {
   return (
     <div className="bg-white rounded-xl shadow-md border border-slate-200 overflow-hidden">
       <div className="overflow-x-auto">
-        <table className="w-full text-left border-collapse">
+        <table className="w-full text-left">
           <thead>
             <tr className="bg-blue-600 border-b border-slate-200">
               <th className="px-6 py-4 text-xs font-semibold text-white">
-                Name
+                Company Name
               </th>
-              
+
               <th className="px-6 py-4 text-xs font-semibold text-white">
-                Email
+                Description
               </th>
+
               <th className="px-6 py-4 text-xs font-semibold text-white">
-                Phone
+                Location
               </th>
+
+              <th className="px-6 py-4 text-xs font-semibold text-white">
+                Website
+              </th>
+
               <th className="px-6 py-4 text-xs font-semibold text-white text-right">
                 Actions
               </th>
             </tr>
           </thead>
-          <tbody >
-            {filteredCandidates.map((candidate) => (
-              <CandidateRow
-                key={candidate._id}
-                candidate={candidate}
-                onEdit={onEditCandidate}
-                onDelete={onDeleteCandidate} 
-                role={role}
+
+          <tbody>
+            {companies?.map((company) => (
+              <CompanyRow
+                key={company._id}
+                company={company}
+                onDelete={onDelete}
+                onEdit={onEdit}
               />
             ))}
           </tbody>
@@ -46,4 +45,4 @@ function CandidateTable({
   );
 }
 
-export default CandidateTable;
+export default CompanyTable;

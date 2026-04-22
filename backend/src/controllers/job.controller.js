@@ -1,11 +1,15 @@
-import Job from "../models/jobModel.js";
+import Job from "../models/job.model.js";
 
 export const createJob = async (req, res) => {
+  console.log("CREATE JOB API HIT");
+
   try {
     const {
       title,
       description,
+      status,
       requirements,
+      responsibilities,
       salary,
       location,
       jobType,
@@ -13,6 +17,8 @@ export const createJob = async (req, res) => {
       position,
       company,
     } = req.body;
+    console.log("REQ BODY:", req.body);
+console.log("RESPONSIBILITIES:", req.body.responsibilities);
     if (!title || !description) {
       return res.status(400).json({
         message: "Title and description are required",
@@ -23,13 +29,15 @@ export const createJob = async (req, res) => {
       title,
       description,
       requirements,
+      responsibilities,
+      status,
       salary,
       location,
       jobType,
       experience,
       position,
       company,
-      createdBy: req.user._id, // from auth middleware
+      createdBy: req.user.id, // from auth middleware
     });
 
     res.status(201).json({
@@ -59,6 +67,9 @@ export const getJobById = async (req, res) => {
     const job = await Job.findById(req.params.id)
       .populate("company")
       .populate("createdBy", "fullName email");
+    console.log("POPULATED JOB:", JSON.stringify(job, null, 2));
+
+    console.log("JOB:", job);
 
     if (!job) {
       return res.status(404).json({ message: "Job not found" });
@@ -66,6 +77,7 @@ export const getJobById = async (req, res) => {
 
     res.status(200).json({ job });
   } catch (error) {
+    console.log("GET JOB ERROR:", error);
     res.status(500).json({ message: error.message });
   }
 };
@@ -81,6 +93,8 @@ export const getMyJobs = async (req, res) => {
 };
 
 export const updateJob = async (req, res) => {
+  const isAdmin = req.user.role === "admin";
+
   try {
     const job = await Job.findById(req.params.id);
 
@@ -88,7 +102,7 @@ export const updateJob = async (req, res) => {
       return res.status(404).json({ message: "Job not found" });
     }
 
-    if (job.createdBy.toString() !== req.user.id) {
+    if (!isAdmin && job.createdBy.toString() !== req.user.id) {
       return res.status(403).json({ message: "Unauthorized" });
     }
 
@@ -96,6 +110,8 @@ export const updateJob = async (req, res) => {
       title,
       description,
       requirements,
+      responsibilities,
+      status,
       salary,
       location,
       jobType,
@@ -108,7 +124,9 @@ export const updateJob = async (req, res) => {
     if (title) updateData.title = title;
     if (description) updateData.description = description;
     if (requirements) updateData.requirements = requirements;
+    if (responsibilities) updateData.responsibilities = responsibilities;
     if (salary) updateData.salary = salary;
+    if (status) updateData.status = status;
     if (location) updateData.location = location;
     if (jobType) updateData.jobType = jobType;
     if (experience) updateData.experience = experience;
@@ -120,23 +138,22 @@ export const updateJob = async (req, res) => {
       });
     }
 
-    const updatedJob = await Job.findByIdAndUpdate(
-      req.params.id,
-      updateData,
-      { new: true }
-    );
+    const updatedJob = await Job.findByIdAndUpdate(req.params.id, updateData, {
+      new: true,
+    });
 
     return res.status(200).json({
       message: "Job updated",
       job: updatedJob,
     });
-
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
 };
 
 export const deleteJob = async (req, res) => {
+  const isAdmin = req.user.role === "admin";
+
   try {
     const job = await Job.findById(req.params.id);
 
@@ -144,7 +161,7 @@ export const deleteJob = async (req, res) => {
       return res.status(404).json({ message: "Job not found" });
     }
 
-    if (job.createdBy.toString() !== req.user.id) {
+    if (!isAdmin && job.createdBy.toString() !== req.user.id) {
       return res.status(403).json({ message: "Unauthorized" });
     }
 

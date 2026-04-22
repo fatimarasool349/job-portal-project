@@ -7,7 +7,6 @@ function JobHeaderCard({ job }) {
   if (!job) return <div className="text-center py-6 text-gray-500">No job selected</div>;
 
   const company = job.company || {};
-
   return (
     <div className="bg-white dark:bg-slate-900 rounded-xl p-6 mb-8 border border-slate-200 dark:border-slate-800 shadow-sm">
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
@@ -34,23 +33,20 @@ function JobHeaderCard({ job }) {
                 {company.name || "Unknown Company"}
               </span>
 
-              {/* Location */}
               <span className="flex items-center gap-1">
                 <FaLocationDot />
                 {company.location || "Unknown Location"}
               </span>
 
-              {/* Job Type */}
               <span className="flex items-center gap-1">
                 <MdOutlineSchedule />
-                {job.type || "Not Specified"}
+                {job.jobType || "Not Specified"}
               </span>
 
-              {/* Posted Time */}
               <span className="flex items-center gap-1 text-green-600 dark:text-green-400 font-medium">
                 <SlCalender />
-                {job.postedDate
-                  ? new Date(job.postedDate).toLocaleDateString("en-US", {
+                {job.createdAt
+                  ? new Date(job.createdAt).toLocaleDateString("en-US", {
                       month: "short",
                       day: "numeric",
                       year: "numeric",

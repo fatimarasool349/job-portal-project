@@ -3,10 +3,17 @@ import { loadAuth } from "../../utils/authHelper";
 
 const savedAuth = loadAuth();
 
+const safeAuth =
+  savedAuth &&
+  typeof savedAuth === "object" &&
+  savedAuth.user &&
+  typeof savedAuth.user === "object";
 
-const initialState = savedAuth
+const initialState = safeAuth
   ? {
-      ...savedAuth,
+      user: savedAuth.user,
+      token: savedAuth.token,
+      role: savedAuth.role,
       isAuthenticated: true,
     }
   : {
@@ -20,12 +27,22 @@ const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
-    loginSuccess: (state, action) => {
-      state.user = action.payload.user;
-      state.token = action.payload.token;
-  state.role = action.payload.user?.role?.trim().toLowerCase(); // ✅ FIXED
-      state.isAuthenticated = true;
-    },
+   loginSuccess: (state, action) => {
+  const user = action.payload.user;
+
+  state.user = {
+    _id: user._id || user.id,
+    fullName: user.fullName,
+    email: user.email,
+    phone: user.phone,
+    role: user.role,
+    profileImage: user.profileImage,
+  };
+
+  state.token = action.payload.token;
+  state.role = user.role;
+  state.isAuthenticated = true;
+},
 
     logout: (state) => {
       state.user = null;

@@ -5,9 +5,8 @@ import Reviews from "./Review";
 import JobSidebar from "./JobSidebar.jsx";
 import { getTabs ,companyData} from "../../constant/index.js";
 
-function ViewDetail({ job }) {
+function ViewDetail({ job  }) {
   const [activeTab, setActiveTab] = useState("description");
-    const company = companyData.find(c => c.id === job.companyId);
 
 
   if (!job) {
@@ -18,9 +17,7 @@ function ViewDetail({ job }) {
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-      {/* Left Column */}
       <div className="lg:col-span-2 space-y-8">
-        {/* Tabs */}
         <div className="border-b border-slate-200 dark:border-slate-800 flex gap-8">
           {tabs.map((tab) => (
             <button
@@ -37,10 +34,9 @@ function ViewDetail({ job }) {
           ))}
         </div>
 
-        {/* Tab Content */}
         {activeTab === "description" && <Description job={job} />}
-        {activeTab === "company" && <Company company={company} />}
-        {activeTab === "reviews" && <Reviews company={company} job={job} />}
+        {activeTab === "company" && <Company company={job.company} />}
+        {activeTab === "reviews" && <Reviews company={job.company} job={job} />}
       </div>
 
       {/* Right Column */}

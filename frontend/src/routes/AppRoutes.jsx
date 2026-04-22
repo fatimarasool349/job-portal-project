@@ -15,6 +15,7 @@ import BookMark from "../pages/user/BookMark";
 import CompanyJobListing from "../pages/user/CompanyJobListing";
 import NotificationsPage from "../pages/user/NotificationsPage";
 import DashboardNotificationPage from "../pages/admin/DashboardNotificationPage";
+import ManageCompany from "../pages/admin/ManageCompany";
 
 import MessagePage from "../pages/user/MessagePage";
 import AdminLayout from "../components/layout/AdminLayout";
@@ -79,6 +80,15 @@ function AppRoutes() {
             </ProtectedRoute>
           }
         />
+         <Route
+          path="company"
+          element={
+            <ProtectedRoute allowedRoles={["admin"]}>
+              <ManageCompany/>
+            </ProtectedRoute>
+          }
+        />
+
         <Route
           path="messages/:id"
           element={

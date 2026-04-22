@@ -1,4 +1,4 @@
-import Users from "../models/Users.js";
+import Users from "../models/users.model.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 
@@ -59,8 +59,7 @@ export const login = async (req, res) => {
   try {
     const { email, password } = req.body;
     const user = await Users.findOne({ email });
-      console.log("LOGIN IMAGE:", user.profileImage);
-
+    console.log("LOGIN IMAGE:", user.profileImage);
 
     if (!user) {
       return res.status(404).json({
@@ -93,7 +92,7 @@ export const login = async (req, res) => {
         email: user.email,
         phone: user.phone,
         role: user.role,
-        profileImage: user.profileImage
+        profileImage: user.profileImage || null
       },
     });
   } catch (err) {
@@ -103,7 +102,8 @@ export const login = async (req, res) => {
 
 export const profileUpdate = async (req, res) => {
   try {
-    const { id } = req.params;
+    const id = req.params.id; 
+
     const { currentPassword, newPassword } = req.body;
 
     const user = await Users.findById(id);
@@ -142,10 +142,9 @@ export const profileUpdate = async (req, res) => {
       updateData.password = await bcrypt.hash(newPassword, 10);
     }
 
-  
     const updatedUser = await Users.findByIdAndUpdate(id, updateData, {
       new: true,
-      runValidators: true, 
+      runValidators: true,
     }).select("-password");
 
     return res.status(200).json({

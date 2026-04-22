@@ -1,6 +1,9 @@
 import { useState, useEffect } from "react";
+import { getAllCompanies } from "../api/companyApi";
 
 function AddJobModal({ onClose, onSave, existingData }) {
+  const [companies, setCompanies] = useState([]);
+
   const [form, setForm] = useState({
     title: "",
     company: "",
@@ -9,20 +12,38 @@ function AddJobModal({ onClose, onSave, existingData }) {
     status: "Active",
     description: "",
     salary: "",
+    responsibilities: "", // ✅ add
+    requirements: "",
     recruiterId: localStorage.getItem("recruiter_id") || null,
   });
+
+  // Load companies from API
+  useEffect(() => {
+    const fetchCompanies = async () => {
+      try {
+        const data = await getAllCompanies();
+        setCompanies(data);
+      } catch (error) {
+        console.log("Error loading companies:", error);
+      }
+    };
+
+    fetchCompanies();
+  }, []);
 
   // Prefill when editing
   useEffect(() => {
     if (existingData) {
       setForm({
         title: existingData.title || "",
-        company: existingData.company || "",
+        company: existingData.company?._id || existingData.company || "",
         location: existingData.location || "",
         jobType: existingData.jobType || "Full-time",
         status: existingData.status || "Active",
         description: existingData.description || "",
         salary: existingData.salary || "",
+        responsibilities: existingData.responsibilities?.join("\n") || "",
+        requirements: existingData.requirements?.join("\n") || "",
         recruiterId:
           existingData.recruiterId ||
           localStorage.getItem("recruiter_id") ||
@@ -31,36 +52,21 @@ function AddJobModal({ onClose, onSave, existingData }) {
     }
   }, [existingData]);
 
-  const handleSubmit = (e) => {
+  // Submit
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const recruiterId = localStorage.getItem("recruiter_id");
+    const payload = {
+      ...form,
+      createdBy: form.recruiterId,
+      salary: form.salary ? Number(form.salary) : null,
+      responsibilities: form.responsibilities
+        ? form.responsibilities.split("\n")
+        : [],
+      requirements: form.requirements ? form.requirements.split("\n") : [],
+    };
 
-    if (existingData) {
-      // UPDATE job
-      onSave((prev) =>
-        prev.map((job) =>
-          job.id === existingData.id
-            ? {
-                ...job,
-                ...form,
-                recruiterId,
-              }
-            : job
-        )
-      );
-    } else {
-      // ADD job
-      const newJob = {
-        id: Date.now(),
-        ...form,
-        recruiterId,
-        createdAt: new Date().toISOString(),
-      };
-
-      onSave((prev) => [...prev, newJob]);
-    }
-
+    await onSave(payload, existingData?._id);
     onClose();
   };
 
@@ -72,7 +78,6 @@ function AddJobModal({ onClose, onSave, existingData }) {
         </h2>
 
         <form onSubmit={handleSubmit} className="space-y-3">
-
           {/* Job Title */}
           <input
             type="text"
@@ -83,15 +88,21 @@ function AddJobModal({ onClose, onSave, existingData }) {
             required
           />
 
-          {/* Company */}
-          <input
-            type="text"
-            placeholder="Company Name"
+          {/* Company Dropdown */}
+          <select
             value={form.company}
             onChange={(e) => setForm({ ...form, company: e.target.value })}
             className="w-full border p-2 rounded"
             required
-          />
+          >
+            <option value="">Select Company</option>
+
+            {companies.map((c) => (
+              <option key={c._id} value={c._id}>
+                {c.name}
+              </option>
+            ))}
+          </select>
 
           {/* Location */}
           <input
@@ -117,8 +128,8 @@ function AddJobModal({ onClose, onSave, existingData }) {
 
           {/* Salary */}
           <input
-            type="text"
-            placeholder="Salary (e.g. 50000 - 80000)"
+            type="number"
+            placeholder="Salary"
             value={form.salary}
             onChange={(e) => setForm({ ...form, salary: e.target.value })}
             className="w-full border p-2 rounded"
@@ -128,12 +139,27 @@ function AddJobModal({ onClose, onSave, existingData }) {
           <textarea
             placeholder="Job Description"
             value={form.description}
-            onChange={(e) =>
-              setForm({ ...form, description: e.target.value })
-            }
+            onChange={(e) => setForm({ ...form, description: e.target.value })}
             className="w-full border p-2 rounded"
             rows="3"
             required
+          />
+          <textarea
+            placeholder="Responsibilities (one per line)"
+            value={form.responsibilities}
+            onChange={(e) =>
+              setForm({ ...form, responsibilities: e.target.value })
+            }
+            className="w-full border p-2 rounded"
+            rows="3"
+          />
+
+          <textarea
+            placeholder="Requirements (one per line)"
+            value={form.requirements}
+            onChange={(e) => setForm({ ...form, requirements: e.target.value })}
+            className="w-full border p-2 rounded"
+            rows="3"
           />
 
           {/* Status */}
@@ -165,7 +191,6 @@ function AddJobModal({ onClose, onSave, existingData }) {
               Save
             </button>
           </div>
-
         </form>
       </div>
     </div>

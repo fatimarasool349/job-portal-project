@@ -1,12 +1,12 @@
-import Account from "./../assets/icons/Account.png";
-import Apply from "./../assets/icons/Apply.png";
-import SearchJob from "./../assets/icons/SearchJob.png";
-import ProductDesign from "./../assets/icons/ProductDesign.png";
-import ReactEngineer from "./../assets/icons/reactEngineer.png";
-import Marking from "./../assets/icons/Marketing.png";
+import Account from "./../assets/Images/Account.png";
+import Apply from "./../assets/Images/Apply.png";
+import SearchJob from "./../assets/Images/SearchJob.png";
+import ProductDesign from "./../assets/Images/ProductDesign.png";
+import ReactEngineer from "./../assets/Images/reactEngineer.png";
+import Marking from "./../assets/Images/Marketing.png";
 import heroImage from "./../assets/Images/HeroImage.png";
 import { IoRocketOutline, IoCode } from "react-icons/io5";
-import profile from "./../assets/icons/profile.jpg";
+import profile from "./../assets/Images/profile.jpg";
 import { MdOutlineDescription } from "react-icons/md";
 import { MdEventNote } from "react-icons/md";
 import {
@@ -17,6 +17,7 @@ import {
   BarChart,
   Settings,
   FileText,
+  Building2,
 } from "lucide-react";
 import { MdRateReview } from "react-icons/md";
 
@@ -72,10 +73,19 @@ export const statsData = [
 ];
 
 // Job Features components
-export const badgeColors = {
-  green: "bg-green-100 text-green-700",
-  blue: "bg-blue-100 text-blue-700",
-  purple: "bg-purple-100 text-purple-700",
+export const getBadgeColor = (type) => {
+  switch (type) {
+    case "Full-time":
+      return "bg-green-100 text-green-700";
+    case "Part-time":
+      return "bg-blue-100 text-blue-700";
+    case "Remote":
+      return "bg-purple-100 text-purple-700";
+    case "Contract":
+      return "bg-yellow-100 text-yellow-700";
+    default:
+      return "bg-gray-100 text-gray-700";
+  }
 };
 
 export const jobsData = [
@@ -1354,6 +1364,12 @@ export const sidebarItems = [
     path: "/dashboard/candidates",
     roles: ["admin", "recruiter"], // both
   },
+   {
+    name: "Manage Companies",
+    icon: Building2,
+    path: "/dashboard/company",
+    roles: ["admin"], // both
+  },
   {
     name: "Manage Recruiters",
     icon: Building,
@@ -1703,6 +1719,7 @@ export const titles = {
   "/dashboard": "Dashboard Overview",
   "/dashboard/candidates":
     role === "Recruiter" ? "Candidates" : "Manage Candidates",
+    "/dashboard/company": "Manage Companies ",
   "/dashboard/jobs": "Manage Jobs",
   "/dashboard/recruiters": "Manage Recruiters",
   "/dashboard/job-applications": "Job Applications",
