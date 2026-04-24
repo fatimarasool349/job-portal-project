@@ -22,7 +22,7 @@ export default function ProfilePage() {
     setError,
     formState: { errors },
   } = useForm();
-  const avatarFile = watch("avatar");
+  const avatarFile = watch("profileImage");
 
   console.log("USER FROM REDUX:", user);
   const dispatch = useDispatch();
@@ -62,7 +62,7 @@ export default function ProfilePage() {
       formData.append("phone", data.phone);
 
       if (data.avatar && data.avatar[0]) {
-        formData.append("avatar", data.avatar[0]);
+        formData.append("profileImage", data.avatar[0]);
       }
       if (data.newPassword && data.newPassword.length > 0) {
         formData.append("currentPassword", data.currentPassword);

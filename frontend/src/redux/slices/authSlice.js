@@ -36,7 +36,7 @@ const authSlice = createSlice({
     email: user.email,
     phone: user.phone,
     role: user.role,
-    profileImage: user.profileImage,
+    profileImage: user.profileImage||null,
   };
 
   state.token = action.payload.token;

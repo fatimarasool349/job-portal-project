@@ -5,6 +5,7 @@ import Pagination from "../../components/adminComponents/common/Pagination";
 import { useRole } from "../../hooks/useRole";
 import { usePagination } from "../../hooks/usePagination";
 import { useSelector , useDispatch } from "react-redux";
+import { fetchAllApplications, fetchRecruiterApplications } from "../../redux/slices/applicationSlice";
 function ManageJobApplications() {
   const [statusFilter, setStatusFilter] = useState("All");
   const [roleFilter, setRoleFilter] = useState("All");
@@ -17,6 +18,14 @@ const dispatch = useDispatch();
 const applications = useSelector(
   (state) => state.applications.applications
 );
+
+  useEffect(() => {
+    if (canViewAll) {
+      dispatch(fetchAllApplications());
+    } else {
+      dispatch(fetchRecruiterApplications());
+    }
+  }, [dispatch, canViewAll]);
 
 
  const roleFiltered = useMemo(() => {
@@ -32,9 +41,11 @@ const filteredApplications = useMemo(() => {
 
     const matchRole =
       roleFilter === "All" || app.position === roleFilter;
+      const fullName = `${app.firstName} ${app.lastName}`;
+
 
     const matchSearch =
-      app.name.toLowerCase().includes(search.toLowerCase()) ||
+      app.fullName.toLowerCase().includes(search.toLowerCase()) ||
       app.email.toLowerCase().includes(search.toLowerCase());
 
     return matchStatus && matchRole && matchSearch;

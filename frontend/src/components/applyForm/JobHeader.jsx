@@ -36,7 +36,7 @@ function JobHeader({ job,company}) {
 
           <span className="flex text-slate-500 items-center gap-1">
             <FaRegClock />
-            {job.type || "Full-time"}
+            {job.jobType || "unspecfied"}
           </span>
         </div>
       </div>

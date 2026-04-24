@@ -1,13 +1,14 @@
- function RecruiterFilter({
-  search,
+function RecruiterFilter({
+  search = "",
   setSearch,
-  statusFilter,
+  statusFilter = "All",
   setStatusFilter,
-  onAddClick,  
+  onAddClick,
 }) {
   return (
     <div className="bg-white p-4 rounded-xl shadow-sm border border-slate-200 mb-6 flex flex-wrap items-center justify-between gap-4">
-      
+
+      {/* SEARCH */}
       <div className="flex-1 min-w-[300px] relative">
         <input
           type="text"
@@ -18,11 +19,13 @@
         />
       </div>
 
+      {/* FILTER + BUTTON */}
       <div className="flex items-center gap-3">
+
         <select
           value={statusFilter}
           onChange={(e) => setStatusFilter(e.target.value)}
-          className="rounded-lg border border-slate-200 text-sm focus:ring-[#2463EB]"
+          className="rounded-lg border border-slate-200 text-sm focus:ring-[#2463EB] px-2 py-2"
         >
           <option value="All">Status: All</option>
           <option value="Active">Active</option>
@@ -30,11 +33,16 @@
         </select>
 
         <button
-         onClick={onAddClick} className="bg-[#2463EB] hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium">
+          type="button"
+          onClick={onAddClick}
+          className="bg-[#2463EB] hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium"
+        >
           Add New Recruiter
         </button>
+
       </div>
     </div>
   );
 }
+
 export default RecruiterFilter;

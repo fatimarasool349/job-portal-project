@@ -35,6 +35,7 @@ export const updateCompany = async (id, data) => {
   const res = await axios.put(`${COMPANY_API}/${id}`, data, {
     headers: {
       Authorization: `Bearer ${token}`,
+      "Content-Type": "multipart/form-data",
     },
   });
 

@@ -1,48 +1,38 @@
-import { IoMdAdd } from "react-icons/io";
-import {memo} from "react";
+import { memo } from "react";
 
 function CandidateFilters({
   search,
   setSearch,
   statusFilter,
   setStatusFilter,
-  onAddCandidate,
-  role,
 }) {
   return (
-    <div className="bg-white p-4 rounded-xl shadow-sm border border-slate-200 mb-6 flex flex-wrap items-center justify-between gap-4">
-      {/* Search Input */}
-      <div className="flex-1 min-w-[300px] relative">
+    <div className="bg-white p-5 rounded-xl shadow-sm border border-slate-100 mb-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
+
+      {/* Search */}
+      <div className="flex-1 relative">
         <input
           type="text"
-          placeholder="Search candidates..."
+          placeholder="Search candidates by name or email..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="w-full pl-4 pr-4 py-2 rounded-lg border border-slate-200 focus:ring-[#2463EB] focus:border-[#2463EB] text-sm"
+          className="w-full pl-4 pr-4 py-2.5 rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
         />
       </div>
 
+      {/* Filters */}
       <div className="flex items-center gap-3">
+
         <select
           value={statusFilter}
           onChange={(e) => setStatusFilter(e.target.value)}
-          className="rounded-lg border border-slate-200 text-sm focus:ring-[#2463EB] focus:border-[#2463EB] px-3 py-2"
+          className="rounded-lg border border-slate-200 text-sm px-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-blue-500"
         >
-          <option value="All">Status: All</option>
-          <option value="Active">Active</option>
-          <option value="Pending">Pending</option>
-          <option value="Inactive">Inactive</option>
+          <option value="All">All Status</option>
+          <option value="active">Active</option>
+          <option value="Blocked">Blocked</option>
         </select>
 
-        {role === "admin" && (
-          <button
-            onClick={onAddCandidate}
-            className="bg-[#2463EB] hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium flex items-center gap-1"
-          >
-            <IoMdAdd />
-            Add New Candidate
-          </button>
-        )}
       </div>
     </div>
   );

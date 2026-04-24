@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { companyData } from "../../constant";
 import {FiExternalLink} from "react-icons/fi"
 import { Link } from "react-router-dom";
+import { getImageUrl } from "../../utils/getImageUrl";
 
 function JobSidebar({ job }) {
   const navigate = useNavigate();
@@ -54,7 +55,7 @@ function JobSidebar({ job }) {
             <img
               className="w-8 h-8 object-contain"
               alt={`${job.company.name} logo`}
-              src={job.company.logo}
+              src={getImageUrl(job.company.logo)}
             />
           </div>
           <div>

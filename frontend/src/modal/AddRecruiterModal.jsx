@@ -1,91 +1,116 @@
 import { useState, useEffect } from "react";
+import axios from "axios";
+import { updateRecruiter } from "../api/recruiterApi";
 
 function AddRecruiterModal({ onClose, setData, existingData }) {
+  const [companies, setCompanies] = useState([]);
+
   const [form, setForm] = useState({
     company: "",
-    name: "",
+    fullName: "",
     email: "",
-    status: "Active", 
+    status: "Active",
   });
 
+  // Load companies from DB
+  useEffect(() => {
+    const fetchCompanies = async () => {
+      try {
+        const res = await axios.get(
+          "http://localhost:5000/api/company"
+        );
+        setCompanies(res.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetchCompanies();
+  }, []);
+
+  // Fill form when editing
   useEffect(() => {
     if (existingData) {
       setForm({
-        company: existingData.company,
+        company: existingData.company?._id || "",
         name: existingData.name,
         email: existingData.email,
-        status: existingData.status || "Active", 
+        status: existingData.status || "Active",
       });
     }
   }, [existingData]);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+const handleSubmit = async (e) => {
+  e.preventDefault();
 
-    if (existingData) {
-      // Edit recruiter
-      setData((prev) =>
-        prev.map((rec) =>
-          rec.id === existingData.id ? { ...rec, ...form } : rec
-        )
-      );
-    } else {
-      // Add recruiter
-      const newRecruiter = {
-        id: Date.now(),
-        ...form, // ✅ includes status
-      };
-      setData((prev) => [...prev, newRecruiter]);
-    }
+  try {
+    await updateRecruiter(existingData._id, {
+      company: form.company,
+      status: form.status,
+    });
 
+    await setData(); // refetch from backend
     onClose();
-  };
+  } catch (error) {
+    console.log(error);
+  }
+};
 
   return (
     <div className="fixed inset-0 bg-black/40 flex justify-center items-center z-50">
-      <div className="bg-white p-6 rounded-xl w-[400px]">
+      <div className="bg-white p-6 rounded-xl w-[420px]">
+
         <h2 className="text-lg font-semibold mb-4">
-          {existingData ? "Edit Recruiter" : "Add Recruiter"}
+          Edit Recruiter
         </h2>
 
         <form onSubmit={handleSubmit} className="space-y-3">
-          <input
-            type="text"
-            placeholder="Company Name"
+
+          {/* Company (assign only) */}
+          <select
             value={form.company}
+            onChange={(e) =>
+              setForm({ ...form, company: e.target.value })
+            }
             className="w-full border p-2 rounded"
-            onChange={(e) => setForm({ ...form, company: e.target.value })}
-            required
+          >
+            <option value="">Select Company</option>
+
+            {companies.map((c) => (
+              <option key={c._id} value={c._id}>
+                {c.name}
+              </option>
+            ))}
+          </select>
+
+          {/* Name (read-only) */}
+          <input
+            value={form.fullName}
+            disabled
+            className="w-full border p-2 rounded bg-gray-100"
           />
 
+          {/* Email (read-only) */}
           <input
-            type="text"
-            placeholder="Recruiter Name"
-            value={form.name}
-            className="w-full border p-2 rounded"
-            onChange={(e) => setForm({ ...form, name: e.target.value })}
-            required
-          />
-
-          <input
-            type="email"
-            placeholder="Email"
             value={form.email}
-            className="w-full border p-2 rounded"
-            onChange={(e) => setForm({ ...form, email: e.target.value })}
-            required
+            disabled
+            className="w-full border p-2 rounded bg-gray-100"
           />
 
-          {/* ✅ NEW STATUS FIELD */}
+          {/* Status */}
           <select
             value={form.status}
-            onChange={(e) => setForm({ ...form, status: e.target.value })}
+            onChange={(e) =>
+              setForm({ ...form, status: e.target.value })
+            }
             className="w-full border p-2 rounded"
           >
             <option value="Active">Active</option>
-            <option value="Inactive">Inactive</option>
+            <option value="pending">Pending</option>
+            <option value = "blocked">Blocked</option>
           </select>
 
+          {/* Buttons */}
           <div className="flex justify-end gap-2 pt-3">
             <button
               type="button"
@@ -102,6 +127,7 @@ function AddRecruiterModal({ onClose, setData, existingData }) {
               Save
             </button>
           </div>
+
         </form>
       </div>
     </div>

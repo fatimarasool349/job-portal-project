@@ -2,6 +2,8 @@ import React from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import Swal from "sweetalert2";
+import { useDispatch } from "react-redux";
+
 
 import ContactForm from "../../components/ApplyForm/ContactForm";
 import Documents from "../../components/ApplyForm/Documents";
@@ -9,6 +11,8 @@ import ProfessionalLinks from "../../components/ApplyForm/ProfessionalLinks";
 import AdditionalInformation from "../../components/ApplyForm/AdditionalInformation";
 import JobHeader from "../../components/ApplyForm/JobHeader";
 import { getJobById } from "../../api/jobApi";
+import { applyJob } from "../../redux/slices/applicationSlice";
+import { useSelector } from "react-redux";
 
 import { useEffect, useState } from "react";
 import axios from "axios";
@@ -19,12 +23,11 @@ function ApplyForm() {
 const { jobId } = useParams();
 const [job, setJob] = useState(null);
   const navigate = useNavigate();
+  const dispatch = useDispatch()
 
-  // Find job from jobData array using jobId
-  // const job = jobData.find((j) => j.id === Number(jobId));
-//   const company = companyData.find(
-//   (c) => c.id === job?.companyId
-// );
+  const user = useSelector(state => state.auth.user);
+
+
 
 useEffect(() => {
   const fetchJob = async () => {
@@ -48,17 +51,33 @@ useEffect(() => {
 
   const file = watch("resume");
 
-  const onSubmit = (data) => {
-    console.log("Form Data:", data);
+   const onSubmit = async (data) => {
+    try {
+      const formData = new FormData();
 
-    Swal.fire({
-      icon: "success",
-      title: "Application Submitted!",
-      text: "Your job application has been sent successfully.",
-      confirmButtonColor: "#1D4ED8",
-    }).then(() => {
-      navigate(-1);
-    });
+      formData.append("jobId", jobId);
+      formData.append("candidate", user._id); // from Redux or auth
+      formData.append("firstName", data.firstName);
+      formData.append("lastName", data.lastName);
+      formData.append("email", data.email);
+      formData.append("phone", data.phone);
+      formData.append("portfolio", data.portfolio || "");
+      formData.append("linkedin", data.linkedin || "");
+      formData.append("coverLetter", data.coverLetter || "");
+      formData.append("resume", data.resume[0]); // 👈 IMPORTANT
+
+      await dispatch(applyJob(formData)).unwrap();
+
+      Swal.fire({
+        icon: "success",
+        title: "Application Submitted!",
+        text: "Your job application has been sent successfully.",
+      }).then(() => {
+        navigate(-1);
+      });
+    } catch (error) {
+      Swal.fire("Error", "Failed to submit application", "error");
+    }
   };
 
   if (!job) {

@@ -1720,6 +1720,7 @@ export const titles = {
   "/dashboard/candidates":
     role === "Recruiter" ? "Candidates" : "Manage Candidates",
     "/dashboard/company": "Manage Companies ",
+
   "/dashboard/jobs": "Manage Jobs",
   "/dashboard/recruiters": "Manage Recruiters",
   "/dashboard/job-applications": "Job Applications",
@@ -1888,9 +1889,11 @@ export const getStatusStyle = (status) => {
   switch (status?.toLowerCase()) {
     case "pending":
       return "bg-yellow-100 text-yellow-700";
-    case "approved":
+    case "active":
       return "bg-green-100 text-green-700";
     case "rejected":
+      return "bg-red-100 text-red-600";
+      case "blocked":
       return "bg-red-100 text-red-600";
     default:
       return "bg-gray-100 text-gray-600";

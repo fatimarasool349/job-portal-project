@@ -24,6 +24,9 @@ function CandidateTable({
               <th className="px-6 py-4 text-xs font-semibold text-white">
                 Phone
               </th>
+                <th className="px-6 py-4 text-xs font-semibold text-white">
+                  Status
+              </th>
               <th className="px-6 py-4 text-xs font-semibold text-white text-right">
                 Actions
               </th>

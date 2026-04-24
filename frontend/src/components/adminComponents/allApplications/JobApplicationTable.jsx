@@ -55,15 +55,15 @@ function JobApplicationTable({ applications, role }) {
 
           <tbody>
             {applications.map((app) => (
-              <tr key={app.id} className="hover:bg-slate-50 transition">
+              <tr key={app._id} className="hover:bg-slate-50 transition">
                 <td className="px-6 py-4 font-medium text-slate-800">
                   <div className="flex items-center gap-3">
                     <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center font-bold text-xs">
-                      {app.name?.charAt(0)}
+                      {`${app.firstName} ${app.lastName}`?.charAt(0)}
                     </div>
 
                     <div>
-                      <p className="font-semibold">{app.name}</p>
+                      <p className="font-semibold">{`${app.firstName} ${app.lastName}`}</p>
                       <p className="text-xs text-gray-500">{app.position}</p>
                     </div>
                   </div>
@@ -123,7 +123,7 @@ function JobApplicationTable({ applications, role }) {
                 </td>
 
                 <td className="px-6 py-4 text-sm text-slate-600 text-right space-x-2">
-                  <Link to={`/dashboard/applications/${app.id}`} title="View">
+                  <Link to={`/dashboard/applications/${app._id}`} title="View">
                     <button className="p-2 text-blue-600 hover:bg-gray-100  rounded-lg transition-all">
                       <GrView />
                     </button>

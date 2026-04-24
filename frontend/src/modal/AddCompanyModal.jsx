@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
-import { IoIosAddCircle, IoIosRemoveCircle  } from "react-icons/io";
+import { IoIosAddCircle, IoIosRemoveCircle } from "react-icons/io";
 import { FaTrashAlt } from "react-icons/fa";
-
-
+import { getImageUrl } from "../utils/getImageUrl";
 
 function AddCompanyModal({ onClose, onSave, existingData }) {
   const [form, setForm] = useState({
@@ -43,35 +42,60 @@ function AddCompanyModal({ onClose, onSave, existingData }) {
     }
   }, [existingData]);
 
-  // Image upload (base64 for now)
   const handleLogoUpload = (e) => {
     const file = e.target.files[0];
 
     if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setForm((prev) => ({
-          ...prev,
-          logo: reader.result,
-        }));
-      };
-      reader.readAsDataURL(file);
+      setForm((prev) => ({
+        ...prev,
+        logo: file,
+      }));
     }
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const payload = {
-      ...form,
-      stats: form.stats.filter((s) => s.label.trim() && s.value.trim()),
-      culture: form.culture.filter(
-        (c) => c.title.trim() && c.description.trim(),
-      ),
-    };
 
-    onSave(payload, existingData?._id);
+    const formData = new FormData();
+
+    formData.append("name", form.name);
+    formData.append("industry", form.industry);
+    formData.append("location", form.location);
+    formData.append("website", form.website);
+    formData.append("about1", form.about1);
+    formData.append("about2", form.about2);
+    formData.append("size", form.size);
+    formData.append("businessHours", form.businessHours);
+
+    // stats & culture must be stringified
+    formData.append(
+      "stats",
+      JSON.stringify(
+        form.stats.filter((s) => s.label.trim() && s.value.trim()),
+      ),
+    );
+
+    formData.append(
+      "culture",
+      JSON.stringify(
+        form.culture.filter((c) => c.title.trim() && c.description.trim()),
+      ),
+    );
+
+    if (form.logo instanceof File) {
+      formData.append("logo", form.logo);
+    }
+
+    form.photos.forEach((file) => {
+      if (file instanceof File) {
+        formData.append("photos", file);
+      }
+    });
+
+    onSave(formData, existingData?._id);
     onClose();
   };
+
   const addStat = () => {
     setForm((prev) => ({
       ...prev,
@@ -98,18 +122,10 @@ function AddCompanyModal({ onClose, onSave, existingData }) {
   const handlePhotosUpload = (e) => {
     const files = Array.from(e.target.files);
 
-    files.forEach((file) => {
-      const reader = new FileReader();
-
-      reader.onloadend = () => {
-        setForm((prev) => ({
-          ...prev,
-          photos: [...prev.photos, reader.result],
-        }));
-      };
-
-      reader.readAsDataURL(file);
-    });
+    setForm((prev) => ({
+      ...prev,
+      photos: [...prev.photos, ...files],
+    }));
   };
 
   return (
@@ -121,7 +137,6 @@ function AddCompanyModal({ onClose, onSave, existingData }) {
         </h2>
 
         <form onSubmit={handleSubmit} className="space-y-3">
-          {/* Company Name */}
           <input
             type="text"
             placeholder="Company Name"
@@ -131,7 +146,6 @@ function AddCompanyModal({ onClose, onSave, existingData }) {
             required
           />
 
-          {/* Industry */}
           <input
             type="text"
             placeholder="Industry"
@@ -140,7 +154,6 @@ function AddCompanyModal({ onClose, onSave, existingData }) {
             className="w-full border p-2 rounded"
           />
 
-          {/* Location */}
           <input
             type="text"
             placeholder="Location"
@@ -177,7 +190,6 @@ function AddCompanyModal({ onClose, onSave, existingData }) {
             }
             className="w-full border p-2 rounded"
           />
-          {/* Website */}
           <input
             type="text"
             placeholder="Website URL"
@@ -225,7 +237,7 @@ function AddCompanyModal({ onClose, onSave, existingData }) {
                   onClick={() => removeStat(index)}
                   className="text-red-500 text-2xl "
                 >
-                  <IoIosRemoveCircle/>
+                  <IoIosRemoveCircle />
                 </button>
               </div>
             ))}
@@ -245,7 +257,7 @@ function AddCompanyModal({ onClose, onSave, existingData }) {
                 }
                 className="text-blue-600 text-2xl"
               >
-                <IoIosAddCircle/>
+                <IoIosAddCircle />
               </button>
             </div>
 
@@ -268,7 +280,6 @@ function AddCompanyModal({ onClose, onSave, existingData }) {
                   className="w-full border p-2 rounded"
                 />
 
-                {/* Description */}
                 <textarea
                   placeholder="Description (e.g We work together as a team...)"
                   value={item.description}
@@ -284,7 +295,6 @@ function AddCompanyModal({ onClose, onSave, existingData }) {
                   className="w-full border p-2 rounded"
                 />
 
-                {/* Remove */}
                 <button
                   type="button"
                   onClick={() =>
@@ -295,7 +305,7 @@ function AddCompanyModal({ onClose, onSave, existingData }) {
                   }
                   className="text-red-500 text-xl"
                 >
-                  <FaTrashAlt/>
+                  <FaTrashAlt />
                 </button>
               </div>
             ))}
@@ -314,18 +324,20 @@ function AddCompanyModal({ onClose, onSave, existingData }) {
             />
 
             <div className="flex gap-2 mt-2 flex-wrap">
-              {form.photos.map((photo, index) => (
+              {form.photos.map((photos, index) => (
                 <img
                   key={index}
-                  src={photo}
-                  alt="company"
+                  src={
+                    photos instanceof File
+                      ? URL.createObjectURL(photos)
+                      : getImageUrl(photos)
+                  }
                   className="w-16 h-16 object-cover rounded"
                 />
               ))}
             </div>
           </div>
 
-          {/* Logo Upload */}
           <div>
             <label className="block text-sm font-medium mb-1">
               Company Logo
@@ -340,14 +352,17 @@ function AddCompanyModal({ onClose, onSave, existingData }) {
 
             {form.logo && (
               <img
-                src={form.logo}
+                src={
+                  form.logo instanceof File
+                    ? URL.createObjectURL(form.logo)
+                    : getImageUrl(form.logo)
+                }
                 alt="logo preview"
                 className="mt-2 w-16 h-16 object-cover rounded"
               />
             )}
           </div>
 
-          {/* Buttons */}
           <div className="flex justify-end gap-2 pt-3">
             <button
               type="button"

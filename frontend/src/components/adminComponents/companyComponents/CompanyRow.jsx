@@ -1,15 +1,15 @@
 import { FaEdit } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
-
+import { getImageUrl } from "../../../utils/getImageUrl";
 
 function CompanyRow({ company, onDelete, onEdit }) {
   return (
-    <tr className="border-b hover:bg-slate-50 transition">
+    <tr className="border-b border-gray-50 hover:bg-slate-50 transition">
       <td className="px-6 py-4">
         <div className="flex items-center gap-3">
           {/* Logo */}
           <img
-            src={company.logo}
+            src={getImageUrl(company.logo)}
             alt="logo"
             className="w-10 h-10 rounded object-cover border"
           />

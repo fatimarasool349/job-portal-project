@@ -1,12 +1,13 @@
 import Users from "../models/users.model.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+import fs from "fs";
+import path from "path";
 
 // REGISTER
 export const register = async (req, res) => {
   try {
-    const { fullName, email, phone, role, password, confirmPassword } =
-      req.body;
+    const { fullName, email, phone, role, password, companyId } = req.body;
 
     const existingUser = await Users.findOne({ email });
     if (existingUser) {
@@ -23,6 +24,8 @@ export const register = async (req, res) => {
       phone,
       role,
       password: hashedPassword,
+      status: role === "recruiter" ? "pending" : "active",
+      companyId: role === "recruiter" ? companyId || null : null,
     });
 
     res.json({
@@ -33,6 +36,8 @@ export const register = async (req, res) => {
         email: user.email,
         phone: user.phone,
         role: user.role,
+        status: user.status,
+        companyId: user.companyId,
       },
     });
   } catch (err) {
@@ -92,7 +97,7 @@ export const login = async (req, res) => {
         email: user.email,
         phone: user.phone,
         role: user.role,
-        profileImage: user.profileImage || null
+        profileImage: user.profileImage || null,
       },
     });
   } catch (err) {
@@ -102,8 +107,7 @@ export const login = async (req, res) => {
 
 export const profileUpdate = async (req, res) => {
   try {
-    const id = req.params.id; 
-
+    const id = req.params.id;
     const { currentPassword, newPassword } = req.body;
 
     const user = await Users.findById(id);
@@ -118,11 +122,16 @@ export const profileUpdate = async (req, res) => {
       phone: req.body.phone,
     };
 
-    if (req.file) {
-      updateData.profileImage = req.file.filename;
-    }
+    if (req.file?.filename) {
+      if (user.profileImage) {
+        const oldPath = path.join(process.cwd(), user.profileImage.replace(/^\//, ""));
+        if (fs.existsSync(oldPath)) {
+          fs.unlinkSync(oldPath);
+        }
+      }
 
-    console.log("FILE:", req.file);
+      updateData.profileImage = `/upload/profile/${req.file.filename}`;
+    }
 
     if (newPassword) {
       if (!currentPassword) {
@@ -131,7 +140,10 @@ export const profileUpdate = async (req, res) => {
         });
       }
 
-      const isMatch = await bcrypt.compare(currentPassword, user.password);
+      const isMatch = await bcrypt.compare(
+        currentPassword,
+        user.password
+      );
 
       if (!isMatch) {
         return res.status(400).json({
@@ -149,10 +161,7 @@ export const profileUpdate = async (req, res) => {
 
     return res.status(200).json({
       message: "Profile updated successfully",
-      user: {
-        ...updatedUser._doc,
-        profileImage: updatedUser.profileImage || null,
-      },
+      user: updatedUser,
     });
   } catch (error) {
     return res.status(500).json({

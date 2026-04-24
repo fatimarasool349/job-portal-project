@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { getBadgeColor } from "../../constant";
 import { FaBuilding, FaMapMarkerAlt } from "react-icons/fa";
+import { getImageUrl } from "../../utils/getImageUrl";
 
 function JobCard({ job }) {
   return (
@@ -10,7 +11,7 @@ function JobCard({ job }) {
           <div className="flex size-14 shrink-0 items-center justify-center rounded-lg border border-slate-100 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 p-2">
             <div className="flex size-14 shrink-0 items-center justify-center rounded-lg border border-slate-100 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 p-2">
               <img
-                src={job.company.logo || "/default-company.png"}
+                src={getImageUrl(job.company.logo) || "/default-company.png"}
                 alt={job.title}
                 className="w-8 h-8 object-contain"
               />

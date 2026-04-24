@@ -14,7 +14,7 @@ console.log("AUTH ROUTES LOADED");
 router.post("/register", register);
 router.post("/login", login);
 router.get("/user/:id", getUserById);
-router.put("/update-profile/:id", upload.single("avatar"), profileUpdate);
+router.put("/update-profile/:id", upload.single("profileImage"), profileUpdate);
 router.get("/me", isAuthenticated, (req, res) => {
   console.log("ME ROUTE WORKING");
 

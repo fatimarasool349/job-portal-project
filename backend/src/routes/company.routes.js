@@ -6,14 +6,28 @@ import {
   updateCompany,
   deleteCompany,
 } from "../controllers/company.controller.js";
+import { upload } from "../middleware/upload.js";
 
 const router = express.Router();
-console.log("✅ Company routes loaded");
 
-router.post("/", createCompany);
+router.post(
+  "/",
+  upload.fields([
+    { name: "logo", maxCount: 1 },
+    { name: "photos", maxCount: 10 },
+  ]),
+  createCompany,
+);
 router.get("/", getCompanies);
 router.get("/:id", getCompany);
-router.put("/:id", updateCompany);
+router.put(
+  "/:id",
+  upload.fields([
+    { name: "logo", maxCount: 1 },
+    { name: "photos", maxCount: 10 },
+  ]),
+  updateCompany,
+);
 router.delete("/:id", deleteCompany);
 
 export default router;

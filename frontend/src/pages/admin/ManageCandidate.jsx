@@ -116,7 +116,7 @@ function ManageCandidate() {
         pageSize={pageSize}
         onPageChange={setCurrentPage}
       />
-      {showModal && canAdd && (
+      {showModal && (
         <AddCandidateModal
           onClose={() => setShowModal(false)}
           setData={fetchCandidates}

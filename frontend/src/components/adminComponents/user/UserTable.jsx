@@ -1,24 +1,26 @@
-import RecruiterRow from "./RecruiterRow";
+import UserRow from "./UserRow";
 
-export default function RecruiterTable({
+export default function UserTable({
   data,
   onEdit,
-  onDeleteRecruiter,
+  onDelete,
+  onToggleStatus,
+  onView,
 }) {
   return (
     <div className="bg-white rounded-xl shadow-md border border-slate-200 overflow-hidden">
       <div className="overflow-x-auto">
         <table className="w-full text-left border-collapse">
           <thead>
-            <tr className="bg-blue-600">
-              <th className="px-6 py-4 text-xs font-semibold text-white">
-                Company
-              </th>
+            <tr className="bg-blue-600 border-b border-slate-200">
               <th className="px-6 py-4 text-xs font-semibold text-white">
                 Name
               </th>
               <th className="px-6 py-4 text-xs font-semibold text-white">
                 Email
+              </th>
+              <th className="px-6 py-4 text-xs font-semibold text-white">
+                Role
               </th>
               <th className="px-6 py-4 text-xs font-semibold text-white">
                 Status
@@ -30,12 +32,14 @@ export default function RecruiterTable({
           </thead>
 
           <tbody>
-            {data.map((item) => (
-              <RecruiterRow
-                key={item._id}
-                recruiter={item}
+            {data.map((user) => (
+              <UserRow
+                key={user._id}
+                user={user}
                 onEdit={onEdit}
-                onDeleteRecruiter={onDeleteRecruiter}
+                onDelete={onDelete}
+                onToggleStatus={onToggleStatus}
+                onViewDetails={onView}
               />
             ))}
           </tbody>

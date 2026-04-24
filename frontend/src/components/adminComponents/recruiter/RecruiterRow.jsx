@@ -1,13 +1,13 @@
-import { FaEdit} from "react-icons/fa";
+import { FaEdit } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
 function RecruiterRow({ recruiter, onEdit, onDeleteRecruiter }) {
   return (
     <tr className="hover:bg-slate-50 transition">
       <td className="px-6 py-4 font-medium text-slate-800">
-        {recruiter.company}
+        {recruiter.companyId?.name || "Not Assigned"}{" "}
       </td>
 
-      <td className="px-6 py-4 text-sm text-slate-600">{recruiter.name}</td>
+      <td className="px-6 py-4 text-sm text-slate-600">{recruiter.fullName}</td>
 
       <td className="px-6 py-4 text-sm text-slate-600">{recruiter.email}</td>
 

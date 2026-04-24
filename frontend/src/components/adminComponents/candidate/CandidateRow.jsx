@@ -3,6 +3,7 @@ import { MdDelete } from "react-icons/md";
 import { TfiEmail } from "react-icons/tfi";
 import { FaPhoneAlt } from "react-icons/fa";
 import { memo } from "react";
+import { getStatusStyle } from "../../../constant";
 import { statusColors } from "../../../constant";
 const CandidateRow = memo(({ candidate, onEdit, onDelete, role }) => {
   return (
@@ -32,6 +33,13 @@ const CandidateRow = memo(({ candidate, onEdit, onDelete, role }) => {
         <div className="flex items-center gap-2">
           <FaPhoneAlt className="text-green-500" />
           <span>{candidate.phone || "N/A"}</span>
+        </div>
+      </td>
+       <td className="px-6 py-4 text-sm text-slate-600">
+        <div className="flex items-center gap-2">
+          <span  className={`px-2 py-1 text-xs font-medium rounded-full capitalize ${getStatusStyle(
+      candidate.status
+    )}`}>{candidate.status || "N/A"}</span>
         </div>
       </td>
       {/* <td className="px-6 py-4">

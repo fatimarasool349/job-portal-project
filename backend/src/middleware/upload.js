@@ -4,26 +4,47 @@ import fs from "fs";
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    let folder = "upload";
+    let folder = "upload/others";
 
-    if (req.baseUrl.includes("candidate")) {
-      folder = "upload/candidates";
-    } else if (req.baseUrl.includes("user")) {
-      folder = "upload/users";
+    console.log("FIELDNAME:", file.fieldname);
+
+    if (file.fieldname === "resume") folder = "upload/resumes";
+    else if (file.fieldname === "profileImage") folder = "upload/profile";
+    else if (file.fieldname === "logo") folder = "upload/company";
+    else if (file.fieldname === "photos") folder = "upload/photos"; 
+
+    // ensure folder exists (relative path ONLY)
+    if (!fs.existsSync(folder)) {
+      fs.mkdirSync(folder, { recursive: true });
     }
 
-    const uploadPath = path.join(process.cwd(), folder);
-
-    if (!fs.existsSync(uploadPath)) {
-      fs.mkdirSync(uploadPath, { recursive: true });
-    }
-
-    cb(null, uploadPath);
+    cb(null, folder);
   },
 
   filename: function (req, file, cb) {
-    cb(null, Date.now() + path.extname(file.originalname));
+    const uniqueName = Date.now() + "-" + file.originalname.replace(/\s/g, "");
+    cb(null, uniqueName);
   },
 });
 
-export const upload = multer({ storage });
+const fileFilter = (req, file, cb) => {
+  if (file.fieldname === "resume") {
+    if (file.mimetype === "application/pdf") {
+      cb(null, true);
+    } else {
+      cb(new Error("Resume must be PDF"), false);
+    }
+  } else {
+    // images
+    if (file.mimetype.startsWith("image/")) {
+      cb(null, true);
+    } else {
+      cb(new Error("Only image files allowed"), false);
+    }
+  }
+};
+
+export const upload = multer({
+  storage,
+  fileFilter,
+});

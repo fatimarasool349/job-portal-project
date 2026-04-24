@@ -2,6 +2,7 @@ import { SlCalender } from "react-icons/sl";
 import { MdOutlineSchedule } from "react-icons/md";
 import { FaLocationDot } from "react-icons/fa6";
 import { FaBuilding } from "react-icons/fa";
+import { getImageUrl } from "../../utils/getImageUrl";
 
 function JobHeaderCard({ job }) {
   if (!job) return <div className="text-center py-6 text-gray-500">No job selected</div>;
@@ -15,7 +16,7 @@ function JobHeaderCard({ job }) {
           <div className="size-16 md:size-20 rounded-xl bg-primary/10 flex items-center justify-center overflow-hidden shrink-0 border border-primary/20">
             <img
               className="w-12 h-12 object-contain"
-              src={job.icon || company.logo || "https://via.placeholder.com/48"}
+              src={getImageUrl(job.company.logo)|| "https://via.placeholder.com/48"}
               alt={(company.name ? company.name : "Company") + " logo"}
             />
           </div>
