@@ -27,7 +27,7 @@ import ManageJobs from "../pages/admin/ManageJob";
 import SystemAnalysis from "../pages/admin/SystemAnaylsis";
 import ProfilePage from "../pages/admin/ProfilePage";
 import JobApplications from "../pages/admin/JobApplications";
-// import ApplicationDetail from "../pages/admin/ApplicationDetail";
+import ApplicationDetail from "../pages/admin/ApplicationDetail";
 import ReviewsDashboard from "../pages/admin/ReviewsDashboard";
 // import ManageUsers from "../pages/admin/ManageUsers";
 
@@ -107,14 +107,14 @@ function AppRoutes() {
             </ProtectedRoute>
           }
         />
-        {/* <Route
+        <Route
           path="applications/:id"
           element={
             <ProtectedRoute allowedRoles={["admin", "recruiter"]}>
               <ApplicationDetail />
             </ProtectedRoute>
           }
-        /> */}
+        />
         <Route
           path="reviews"
           element={
@@ -164,6 +164,15 @@ function AppRoutes() {
 
         <Route
           path="job-applications"
+          element={
+            <ProtectedRoute allowedRoles={["admin", "recruiter"]}>
+              <JobApplications />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="applications"
           element={
             <ProtectedRoute allowedRoles={["admin", "recruiter"]}>
               <JobApplications />

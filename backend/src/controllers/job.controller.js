@@ -1,4 +1,6 @@
 import Job from "../models/job.model.js";
+import Users from "../models/users.model.js"
+import Company from "../models/company.model.js";
 
 export const createJob = async (req, res) => {
   console.log("CREATE JOB API HIT");
@@ -14,44 +16,70 @@ export const createJob = async (req, res) => {
       location,
       jobType,
       experience,
-      position,
-      company,
+      position
     } = req.body;
     console.log("REQ BODY:", req.body);
-console.log("RESPONSIBILITIES:", req.body.responsibilities);
+    console.log("RESPONSIBILITIES:", req.body.responsibilities);
     if (!title || !description) {
       return res.status(400).json({
         message: "Title and description are required",
       });
     }
+    const companyId = req.body?.company;
+    const company = await Company.findOne({
+      _id: companyId
+    })
+    if(!company){
+      return res.status(400).json({
+        message: "Company not found",
+      });
+    }
+    if(req?.user?.role == "recruiter"){
+      const user = await Users.findOne({
+        _id: req.user.id,
+      });
+      if (!(user && user?.companyId == companyId)){
+        return res.status(400).json({
+          message: "Company not assigned to recruiter",
+        });
+      }
+    }
 
-    const job = await Job.create({
-      title,
-      description,
-      requirements,
-      responsibilities,
-      status,
-      salary,
-      location,
-      jobType,
-      experience,
-      position,
-      company,
-      createdBy: req.user.id, // from auth middleware
-    });
+  const job = await Job.create({
+  title,
+  description,
+  requirements,
+  responsibilities,
+  status,
+  salary,
+  location,
+  jobType,
+  experience,
+  position,
+  company: companyId,
+  createdBy: req.user.id,
+});
 
     res.status(201).json({
       message: "Job created successfully",
       job,
     });
   } catch (error) {
+    console.log(`Internal Server Error ${error.message}`)
     res.status(500).json({ message: error.message });
   }
 };
 
 export const getAllJobs = async (req, res) => {
   try {
-    const jobs = await Job.find()
+    console.log(`getAllJobs user ${JSON.stringify(req.user)}`)
+
+    let criteria = {};
+    if(req.user?.role == "recruiter"){
+      criteria["company"] = req.user?.company;
+    }
+    console.log(`getAllJobs criteria ${JSON.stringify(criteria)}`)
+    const jobs = await Job.find(criteria)
       .sort({ createdAt: -1 })
       .populate("company")
       .populate("createdBy", "fullName email");

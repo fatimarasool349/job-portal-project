@@ -1,8 +1,10 @@
 import { useState, useEffect } from "react";
-import { getAllCompanies } from "../api/companyApi";
+import { getAllCompanies, getMyCompany } from "../api/companyApi";
+import { useRole } from "../hooks/useRole";
 
 function AddJobModal({ onClose, onSave, existingData }) {
   const [companies, setCompanies] = useState([]);
+  const { role } = useRole();
 
   const [form, setForm] = useState({
     title: "",
@@ -14,61 +16,110 @@ function AddJobModal({ onClose, onSave, existingData }) {
     salary: "",
     responsibilities: "", // ✅ add
     requirements: "",
-    recruiterId: localStorage.getItem("recruiter_id") || null,
   });
 
+
   // Load companies from API
-  useEffect(() => {
-    const fetchCompanies = async () => {
-      try {
+  // useEffect(() => {
+
+  //   const fetchCompanies = async () => {
+  //     try {
+  //       let data;
+
+  //       if (role === "admin") {
+  //         data = await getAllCompanies();
+  //       } else if (role === "recruiter") {
+  //         data = await getMyCompany();
+  //       }
+
+  //       setCompanies(Array.isArray(data) ? data : [data]);
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   };
+
+  //   fetchCompanies();
+  // }, [role]);
+useEffect(() => {
+  const fetchCompanies = async () => {
+    try {
+      if (role === "admin") {
         const data = await getAllCompanies();
         setCompanies(data);
-      } catch (error) {
-        console.log("Error loading companies:", error);
       }
-    };
 
-    fetchCompanies();
-  }, []);
+      if (role === "recruiter") {
+        const companyData = await getMyCompany();
+
+        const selected = Array.isArray(companyData)
+          ? companyData[0]
+          : companyData;
+
+        if (!selected?._id) {
+          console.log("❌ No company found for recruiter");
+          return;
+        }
+
+        setCompanies([selected]);
+
+        setForm((prev) => ({
+          ...prev,
+          company: selected._id,
+        }));
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  if (role) fetchCompanies();
+}, [role]);
 
   // Prefill when editing
-  useEffect(() => {
-    if (existingData) {
-      setForm({
-        title: existingData.title || "",
-        company: existingData.company?._id || existingData.company || "",
-        location: existingData.location || "",
-        jobType: existingData.jobType || "Full-time",
-        status: existingData.status || "Active",
-        description: existingData.description || "",
-        salary: existingData.salary || "",
-        responsibilities: existingData.responsibilities?.join("\n") || "",
-        requirements: existingData.requirements?.join("\n") || "",
-        recruiterId:
-          existingData.recruiterId ||
-          localStorage.getItem("recruiter_id") ||
-          null,
-      });
-    }
-  }, [existingData]);
+useEffect(() => {
+  if (existingData) {
+    setForm({
+      title: existingData.title || "",
+      company: existingData.company?._id || existingData.company || "",
+      location: existingData.location || "",
+      jobType: existingData.jobType || "Full-time",
+      status: existingData.status || "Active",
+      description: existingData.description || "",
+      salary: existingData.salary || "",
+      responsibilities: existingData.responsibilities?.join("\n") || "",
+      requirements: existingData.requirements?.join("\n") || "",
+    });
+  }
+}, [existingData]);
 
   // Submit
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+ const handleSubmit = async (e) => {
+  e.preventDefault();
 
-    const payload = {
-      ...form,
-      createdBy: form.recruiterId,
-      salary: form.salary ? Number(form.salary) : null,
-      responsibilities: form.responsibilities
-        ? form.responsibilities.split("\n")
-        : [],
-      requirements: form.requirements ? form.requirements.split("\n") : [],
-    };
+  if (!form.company) {
+    alert("Please select a company first");
+    return;
+  }
 
-    await onSave(payload, existingData?._id);
-    onClose();
+  const payload = {
+    title: form.title,
+    company: form.company,
+    location: form.location,
+    jobType: form.jobType,
+    status: form.status,
+    description: form.description,
+    salary: form.salary ? Number(form.salary) : null,
+    responsibilities: form.responsibilities
+      ? form.responsibilities.split("\n").filter(Boolean)
+      : [],
+    requirements: form.requirements
+      ? form.requirements.split("\n").filter(Boolean)
+      : [],
   };
+
+  await onSave(payload, existingData?._id);
+  onClose();
+};
 
   return (
     <div className="fixed inset-0 bg-black/40 flex justify-center items-center z-50">
@@ -94,6 +145,7 @@ function AddJobModal({ onClose, onSave, existingData }) {
             onChange={(e) => setForm({ ...form, company: e.target.value })}
             className="w-full border p-2 rounded"
             required
+            disabled={role === "recruiter"}
           >
             <option value="">Select Company</option>
 

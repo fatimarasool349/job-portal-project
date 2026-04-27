@@ -1,4 +1,5 @@
 import Company from "../models/company.model.js";
+import Users from "../models/users.model.js";
 import fs from "fs";
 import path from "path";
 
@@ -30,11 +31,12 @@ export const createCompany = async (req, res) => {
       about2: req.body.about2,
       size: req.body.size,
       businessHours: req.body.businessHours,
+      recruiterId: req.user.id, // ✅ ADD THIS
 
       stats,
       culture,
       logo: logoPath,
-      photos: photosPaths, 
+      photos: photosPaths,
     });
 
     res.status(201).json(company);
@@ -55,10 +57,23 @@ export const getCompanies = async (req, res) => {
 };
 
 // GET ONE
-export const getCompany = async (req, res) => {
+export const getMyCompany = async (req, res) => {
   try {
-    const company = await Company.findById(req.params.id);
-    res.json(company);
+    const userId = req.user?.id;
+    if (!userId) {
+      return res.status(401).json({ message: "User ID not found in token" });
+    }
+    const user = await Users.findOne({
+      _id: userId,
+    }).populate("companyId");
+    
+    console.log(`User found:`, user);
+    
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.json(user.companyId);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

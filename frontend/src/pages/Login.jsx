@@ -18,6 +18,7 @@ function LoginPage() {
     setError,
     formState: { errors },
   } = useForm();
+  
   const onSubmit = async (data) => {
     try {
       console.log("Sending login request...");
@@ -27,7 +28,7 @@ function LoginPage() {
       });
       console.log("Response:", res.data);
 
-      const { token, user } = res.data;
+      const { token, user , company} = res.data;
       console.log("LOGIN USER:", res.data.user);
 
    dispatch(
@@ -35,6 +36,8 @@ function LoginPage() {
     user: user,   // keep full object
     token,
     role: user.role,
+    company: company || null,
+
   }),
 );
       localStorage.setItem("token", token);

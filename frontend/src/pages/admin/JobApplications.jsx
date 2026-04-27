@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo ,useEffect} from "react";
 import JobApplicationTable from "../../components/adminComponents/allApplications/JobApplicationTable";
 import JobApplicationFilters from "../../components/adminComponents/allApplications/JobApplicationFilters";
 import Pagination from "../../components/adminComponents/common/Pagination";
@@ -41,12 +41,11 @@ const filteredApplications = useMemo(() => {
 
     const matchRole =
       roleFilter === "All" || app.position === roleFilter;
-      const fullName = `${app.firstName} ${app.lastName}`;
-
+    const fullName = `${app.firstName} ${app.lastName}`;
 
     const matchSearch =
-      app.fullName.toLowerCase().includes(search.toLowerCase()) ||
-      app.email.toLowerCase().includes(search.toLowerCase());
+      fullName.toLowerCase().includes(search.toLowerCase()) ||
+      (app.email && app.email.toLowerCase().includes(search.toLowerCase()));
 
     return matchStatus && matchRole && matchSearch;
   });

@@ -11,7 +11,7 @@ function JobCard({ job }) {
       {/* Badge */}
       <div className="flex justify-between items-start mb-4">
         <img
-          src={getImageUrl(job.company.logo) || "/default-company.png"}
+          src={getImageUrl(job.company?.logo) || "/default-company.png"}
           alt={company.name}
           className="w-10 h-10 object-contain"
         />{" "}

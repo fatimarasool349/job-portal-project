@@ -1,17 +1,15 @@
-import axios from "axios";
-
-const API = "http://localhost:5000/api/recruiters";
+import API from "./axiosConfig.js";
 
 export const getRecruiters = (params) =>
-  axios.get(API, { params });
+  API.get("/recruiters", { params });
 
 export const updateRecruiter = (id, data) =>
-  axios.put(`${API}/${id}`, data);
+  API.put(`/recruiters/${id}`, data);
 
 export const deleteRecruiter = (id) =>
-  axios.delete(`${API}/${id}`);
+  API.delete(`/recruiters/${id}`);
 
 export const assignCompanyToRecruiter = (id, companyId) =>
-  axios.put(`${API}/${id}/assign-company`, {
+  API.put(`/recruiters/${id}/assign-company`, {
     companyId,
   });

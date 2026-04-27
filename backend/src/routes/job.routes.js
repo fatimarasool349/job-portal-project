@@ -12,10 +12,11 @@ import { isAuthenticated } from "../middleware/authMiddleware.js";
 const router = express.Router();
 
 router.post("/", isAuthenticated, createJob);
-router.get("/", getAllJobs);
+router.get("/", isAuthenticated, getAllJobs);
 router.get("/my", isAuthenticated, getMyJobs);
 router.get("/:id", getJobById);
 router.put("/:id", isAuthenticated, updateJob);
 router.delete("/:id", isAuthenticated, deleteJob);
+console.log(`Job routes mounted`)
 
 export default router;

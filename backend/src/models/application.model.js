@@ -15,13 +15,13 @@ const applicationSchema = new mongoose.Schema(
 
     recruiter: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
+      ref: "Users", // ✅ Changed from "User" to "Users" (matches the export)
     },
 
     // 🔥 ADD THIS (VERY IMPORTANT)
     candidate: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
+      ref: "Users", // ✅ Changed from "Use   r" to "Users"
       required: true,
     },
 
@@ -31,7 +31,7 @@ const applicationSchema = new mongoose.Schema(
     email: { type: String, required: true },
     phone: { type: String },
 
-    resume: { type: String, required: true },
+    // resume: { type: String, required: true },
     portfolio: { type: String },
 
     linkedin: { type: String },

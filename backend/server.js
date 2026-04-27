@@ -20,14 +20,19 @@ connectDB();
 
 const app = express();
 
-app.use(cors());
+app.use(cors({
+  origin: "*",
+  credentials: true,
+  allowedHeaders: ["Content-Type", "Authorization"],
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"]
+}));
 app.use(express.json());
 
 
-app.use((req, res, next) => {
-  console.log("➡️ REQUEST:", req.method, req.url);
-  next();
-});
+// app.use((req, res, next) => {
+//   console.log("➡️ REQUEST:", req.method, req.url);
+//   next();
+// });
 
 app.use("/upload", express.static(path.join(process.cwd(), "upload")));
 console.log("AUTH ROUTES MOUNTING");
@@ -42,10 +47,12 @@ app.use("/api/candidate", candidateRoutes);
 app.use("/api/company", companyRoutes)
 app.use("/api/users", userRoutes);
 
-app.use("/api/recruiters", (req, res, next) => {
-  next();
-}, recruiterRoutes);
-app.use("/api/application", applicationRoutes)
+app.use("/api/recruiters", recruiterRoutes);
+
+console.log("APPLICATION ROUTES MOUNTING 1");
+app.use("/api/application", applicationRoutes);
+
+console.log("ALL ROUTES MOUNTED");
 
 
 

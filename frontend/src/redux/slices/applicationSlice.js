@@ -5,7 +5,7 @@ import {
   getRecruiterApplicationsApi,
   deleteApplicationApi,
 } from "../../api/applicationApi";
-
+import axios from "axios";
 // APPLY
 export const applyJob = createAsyncThunk("apply", async (formData) => {
   const res = await applyJobApi(formData);
@@ -32,6 +32,14 @@ export const deleteApplication = createAsyncThunk("delete", async (id) => {
   await deleteApplicationApi(id);
   return id;
 });
+
+export const updateApplicationStatus = createAsyncThunk(
+  "updateStatus",
+  async ({ id, status }) => {
+    const res = await axios.patch(`/api/application/${id}`, { status });
+    return res.data;
+  }
+);
 
 const applicationSlice = createSlice({
   name: "applications",
@@ -62,8 +70,18 @@ const applicationSlice = createSlice({
         state.applications = state.applications.filter(
           (app) => app._id !== action.payload,
         );
-      });
-  },
+      })
+      .addCase(updateApplicationStatus.fulfilled, (state, action) => {
+  const index = state.applications.findIndex(
+    (app) => app._id === action.payload._id
+  );if (index !== -1) {
+    state.applications[index] = action.payload;
+  }
 });
+}
+});
+
+
+
 
 export default applicationSlice.reducer;

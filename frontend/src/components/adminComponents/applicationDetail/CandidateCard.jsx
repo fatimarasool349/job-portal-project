@@ -1,15 +1,16 @@
 import { FaEnvelope, FaPhone } from "react-icons/fa";
 function CandidateCard({ data }) {
+    if (!data) return null;
   return (
     <section className="bg-white rounded-xl p-8 border">
       <div className="flex flex-col md:flex-row gap-8">
         <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center font-bold text-white text-sm shadow">
-          {data.name.charAt(0).toUpperCase()}
+          {data?.fullName.charAt(0).toUpperCase()}
         </div>
 
         <div className="flex-1 space-y-4">
           <div>
-            <h2 className="text-2xl font-bold">{data.name}</h2>
+            <h2 className="text-2xl font-bold">{data.fullName}</h2>
             <p className="text-blue-700 font-semibold">{data.role}</p>
           </div>
 

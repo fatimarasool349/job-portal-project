@@ -63,8 +63,9 @@ export const register = async (req, res) => {
 export const login = async (req, res) => {
   try {
     const { email, password } = req.body;
+    console.log("login :", email);
+
     const user = await Users.findOne({ email });
-    console.log("LOGIN IMAGE:", user.profileImage);
 
     if (!user) {
       return res.status(404).json({
@@ -83,6 +84,7 @@ export const login = async (req, res) => {
       {
         id: user._id,
         role: user.role,
+        company: user.companyId 
       },
       process.env.JWT_SECRET,
       { expiresIn: "1d" },
@@ -98,6 +100,7 @@ export const login = async (req, res) => {
         phone: user.phone,
         role: user.role,
         profileImage: user.profileImage || null,
+        companyId: user.companyId || null
       },
     });
   } catch (err) {
@@ -124,7 +127,10 @@ export const profileUpdate = async (req, res) => {
 
     if (req.file?.filename) {
       if (user.profileImage) {
-        const oldPath = path.join(process.cwd(), user.profileImage.replace(/^\//, ""));
+        const oldPath = path.join(
+          process.cwd(),
+          user.profileImage.replace(/^\//, ""),
+        );
         if (fs.existsSync(oldPath)) {
           fs.unlinkSync(oldPath);
         }
@@ -140,10 +146,7 @@ export const profileUpdate = async (req, res) => {
         });
       }
 
-      const isMatch = await bcrypt.compare(
-        currentPassword,
-        user.password
-      );
+      const isMatch = await bcrypt.compare(currentPassword, user.password);
 
       if (!isMatch) {
         return res.status(400).json({

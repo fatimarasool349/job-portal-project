@@ -90,7 +90,6 @@ function ManageJobs() {
 
   const roleFilteredJobs = useMemo(() => {
     if (canViewAll) return jobs;
-
     return jobs.filter(
       (job) => job.createdBy?._id === recruiterId
     );
