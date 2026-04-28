@@ -31,7 +31,7 @@ export const createCompany = async (req, res) => {
       about2: req.body.about2,
       size: req.body.size,
       businessHours: req.body.businessHours,
-      recruiterId: req.user.id, // ✅ ADD THIS
+      recruiterId: req.user.id, 
 
       stats,
       culture,

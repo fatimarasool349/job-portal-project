@@ -1,5 +1,5 @@
 import Job from "../models/job.model.js";
-import Users from "../models/users.model.js"
+import Users from "../models/users.model.js";
 import Company from "../models/company.model.js";
 
 export const createJob = async (req, res) => {
@@ -16,7 +16,7 @@ export const createJob = async (req, res) => {
       location,
       jobType,
       experience,
-      position
+      position,
     } = req.body;
     console.log("REQ BODY:", req.body);
     console.log("RESPONSIBILITIES:", req.body.responsibilities);
@@ -27,58 +27,55 @@ export const createJob = async (req, res) => {
     }
     const companyId = req.body?.company;
     const company = await Company.findOne({
-      _id: companyId
-    })
-    if(!company){
+      _id: companyId,
+    });
+    if (!company) {
       return res.status(400).json({
         message: "Company not found",
       });
     }
-    if(req?.user?.role == "recruiter"){
-      const user = await Users.findOne({
-        _id: req.user.id,
-      });
-      if (!(user && user?.companyId == companyId)){
+    if (req?.user?.role == "recruiter") {
+      if (req?.user?.company == null || req?.user?.company != companyId) {
         return res.status(400).json({
           message: "Company not assigned to recruiter",
         });
       }
     }
 
-  const job = await Job.create({
-  title,
-  description,
-  requirements,
-  responsibilities,
-  status,
-  salary,
-  location,
-  jobType,
-  experience,
-  position,
-  company: companyId,
-  createdBy: req.user.id,
-});
+    const job = await Job.create({
+      title,
+      description,
+      requirements,
+      responsibilities,
+      status,
+      salary,
+      location,
+      jobType,
+      experience,
+      position,
+      company: companyId,
+      createdBy: req.user.id,
+    });
 
     res.status(201).json({
       message: "Job created successfully",
       job,
     });
   } catch (error) {
-    console.log(`Internal Server Error ${error.message}`)
+    console.log(`Internal Server Error ${error.message}`);
     res.status(500).json({ message: error.message });
   }
 };
 
 export const getAllJobs = async (req, res) => {
   try {
-    console.log(`getAllJobs user ${JSON.stringify(req.user)}`)
+    console.log(`getAllJobs user ${JSON.stringify(req.user)}`);
 
     let criteria = {};
-    if(req.user?.role == "recruiter"){
+    if (req.user?.role == "recruiter") {
       criteria["company"] = req.user?.company;
     }
-    console.log(`getAllJobs criteria ${JSON.stringify(criteria)}`)
+    console.log(`getAllJobs criteria ${JSON.stringify(criteria)}`);
     const jobs = await Job.find(criteria)
       .sort({ createdAt: -1 })
       .populate("company")
@@ -112,7 +109,7 @@ export const getJobById = async (req, res) => {
 
 export const getMyJobs = async (req, res) => {
   try {
-    const jobs = await Job.find({ createdBy: req.user.id });
+    const jobs = await Job.find({ company: req.user.companyId });
 
     res.status(200).json({ jobs });
   } catch (error) {
@@ -189,7 +186,7 @@ export const deleteJob = async (req, res) => {
       return res.status(404).json({ message: "Job not found" });
     }
 
-    if (!isAdmin && job.createdBy.toString() !== req.user.id) {
+    if (!isAdmin && job.company.toString() !== req.user.company) {
       return res.status(403).json({ message: "Unauthorized" });
     }
 

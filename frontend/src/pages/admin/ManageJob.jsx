@@ -19,7 +19,7 @@ function ManageJobs() {
   const [showModal, setShowModal] = useState(false);
   const [editingJob, setEditingJob] = useState(null);
 
-  const { recruiterId, canAdd, canDelete, canEdit, canViewAll } =
+  const { recruiterId, recruiterCompanyId, canAdd, canDelete, canEdit, canViewAll } =
     useRole();
 
   const fetchJobs = async () => {
@@ -91,9 +91,9 @@ function ManageJobs() {
   const roleFilteredJobs = useMemo(() => {
     if (canViewAll) return jobs;
     return jobs.filter(
-      (job) => job.createdBy?._id === recruiterId
+      (job) => job.company?._id === recruiterCompanyId
     );
-  }, [jobs, recruiterId, canViewAll]);
+  }, [jobs, recruiterCompanyId, canViewAll]);
 
   const filteredJobs = useMemo(() => {
     return roleFilteredJobs.filter((job) => {

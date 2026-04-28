@@ -64,7 +64,7 @@ function JobApplicationTable({ applications, role }) {
 
                     <div>
                       <p className="font-semibold">{`${app.firstName} ${app.lastName}`}</p>
-                      <p className="text-xs text-gray-500">{app.position}</p>
+                      <p className="text-xs text-gray-500">{app.job?.title}</p>
                     </div>
                   </div>
                 </td>
@@ -74,7 +74,7 @@ function JobApplicationTable({ applications, role }) {
                 </td>
 
                 <td className="px-6 py-4 text-sm text-slate-600">
-                  {app.position}
+                  {app.job?.title}
                 </td>
 
                 <td className="px-6 py-4 text-sm text-slate-600">

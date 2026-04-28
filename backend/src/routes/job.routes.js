@@ -7,16 +7,14 @@ import {
   updateJob,
   deleteJob,
 } from "../controllers/job.controller.js";
-import { isAuthenticated } from "../middleware/authMiddleware.js";
 
 const router = express.Router();
 
-router.post("/", isAuthenticated, createJob);
-router.get("/", isAuthenticated, getAllJobs);
-router.get("/my", isAuthenticated, getMyJobs);
+router.post("/", createJob);
+router.get("/", getAllJobs);
+router.get("/my", getMyJobs);
 router.get("/:id", getJobById);
-router.put("/:id", isAuthenticated, updateJob);
-router.delete("/:id", isAuthenticated, deleteJob);
-console.log(`Job routes mounted`)
+router.put("/:id", updateJob);
+router.delete("/:id", deleteJob);
 
 export default router;

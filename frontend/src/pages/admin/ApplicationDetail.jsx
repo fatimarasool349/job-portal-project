@@ -23,15 +23,15 @@ function ApplicationDetail() {
     <main className="max-w-7xl mx-auto w-full px-8 py-8 flex-1">
       <Header
         status={application?.status}
-        onApprove={() =>    dispatch(updateApplicationStatus({ id: application.id, status: "accepted" }))}
-        onReject={() => dispatch(updateApplicationStatus({ id: application.id, status: "rejected" }))}
-        onMessage={() => navigate(`/dashboard/messages/${application.id}`)}
+        onApprove={() =>    dispatch(updateApplicationStatus({ id: application._id, status: "accepted" }))}
+        onReject={() => dispatch(updateApplicationStatus({ id: application._id, status: "rejected" }))}
+        onMessage={() => navigate(`/dashboard/messages/${application._id}`)}
       />
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* LEFT */}
         <div className="lg:col-span-8 flex flex-col gap-6">
-          <CandidateCard data={application?.job} />
+          <CandidateCard data={application} />
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <JobDetails job={application?.job} />

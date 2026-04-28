@@ -10,6 +10,7 @@ import { useDispatch } from "react-redux";
 import { loginSuccess } from "../../redux/slices/authSlice.js";
 import { getImageUrl } from "../../utils/getImageUrl.js";
 import defaultImage from "../../assets/Images/default_img.png";
+import API from "../../api/axiosConfig.js"
 
 export default function ProfilePage() {
   const [deactivated, setDeactivated] = useState(false);
@@ -82,14 +83,9 @@ export default function ProfilePage() {
         return;
       }
 
-      const res = await axios.put(
-        `http://localhost:5000/api/auth/update-profile/${userId}`,
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        },
+      const res = await API.put(
+        `/auth/update-profile/${userId}`,
+        formData
       );
 
       console.log("Updated:", res.data.user);

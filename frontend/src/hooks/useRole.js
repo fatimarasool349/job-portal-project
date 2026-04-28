@@ -1,6 +1,7 @@
 export const useRole = () => {
   const role = localStorage.getItem("role")?.trim().toLowerCase() || "recruiter";
   const recruiterId = localStorage.getItem("recruiter_id");
+  const recruiterCompanyId = localStorage.getItem("companyId")
 
   const isAdmin = role === "admin";
   const isRecruiter = role === "recruiter";
@@ -16,6 +17,7 @@ export const useRole = () => {
   return {
     role,
     recruiterId,
+    recruiterCompanyId,
 
     // roles
     isAdmin,

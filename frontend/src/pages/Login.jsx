@@ -28,7 +28,7 @@ function LoginPage() {
       });
       console.log("Response:", res.data);
 
-      const { token, user , company} = res.data;
+      const { token, user } = res.data;
       console.log("LOGIN USER:", res.data.user);
 
    dispatch(
@@ -36,11 +36,12 @@ function LoginPage() {
     user: user,   // keep full object
     token,
     role: user.role,
-    company: company || null,
+    company: user.companyId || null,
 
   }),
 );
       localStorage.setItem("token", token);
+      localStorage.setItem("companyId", user.companyId);
 
       // localStorage.setItem(
       //   "auth",

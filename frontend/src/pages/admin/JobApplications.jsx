@@ -28,11 +28,12 @@ const applications = useSelector(
   }, [dispatch, canViewAll]);
 
 
- const roleFiltered = useMemo(() => {
-  return canViewAll
-    ? applications
-    : applications.filter((a) => a.recruiter_id == recruiterId);
-}, [applications, canViewAll, recruiterId]);
+ const roleFiltered =  applications;
+// useMemo(() => {
+//   return canViewAll
+//     ? applications
+//     : applications.filter((a) => String(a.recruiter?._id) === String(recruiterId));
+// }, [applications, canViewAll, recruiterId]);
 
 const filteredApplications = useMemo(() => {
   return roleFiltered.filter((app) => {
@@ -59,23 +60,7 @@ const { currentPage, paginatedData, setCurrentPage } = usePagination(
   return (
     <section className="p-8 space-y-8 flex-1">
       {/* Header */}
-      <div className="flex justify-between items-end">
-        <div>
-          <h1 className="text-3xl font-extrabold">Job Applications</h1>
-          <p className="text-sm text-gray-500">
-            Manage and review incoming applications
-          </p>
-        </div>
-
-        <div className="flex gap-3">
-          <button className="px-4 py-2 border rounded-xl text-sm">
-            Filters
-          </button>
-          <button className="px-4 py-2 bg-blue-600 text-white rounded-xl text-sm">
-            Export CSV
-          </button>
-        </div>
-      </div>
+      
       <JobApplicationFilters
         search={search}
         setSearch={setSearch}

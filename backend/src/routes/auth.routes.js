@@ -8,19 +8,25 @@ import {
 import { upload } from "../middleware/upload.js";
 import { isAuthenticated } from "../middleware/authMiddleware.js";
 
-const router = express.Router();
+const publicAuthRoutes = express.Router();
+const protectedAuthRoutes = express.Router();
+
 console.log("AUTH ROUTES LOADED");
 
-router.post("/register", register);
-router.post("/login", login);
-router.get("/user/:id", getUserById);
-router.put("/update-profile/:id", upload.single("profileImage"), profileUpdate);
-router.get("/me", isAuthenticated, (req, res) => {
-  console.log("ME ROUTE WORKING");
+publicAuthRoutes.post("/register", register);
+publicAuthRoutes.post("/login", login);
 
-res.json({
-  _id: req.user.id,
-  role: req.user.role,
-});});
+protectedAuthRoutes.get("/user/:id", getUserById);
+protectedAuthRoutes.put(
+  "/update-profile/:id",
+  upload.single("profileImage"),
+  profileUpdate,
+);
+protectedAuthRoutes.get("/me", (req, res) => {
+  res.json({
+    _id: req.user.id,
+    role: req.user.role,
+  });
+});
 
-export default router;
+export {publicAuthRoutes, protectedAuthRoutes};

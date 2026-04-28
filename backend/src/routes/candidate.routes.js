@@ -6,13 +6,11 @@ import {
   deleteCandidate,
 } from "../controllers/candidate.controller.js";
 
-import { isAuthenticated } from "../middleware/authMiddleware.js";
-
 const router = express.Router();
 
-router.get("/", isAuthenticated, getCandidates);
-router.post("/", isAuthenticated, addCandidate);
-router.put("/:id", isAuthenticated, updateCandidate);
-router.delete("/:id", isAuthenticated, deleteCandidate);
+router.get("/", getCandidates);
+router.post("/", addCandidate);
+router.put("/:id", updateCandidate);
+router.delete("/:id", deleteCandidate);
 
 export default router;

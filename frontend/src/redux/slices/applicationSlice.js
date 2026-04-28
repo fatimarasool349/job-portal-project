@@ -4,6 +4,7 @@ import {
   getAllApplicationsApi,
   getRecruiterApplicationsApi,
   deleteApplicationApi,
+  updateApplicationStatusApi,
 } from "../../api/applicationApi";
 import axios from "axios";
 // APPLY
@@ -36,7 +37,7 @@ export const deleteApplication = createAsyncThunk("delete", async (id) => {
 export const updateApplicationStatus = createAsyncThunk(
   "updateStatus",
   async ({ id, status }) => {
-    const res = await axios.patch(`/api/application/${id}`, { status });
+    const res = await updateApplicationStatusApi(id,status);
     return res.data;
   }
 );
