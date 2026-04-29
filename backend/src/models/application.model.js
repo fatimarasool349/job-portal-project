@@ -32,7 +32,7 @@ const applicationSchema = new mongoose.Schema(
     email: { type: String, required: true },
     phone: { type: String },
 
-    // resume: { type: String, required: true },
+    resume: { type: String, required: true },
     portfolio: { type: String },
 
     linkedin: { type: String },

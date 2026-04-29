@@ -133,7 +133,7 @@ function JobApplicationTable({ applications, role }) {
                     <>
                       {/* Delete */}
                       <button
-                        onClick={() => handleDelete(app.id)}
+                        onClick={() => handleDelete(app._id)}
                         className=" text-gray-500 hover:bg-gray-100 hover:text-red-600 rounded-lg transition-all"
                         title="Delete"
                       >

@@ -1,102 +1,101 @@
 import { useParams } from "react-router-dom";
-import {
-  jobData,
-  companyData,
-  companyReviewData,
-  defaultValues,
-} from "../../constant";
+import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
 import RatingBar from "../../components/ViewDetail/RatingBar";
 import RatingStar from "../../components/reviewForm/RatingStar";
-import { useState } from "react";
-import { useForm } from "react-hook-form";
+import { createReview } from "../../api/reviewApi";
 
-function Review() {
+export default function Review() {
   const { id } = useParams();
-  const job = jobData.find((j) => j.id === parseInt(id));
-  const company = job ? companyData.find((c) => c.id === job.companyId) : null;
-  // Safety check
-  const reviews = companyReviewData.find((r) => r.companyId === company?.id) ||
-    job?.reviews || { overallRating: 0, ratingBar: [] };
-  const [overallRating, setOverallRating] = useState(
-    reviews.overallRating || 0,
-  );
-  const [categoryRatings, setCategoryRatings] = useState(
-    reviews.ratingBar.map((cat) => ({ ...cat })) || [],
-  );
 
-  const { register, handleSubmit, reset } = useForm({ defaultValues });
+  const [company, setCompany] = useState(null);
+  const [overallRating, setOverallRating] = useState(0);
+  const [categoryRatings, setCategoryRatings] = useState([]);
 
+  const { register, handleSubmit, reset } = useForm();
+
+  // GET JOB → COMPANY
+  useEffect(() => {
+    const fetchCompany = async () => {
+      try {
+        const jobRes = await API.get(`/job/${id}`);
+        const job = jobRes.data;
+
+        const companyRes = await API.get(
+          `/${job.companyId}`
+        );
+
+        setCompany(companyRes.data);
+
+        setCategoryRatings(companyRes.data?.ratingBar || []);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+
+    fetchCompany();
+  }, [id]);
+
+  // SAFE CATEGORY UPDATE
   const handleCategoryRate = (index, value) => {
-    const newRatings = [...categoryRatings];
-    newRatings[index].rating = value;
-    setCategoryRatings(newRatings);
+    setCategoryRatings((prev) =>
+      prev.map((item, i) =>
+        i === index ? { ...item, rating: value } : item
+      )
+    );
   };
 
-  const onSubmit = (data) => {
-    console.log({ ...data, overallRating, categoryRatings });
-    reset();
-    setOverallRating(0);
-    setCategoryRatings(reviews.ratingBar ? reviews.ratingBar.map(cat => ({ ...cat })) : []);
+  // SUBMIT REVIEW
+  const onSubmit = async (data) => {
+    try {
+      await createReview({
+        ...data,
+        companyId: company?._id,
+        rating: overallRating,
+        ratingBar: categoryRatings,
+      });
 
+      reset();
+      setOverallRating(0);
+      setCategoryRatings([]);
+      alert("Review submitted!");
+    } catch (err) {
+      console.log(err);
+    }
   };
 
-  if (!job) return <div>Job not found</div>; // fallback if ID is wrong
+  if (!company) return <div>Loading...</div>;
 
   return (
-    <main className="max-w-4xl mx-auto px-4 py-12">
-      <h1 className="text-3xl font-extrabold mb-4">{`Write a Review for ${company?.name||"Company"}`}</h1>
+    <main className="max-w-4xl mx-auto py-10">
+      <h1 className="text-2xl font-bold">
+        Write Review for {company.name}
+      </h1>
 
-      <section className="mb-8">
-        <h2 className="text-sm font-semibold uppercase mb-2">Overall Rating</h2>
-        <RatingStar stars={overallRating} setStars={setOverallRating} />
-      </section>
+      <RatingStar
+        stars={overallRating}
+        setStars={setOverallRating}
+      />
 
-      <section className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-        <RatingBar
-          bar={categoryRatings}
-          setBar={handleCategoryRate}
-          size="text-3xl"
-        />
-      </section>
+      <RatingBar
+        bar={categoryRatings}
+        setBar={handleCategoryRate}
+      />
 
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+      <form onSubmit={handleSubmit(onSubmit)}>
         <input
           {...register("title")}
-          placeholder="Review Title"
-          className="w-full p-3 rounded-xl border focus:ring-2 focus:ring-blue-600"
+          placeholder="Title"
         />
-        <textarea
-          {...register("review")}
-          placeholder="Your review..."
-          className="w-full p-3 rounded-xl border focus:ring-2 focus:ring-blue-600"
-          rows={5}
-        />
-        <div className="flex gap-4">
-          <textarea
-            {...register("pros")}
-            placeholder="Pros"
-            className="w-1/2 p-3 rounded-xl border"
-            rows={4}
-          />
-          <textarea
-            {...register("cons")}
-            placeholder="Cons"
-            className="w-1/2 p-3 rounded-xl border"
-            rows={4}
-          />
-        </div>
-        <label className="flex items-center gap-2">
-          <input type="checkbox" {...register("anonymous")} />
-          Submit anonymously
-        </label>
-        <button
-          type="submit"
-          className="px-6 py-3 bg-blue-600 text-white rounded-xl"
-        >
-          Submit Review
-        </button>
+
+        <textarea {...register("review")} placeholder="Review" />
+
+        <textarea {...register("pros")} placeholder="Pros" />
+
+        <textarea {...register("cons")} placeholder="Cons" />
+
+        <button type="submit">Submit</button>
       </form>
     </main>
   );
 }
-export default Review;

@@ -33,7 +33,7 @@ function CandidateCard({ data }) {
           </div>
 
           <p className="text-sm italic border-t border-gray-200 pt-4">
-            "{data.bio}"
+            "{data.coverLetter}"
           </p>
         </div>
       </div>

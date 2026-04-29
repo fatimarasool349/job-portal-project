@@ -34,7 +34,7 @@ function ApplicationDetail() {
           <CandidateCard data={application} />
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <JobDetails job={application?.job} />
+            <JobDetails application={application } />
             <Documents resume={application?.resume} />
           </div>
 
@@ -42,9 +42,9 @@ function ApplicationDetail() {
         </div>
 
         {/* RIGHT */}
-        <div className="lg:col-span-4">
+        {/* <div className="lg:col-span-4">
           <Timeline items={application?.timeline||[]} />
-        </div>
+        </div> */}
       </div>
     </main>
   );

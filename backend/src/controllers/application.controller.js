@@ -80,7 +80,13 @@ export const getRecruiterApplications = async (req, res) => {
     const applications = await Application.find({
       company: new mongoose.Types.ObjectId(companyId),
     })
-      .populate("job")
+      .populate({
+        path: "job",
+        populate: {
+          path: "company",
+          select: "name logo",
+        },
+      })
       .populate("candidate", "fullName email")
       .populate("recruiter", "fullName email");
 
@@ -109,12 +115,20 @@ export const updateApplicationStatus = async (req, res) => {
       return res.status(400).json({ message: "Status required" });
     }
 
-
     const application = await Application.findByIdAndUpdate(
       req.params.id,
       { status },
       { new: true },
-    );
+    )
+      .populate({
+        path: "job",
+        populate: {
+          path: "company",
+          select: "name logo",
+        },
+      })
+      .populate("candidate")
+      .populate("recruiter");
 
     res.json(application);
   } catch (err) {

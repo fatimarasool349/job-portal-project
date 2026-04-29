@@ -4,41 +4,44 @@ function CandidateTable({
   filteredCandidates,
   setCandidates,
   onEditCandidate,
-    onDeleteCandidate,
-    role,
+  onDeleteCandidate,
+  role,
 }) {
-  
   return (
     <div className="bg-white rounded-xl shadow-md border border-slate-200 overflow-hidden">
       <div className="overflow-x-auto">
         <table className="w-full text-left border-collapse">
-          <thead>
-            <tr className="bg-blue-600 border-b border-slate-200">
+          <thead className="bg-blue-600">
+            <tr className=" border-b border-slate-200">
               <th className="px-6 py-4 text-xs font-semibold text-white">
                 Name
               </th>
-              
+
               <th className="px-6 py-4 text-xs font-semibold text-white">
                 Email
               </th>
               <th className="px-6 py-4 text-xs font-semibold text-white">
                 Phone
               </th>
+            
                 <th className="px-6 py-4 text-xs font-semibold text-white">
                   Status
-              </th>
-              <th className="px-6 py-4 text-xs font-semibold text-white text-right">
-                Actions
-              </th>
+                </th>
+              
+              {role === "admin" && (
+                <th className="px-6 py-4 text-xs font-semibold text-white text-right">
+                  Actions
+                </th>
+              )}
             </tr>
           </thead>
-          <tbody >
+          <tbody>
             {filteredCandidates.map((candidate) => (
               <CandidateRow
                 key={candidate._id}
                 candidate={candidate}
                 onEdit={onEditCandidate}
-                onDelete={onDeleteCandidate} 
+                onDelete={onDeleteCandidate}
                 role={role}
               />
             ))}

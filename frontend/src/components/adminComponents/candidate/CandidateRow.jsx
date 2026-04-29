@@ -10,12 +10,12 @@ const CandidateRow = memo(({ candidate, onEdit, onDelete, role }) => {
     <tr className="hover:bg-slate-50 transition">
       <td className="px-6 py-4 font-medium text-slate-800">
         <div className="flex items-center gap-3">
-          {candidate.profileImage &&(
-          <img
-            alt={candidate.fullName}
-            className="w-10 h-10 rounded-full object-cover"
-            src={candidate.profileImage}
-          />
+          {candidate.profileImage && (
+            <img
+              alt={candidate.fullName}
+              className="w-10 h-10 rounded-full object-cover"
+              src={candidate.profileImage}
+            />
           )}
           <span className="font-semibold text-on-surface">
             {candidate.fullName}
@@ -35,11 +35,15 @@ const CandidateRow = memo(({ candidate, onEdit, onDelete, role }) => {
           <span>{candidate.phone || "N/A"}</span>
         </div>
       </td>
-       <td className="px-6 py-4 text-sm text-slate-600">
+      <td className="px-6 py-4 text-sm text-slate-600">
         <div className="flex items-center gap-2">
-          <span  className={`px-2 py-1 text-xs font-medium rounded-full capitalize ${getStatusStyle(
-      candidate.status
-    )}`}>{candidate.status || "N/A"}</span>
+          <span
+            className={`px-2 py-1 text-xs font-medium rounded-full capitalize ${getStatusStyle(
+              candidate.status,
+            )}`}
+          >
+            {candidate.status || "N/A"}
+          </span>
         </div>
       </td>
       {/* <td className="px-6 py-4">
@@ -51,8 +55,8 @@ const CandidateRow = memo(({ candidate, onEdit, onDelete, role }) => {
           {candidate.status}
         </span>
       </td> */}
-      <td className="px-6 py-4 text-right">
-        {role === "admin" && (
+      {role === "admin" && (
+        <td className="px-6 py-4 text-right">
           <div className="flex justify-end gap-2">
             <button
               onClick={() => onEdit(candidate)}
@@ -67,8 +71,8 @@ const CandidateRow = memo(({ candidate, onEdit, onDelete, role }) => {
               <MdDelete />
             </button>
           </div>
-        )}
-      </td>
+        </td>
+      )}
     </tr>
   );
 });

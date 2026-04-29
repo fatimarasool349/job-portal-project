@@ -2,19 +2,35 @@ import { GrView } from "react-icons/gr";
 import { MdOutlineFileDownload } from "react-icons/md";
 
 function Documents({ resume }) {
-  const resumeUrl = resume || "/resume.pdf"; 
+  const resumeUrl = resume ? `http://localhost:5000/${resume}` : "/resume.pdf";
+  const fileName = resume
+  ? resume.split(/[/\\]/).pop()
+  : "Resume.pdf";
+
 
   const handleView = () => {
     window.open(resumeUrl, "_blank");
   };
 
-  const handleDownload = () => {
-    const link = document.createElement("a");
-    link.href = resumeUrl;
-    link.download = resumeUrl.split("/").pop();
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+  const handleDownload = async () => {
+    try {
+      const response = await fetch(resumeUrl);
+      const blob = await response.blob();
+
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement("a");
+
+      link.href = url;
+      link.download = resume ? resume.split("/").pop() : "Resume.pdf";
+
+      document.body.appendChild(link);
+      link.click();
+
+      link.remove();
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error("Download failed:", error);
+    }
   };
 
   return (
@@ -25,9 +41,9 @@ function Documents({ resume }) {
         {/* Resume Name */}
         <button
           className="flex justify-between p-4 border border-gray-200 rounded-xl hover:bg-gray-100"
-          onClick={handleView} 
+          onClick={handleView}
         >
-          <span>{resume || "Resume.pdf"}</span>
+          <span>{fileName}</span>{" "}
           <GrView />
         </button>
 
