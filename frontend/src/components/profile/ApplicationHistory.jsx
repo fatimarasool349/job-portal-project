@@ -1,4 +1,4 @@
-import {applicationsData , statusStyles} from "../../constant/index.js"
+import {applicationsData , statusStyles} from "../../constants/index.js"
 import {CiMenuKebab} from "react-icons/ci"
 
 

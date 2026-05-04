@@ -1,11 +1,11 @@
 import { lazy } from "react";
 import { USER_ROLES } from "../constants/roles";
 
-// Eagerly loaded layouts
+// Layouts
 import AppLayout from "../components/layout/AppLayout";
 import AdminLayout from "../components/layout/AdminLayout";
 
-// Eagerly loaded auth pages
+// Auth pages
 import SignUp from "../pages/SignUp";
 import Login from "../pages/Login";
 import Logout from "../pages/Logout";
@@ -15,8 +15,9 @@ import LandingPage from "../pages/LandingPage";
 // Error pages
 import NotFound from "../pages/NotFound";
 import Unauthorized from "../pages/Unauthorized";
+import { PUBLIC_ROUTES, USER_ROUTES, ADMIN_ROUTES } from "../constants/routes";
 
-// Lazily load user pages (code splitting)
+// User pages (lazy)
 const UserProfile = lazy(() => import("../pages/user/UserProfile"));
 const FindJob = lazy(() => import("../pages/user/FindJob"));
 const ViewDetailPage = lazy(() => import("../pages/user/ViewDetailPage"));
@@ -28,7 +29,7 @@ const CompanyJobListing = lazy(() => import("../pages/user/CompanyJobListing"));
 const NotificationsPage = lazy(() => import("../pages/user/NotificationsPage"));
 const MessagePage = lazy(() => import("../pages/user/MessagePage"));
 
-// Lazily load admin pages (code splitting)
+// Admin pages (lazy)
 const Dashboard = lazy(() => import("../pages/admin/Dashboard"));
 const ManageRecruiter = lazy(() => import("../pages/admin/ManageRecuiter"));
 const ManageCompany = lazy(() => import("../pages/admin/ManageCompany"));
@@ -36,173 +37,86 @@ const ManageCandidate = lazy(() => import("../pages/admin/ManageCandidate"));
 const ManageJobs = lazy(() => import("../pages/admin/ManageJob"));
 const SystemAnalysis = lazy(() => import("../pages/admin/SystemAnaylsis"));
 const ProfilePage = lazy(() => import("../pages/admin/ProfilePage"));
-const JobApplications = lazy(() => import("../pages/admin/JobApplications"));
+const ManageJobApplications = lazy(() => import("../pages/admin/ManageJobApplications"));
 const ApplicationDetail = lazy(() => import("../pages/admin/ApplicationDetail"));
 const ReviewsDashboard = lazy(() => import("../pages/admin/ReviewsDashboard"));
 const DashboardNotificationPage = lazy(() =>
   import("../pages/admin/DashboardNotificationPage")
 );
 
-/**
- * Public route configuration
- * Routes accessible without authentication
- */
+/* ================= PUBLIC ROUTES ================= */
 export const publicRoutes = [
   {
-    path: "/",
-    element: <LandingPage />,
-    layout: <AppLayout />,
+    path: PUBLIC_ROUTES.HOME,
+    element: <AppLayout />, 
+    children: [
+      {
+        index: true,
+        element: <LandingPage />,
+      },
+    ],
   },
   {
-    path: "/login/:role",
+    path: PUBLIC_ROUTES.LOGIN,
     element: <Login />,
   },
   {
-    path: "/signup/:role",
+    path: PUBLIC_ROUTES.SIGNUP,
     element: <SignUp />,
   },
   {
-    path: "/logout/:role",
+    path: PUBLIC_ROUTES.LOGOUT,
     element: <Logout />,
   },
   {
-    path: "/forgotPassword",
+    path: PUBLIC_ROUTES.FORGOT_PASSWORD,
     element: <ForgotPassword />,
   },
 ];
 
-/**
- * User route configuration
- * Routes accessible to authenticated users (requires USER_ROLES.CANDIDATE role)
- */
+/* ================= USER ROUTES ================= */
 export const userRoutes = [
   {
-    path: "/",
-    layout: <AppLayout />,
+    path: PUBLIC_ROUTES.HOME,
+    element: <AppLayout />, 
     children: [
-      {
-        path: "userprofile",
-        element: <UserProfile />,
-      },
-      {
-        path: "findjob",
-        element: <FindJob />,
-      },
-      {
-        path: "companies",
-        element: <CompaniesPage />,
-      },
-      {
-        path: "companies/:id",
-        element: <CompanyJobListing />,
-      },
-      {
-        path: "viewdetailpage/:id",
-        element: <ViewDetailPage />,
-      },
-      {
-        path: "jobs/:jobId/apply",
-        element: <ApplyForm />,
-      },
-      {
-        path: "bookmark",
-        element: <BookMark />,
-      },
-      {
-        path: "notifications/:tab",
-        element: <NotificationsPage />,
-      },
-      {
-        path: "messages",
-        element: <MessagePage />,
-      },
-      {
-        path: "messages/:id",
-        element: <MessagePage />,
-      },
-      {
-        path: "review/:id",
-        element: <Review />,
-      },
+      { path: USER_ROUTES.PROFILE, element: <UserProfile /> },
+      { path: USER_ROUTES.FIND_JOBS, element: <FindJob /> },
+      { path: USER_ROUTES.COMPANIES, element: <CompaniesPage /> },
+      { path: USER_ROUTES.COMPANY_JOBS, element: <CompanyJobListing /> },
+      { path: USER_ROUTES.JOB_DETAIL, element: <ViewDetailPage /> },
+      { path: USER_ROUTES.APPLY_JOB, element: <ApplyForm /> },
+      { path: USER_ROUTES.BOOKMARKS, element: <BookMark /> },
+      { path: USER_ROUTES.NOTIFICATIONS, element: <NotificationsPage /> },
+      { path: USER_ROUTES.MESSAGES, element: <MessagePage /> },
+      { path: USER_ROUTES.MESSAGE_DETAIL, element: <MessagePage /> },
+      { path: USER_ROUTES.REVIEW, element: <Review /> },
     ],
   },
 ];
 
-/**
- * Admin route configuration
- * Routes accessible to admin and recruiter roles
- */
+/* ================= ADMIN ROUTES ================= */
 export const adminRoutes = [
   {
-    path: "/dashboard",
-    layout: <AdminLayout />,
-    allowedRoles: [USER_ROLES.ADMIN, USER_ROLES.RECRUITER],
+    element: <AdminLayout />, 
     children: [
-      {
-        index: true,
-        element: <Dashboard />,
-      },
-      {
-        path: "recruiters",
-        element: <ManageRecruiter />,
-        allowedRoles: [USER_ROLES.ADMIN],
-      },
-      {
-        path: "company",
-        element: <ManageCompany />,
-        allowedRoles: [USER_ROLES.ADMIN],
-      },
-      {
-        path: "candidates",
-        element: <ManageCandidate />,
-        allowedRoles: [USER_ROLES.ADMIN, USER_ROLES.RECRUITER],
-      },
-      {
-        path: "applications",
-        element: <JobApplications />,
-        allowedRoles: [USER_ROLES.ADMIN, USER_ROLES.RECRUITER],
-      },
-      {
-        path: "applications/:id",
-        element: <ApplicationDetail />,
-        allowedRoles: [USER_ROLES.ADMIN, USER_ROLES.RECRUITER],
-      },
-      {
-        path: "reviews",
-        element: <ReviewsDashboard />,
-        allowedRoles: [USER_ROLES.ADMIN, USER_ROLES.RECRUITER],
-      },
-      {
-        path: "notifications",
-        element: <DashboardNotificationPage />,
-        allowedRoles: [USER_ROLES.ADMIN, USER_ROLES.RECRUITER],
-      },
-      {
-        path: "jobs",
-        element: <ManageJobs />,
-        allowedRoles: [USER_ROLES.ADMIN, USER_ROLES.RECRUITER],
-      },
-      {
-        path: "analytics",
-        element: <SystemAnalysis />,
-        allowedRoles: [USER_ROLES.ADMIN],
-      },
-      {
-        path: "settings",
-        element: <ProfilePage />,
-      },
-      {
-        path: "messages/:id",
-        element: <MessagePage />,
-        allowedRoles: [USER_ROLES.RECRUITER],
-      },
+      { path: ADMIN_ROUTES.DASHBOARD, index: true, element: <Dashboard /> },
+      { path: ADMIN_ROUTES.RECRUITERS, element: <ManageRecruiter /> },
+      { path: ADMIN_ROUTES.COMPANIES, element: <ManageCompany /> },
+      { path: ADMIN_ROUTES.CANDIDATES, element: <ManageCandidate /> },
+      { path: ADMIN_ROUTES.APPLICATIONS, element: <ManageJobApplications /> },
+      { path: ADMIN_ROUTES.APPLICATION_DETAIL, element: <ApplicationDetail /> },
+      { path: ADMIN_ROUTES.REVIEWS, element: <ReviewsDashboard /> },
+      { path: ADMIN_ROUTES.NOTIFICATIONS, element: <DashboardNotificationPage /> },
+      { path: ADMIN_ROUTES.JOBS, element: <ManageJobs /> },
+      { path: ADMIN_ROUTES.ANALYTICS, element: <SystemAnalysis /> },
+      { path: ADMIN_ROUTES.SETTINGS, element: <ProfilePage /> },
+      { path: ADMIN_ROUTES.MESSAGES + "/:id", element: <MessagePage /> },
     ],
   },
 ];
 
-/**
- * Error route configuration
- */
+/* ================= ERROR ROUTES ================= */
 export const errorRoutes = [
   {
     path: "/unauthorized",
@@ -214,9 +128,7 @@ export const errorRoutes = [
   },
 ];
 
-/**
- * All routes combined
- */
+/* ================= ALL ROUTES ================= */
 export const allRoutes = [
   ...publicRoutes,
   ...userRoutes,

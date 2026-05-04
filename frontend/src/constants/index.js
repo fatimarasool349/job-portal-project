@@ -20,6 +20,7 @@ import {
   Building2,
 } from "lucide-react";
 import { MdRateReview } from "react-icons/md";
+import { ADMIN_ROUTES, USER_ROUTES } from "./routes.js";
 
 import {
   MdOutlineQueryStats,
@@ -318,7 +319,7 @@ export const jobsDataDescription = [
 ];
 
 // BreadCrumbs
-export const breadcrumbItems = [{ label: "Jobs", path: "/findjob" }];
+export const breadcrumbItems = [{ label: "Jobs", path: USER_ROUTES.FIND_JOBS }];
 
 //View Detail
 export const jobData = [
@@ -1355,55 +1356,55 @@ export const sidebarItems = [
   {
     name: "Dashboard",
     icon: Home,
-    path: "/dashboard",
+    path: ADMIN_ROUTES.DASHBOARD,
     roles: ["admin", "recruiter"], // both
   },
   {
     name: "Manage Users",
     icon: Users,
-    path: "/dashboard/candidates",
+    path: ADMIN_ROUTES.CANDIDATES,
     roles: ["admin", "recruiter"], // both
   },
    {
     name: "Manage Companies",
     icon: Building2,
-    path: "/dashboard/company",
+    path: ADMIN_ROUTES.COMPANIES,
     roles: ["admin"], // both
   },
   {
     name: "Manage Recruiters",
     icon: Building,
-    path: "/dashboard/recruiters",
+    path: ADMIN_ROUTES.RECRUITERS,
     roles: ["admin"], // only admin
   },
   {
     name: "Manage Jobs",
     icon: Briefcase,
-    path: "/dashboard/jobs",
+    path: ADMIN_ROUTES.JOBS,
     roles: ["admin", "recruiter"], // both
   },
   {
     name: "Applications",
     icon: FileText,
-    path: "/dashboard/job-applications",
+    path: ADMIN_ROUTES.APPLICATIONS,
     roles: ["admin", "recruiter"], // both
   },
   {
     name: "User Reviews",
     icon: MdRateReview,
-    path: "/dashboard/reviews",
+    path: ADMIN_ROUTES.REVIEWS,
     roles: ["admin", "recruiter"], // both
   },
   {
     name: "System Analytics",
     icon: BarChart,
-    path: "/dashboard/analytics",
+    path: ADMIN_ROUTES.ANALYTICS,
     roles: ["admin"], // only admin
   },
   {
     name: "Settings",
     icon: Settings,
-    path: "/dashboard/settings",
+    path: ADMIN_ROUTES.SETTINGS,
     roles: ["admin", "recruiter"], // both
   },
 ];
@@ -1507,14 +1508,14 @@ export const actions = [
     label: "Manage Users",
     icon: Users,
     primary: true,
-    path: "/dashboard/candidates",
+    path: ADMIN_ROUTES.CANDIDATES,
     for: ["admin"], // only admin
   },
   {
     label: "Manage Jobs",
     icon: Briefcase,
     primary: false,
-    path: "/dashboard/jobs",
+    path: ADMIN_ROUTES.JOBS,
     for: ["recruiter", "admin"], // both can see
   },
 ];
@@ -1716,17 +1717,15 @@ export const userReviews = [
 ];
 const role = localStorage.getItem("role")?.trim().toLowerCase();
 export const titles = {
-  "/dashboard": "Dashboard Overview",
-  "/dashboard/candidates":
-    role === "Recruiter" ? "Candidates" : "Manage Candidates",
-    "/dashboard/company": "Manage Companies ",
-
-  "/dashboard/jobs": "Manage Jobs",
-  "/dashboard/recruiters": "Manage Recruiters",
-  "/dashboard/job-applications": "Job Applications",
-  "/dashboard/analytics": "System Analytics",
-  "/dashboard/reviews": "User Reviews",
-  "/dashboard/settings": "Settings",
+  [ADMIN_ROUTES.DASHBOARD]: "Dashboard Overview",
+  [ADMIN_ROUTES.CANDIDATES]: role === "Recruiter" ? "Candidates" : "Manage Candidates",
+  [ADMIN_ROUTES.COMPANIES]: "Manage Companies",
+  [ADMIN_ROUTES.JOBS]: "Manage Jobs",
+  [ADMIN_ROUTES.RECRUITERS]: "Manage Recruiters",
+  [ADMIN_ROUTES.APPLICATIONS]: "Job Applications",
+  [ADMIN_ROUTES.ANALYTICS]: "System Analytics",
+  [ADMIN_ROUTES.REVIEWS]: "User Reviews",
+  [ADMIN_ROUTES.SETTINGS]: "Settings",
 };
 
 export const colorMap = {

@@ -1,5 +1,5 @@
-import {MdOutlinePictureAsPdf} from "react-icons/md"
-function Documents({register,errors}) {
+import { MdOutlinePictureAsPdf } from "react-icons/md";
+function Documents({ register, errors }) {
   return (
     <div className="p-6 sm:p-8 border-b border-slate-100 dark:border-slate-800">
       <div className="flex items-center gap-3 mb-6">
@@ -15,7 +15,11 @@ function Documents({register,errors}) {
             Resume/CV *
           </label>
           <input
-            {...register("resume", { required: "Resume is required" })}
+            {...register("resume", {
+              required: "Resume is required",
+              validate: (files) =>
+                files?.[0]?.type === "application/pdf" || "Only PDF allowed",
+            })}
             type="file"
             accept=".pdf"
             className="block w-full text-sm text-slate-500
@@ -46,7 +50,7 @@ function Documents({register,errors}) {
         </div>
       </div>
     </div>
-  )
+  );
 }
 
-export default Documents
+export default Documents;

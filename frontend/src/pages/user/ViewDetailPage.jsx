@@ -2,12 +2,13 @@ import { useParams } from "react-router-dom";
 import BreadCrumbs from "../../components/viewDetail/BreadCrumbs";
 import ViewDetail from "../../components/viewDetail/ViewDetail";
 import JobHeaderCard from "../../components/viewDetail/JobHeaderCard";
-import { getJobById } from "../../api/jobApi";
+import { getJobBySlug } from "../../api/jobApi";
 import { useState, useEffect } from "react";
 
 function ViewDetailPage() {
-  const { id } = useParams();
+  const { slug } = useParams();
 
+  console.log("SLUG FROM URL:", slug); // 👈 must NOT be undefined
   const [job, setJob] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -16,7 +17,7 @@ function ViewDetailPage() {
       try {
         setLoading(true);
 
-        const res = await getJobById(id);
+        const res = await getJobBySlug(slug);
         setJob(res);
 
       } catch (error) {
@@ -27,7 +28,7 @@ function ViewDetailPage() {
     };
 
     fetchData();
-  }, [id]);
+  }, [slug]);
 
   if (loading) return <div>Loading...</div>;
   if (!job) return <div>Job not found</div>;

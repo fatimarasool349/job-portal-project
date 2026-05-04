@@ -11,7 +11,7 @@ const applicationSchema = new mongoose.Schema(
     company: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Company",
-      required:true,
+      required: true,
     },
 
     recruiter: {
@@ -42,15 +42,19 @@ const applicationSchema = new mongoose.Schema(
 
     status: {
       type: String,
-      enum: ["Pending", "Reviewed", "Accepted", "Rejected"],
-      default: "Pending",
+      enum: ["pending", "reviewed", "accepted", "rejected"],
+      default: "pending",
     },
     appliedDate: {
       type: Date,
       default: Date.now,
     },
+    publicId: {
+      type: String,
+      unique: true,
+    },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 export default mongoose.model("Application", applicationSchema);

@@ -21,7 +21,7 @@ function ReviewTable  ({ reviews, onView })  {
         <tbody>
           {reviews.map((review) => (
             <ReviewRow
-              key={review.id}
+              key={review._id}
               review={review}
               onView={onView}
             />

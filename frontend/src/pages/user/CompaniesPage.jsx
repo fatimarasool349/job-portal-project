@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { companyData } from "../../constant";
+import { companyData } from "../../constants";
 import CompanyGrid from "../../components/companies/CompanyGrid";
 import CompanySearch from "../../components/companies/CompanySearch";
 import Pagination from "../../components/companies/Pagination";

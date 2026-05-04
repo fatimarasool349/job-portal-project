@@ -3,6 +3,7 @@ import RatingBar from "./../../components/ViewDetail/RatingBar";
 import { Link } from "react-router-dom";
 import API from "../../api/axiosConfig";
 import { useEffect, useState } from "react";
+import { USER_ROUTES } from "../../constants/routes";
 
 export default function Reviews({ company, job }) {
   const [reviews, setReviews] = useState({
@@ -52,7 +53,7 @@ export default function Reviews({ company, job }) {
           Employee Reviews
         </h3>
 
-        <Link to={`/review/${company?._id}`}>
+        <Link to={`${USER_ROUTES.REVIEW.replace(":id", job?._id)}`}>
           <button className="flex-1 text-md text-blue-600 border-2 border-blue-600">
             Write a Review
           </button>

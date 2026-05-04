@@ -4,28 +4,65 @@ import JobDetails from "../../components/adminComponents/applicationDetail/JobDe
 import Documents from "../../components/adminComponents/applicationDetail/Documents";
 import Notes from "../../components/adminComponents/applicationDetail/Notes";
 import Timeline from "../../components/adminComponents/applicationDetail/Timeline";
-import {updateApplicationStatus} from "../../redux/slices/applicationSlice.js"
-import { ApplicationData } from "../../constant/index.js";
+import { updateApplicationStatus } from "../../redux/slices/applicationSlice.js";
+import { ApplicationData } from "../../constants/index.js";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
+import { ADMIN_ROUTES } from "../../constants/routes.js";
 
 function ApplicationDetail() {
-  const { id } = useParams();
-  const application = useSelector((state) =>
-  state.applications.applications.find((a) => a._id == id)
-);
- 
+  const { publicId } = useParams();
+  console.log("URL publicId:", publicId);
+ const application = useSelector((state) => {
+  console.log("Redux applications:", state.applications.applications);
+
+  return state.applications.applications.find(
+    (a) => a.publicId === publicId
+  );
+});
+
+  if (!application) {
+    return (
+      <main className="p-8 text-center">
+        <p className="text-gray-500">Loading application...</p>
+      </main>
+    );
+  }
+
   const dispatch = useDispatch();
- 
+
   const navigate = useNavigate();
   return (
     <main className="max-w-7xl mx-auto w-full px-8 py-8 flex-1">
       <Header
         status={application?.status}
-        onApprove={() =>    dispatch(updateApplicationStatus({ id: application._id, status: "accepted" }))}
-        onReject={() => dispatch(updateApplicationStatus({ id: application._id, status: "rejected" }))}
-        onMessage={() => navigate(`/dashboard/messages/${application._id}`)}
+        onApprove={() => {
+          if (application?.status !== "pending") return;
+
+          dispatch(
+            updateApplicationStatus({
+              id: application.publicId,
+              status: "accepted",
+            }),
+          );
+        }}
+        onReject={() => {
+          if (application?.status !== "pending") return;
+
+          dispatch(
+            updateApplicationStatus({
+              id: application.publicId,
+              status: "rejected",
+            }),
+          );
+        }}
+        onMessage={() =>
+          application &&
+          navigate(
+            ADMIN_ROUTES.MESSAGES.replace(":publicId", application.publicId),
+          )
+        }
       />
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
@@ -34,11 +71,11 @@ function ApplicationDetail() {
           <CandidateCard data={application} />
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <JobDetails application={application } />
+            <JobDetails application={application} />
             <Documents resume={application?.resume} />
           </div>
 
-          <Notes candidateId={application?._id} />
+          <Notes candidateId={application?.publicId} />
         </div>
 
         {/* RIGHT */}

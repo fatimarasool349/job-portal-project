@@ -1,5 +1,5 @@
 import React from 'react'
-import {links, appName} from "../../../constant/index.js"
+import {links, appName} from "../../../constants/index.js"
 
 function AdminFooter() {
     const  year = new Date().getFullYear();

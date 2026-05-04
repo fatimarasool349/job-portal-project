@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+import { USER_ROUTES } from "../../constants/routes";
 
 function SearchResults({ results }) {
   const navigate = useNavigate();
@@ -13,7 +14,7 @@ function SearchResults({ results }) {
           className="p-4 border rounded mb-2 hover:bg-gray-50 cursor-pointer"
           onClick={() => {
             if (item.type === "job") {
-              navigate(`/viewdetailpage/${item.id}`);
+              navigate(USER_ROUTES.JOB_DETAIL.replace(":id", item.id));
             }
           }}
         >

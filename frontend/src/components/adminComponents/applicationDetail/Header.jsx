@@ -27,6 +27,7 @@ function Header({ status, onApprove, onReject, onMessage }) {
       </div>
       {role === "recruiter" && (
         <ActionButton
+          status={status}
           onApprove={onApprove}
           onReject={onReject}
           onMessage={onMessage}

@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate, Link, useParams } from "react-router-dom";
+import { PUBLIC_ROUTES, ADMIN_ROUTES } from "../constants/routes";
+
 import axios from "axios";
 import {
   FaUser,
@@ -52,11 +54,11 @@ export default function SignUp() {
 
       if (user.role === "recruiter") {
         localStorage.setItem("recruiter_id", user._id);
-        navigate("/dashboard");
+        navigate(ADMIN_ROUTES.DASHBOARD);
       } else if (user.role === "admin") {
-        navigate("/dashboard");
+        navigate(ADMIN_ROUTES.DASHBOARD);
       } else {
-        navigate("/");
+        navigate(PUBLIC_ROUTES.HOME);
       }
     } catch (error) {
       console.log("Signup error:", error.response?.data);
@@ -261,7 +263,7 @@ export default function SignUp() {
         <p className="text-center text-gray-500 text-sm mt-6">
           Already have an account?{" "}
           <Link
-            to={`/login/${role?.toLowerCase()?.replace(" ", "") || ""}`}
+            to={PUBLIC_ROUTES.LOGIN.replace(":role", role.toLowerCase().replace(" ", ""))}
             className="text-blue-600  cursor-pointer hover:underline"
           >
             Log In

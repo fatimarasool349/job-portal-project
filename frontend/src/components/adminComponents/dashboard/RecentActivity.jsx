@@ -1,4 +1,4 @@
-import { colorMap } from "../../../constant/index.js";
+import { colorMap } from "../../../constants/index.js";
 function RecentActivity({ activities }) {
   return (
     <section className="lg:col-span-2 bg-white rounded-xl shadow-sm border border-gray-100 p-6">

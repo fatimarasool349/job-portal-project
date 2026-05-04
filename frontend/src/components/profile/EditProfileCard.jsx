@@ -4,7 +4,7 @@ import "aos/dist/aos.css";
 import save from "./../../assets/Images/save.png";
 import editButton from "./../../assets/icons/camra.svg";
 import { FaEnvelope, FaPhone } from "react-icons/fa";
-import { initialUserData } from "../../constant/index.js";
+import { initialUserData } from "../../constants/index.js";
 
 function UserProfileCard({ initialData }) {
   useEffect(() => {

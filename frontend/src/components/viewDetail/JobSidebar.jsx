@@ -1,10 +1,11 @@
 import { IoMdArrowRoundForward } from "react-icons/io";
 import { FaRegBookmark } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
-import { companyData } from "../../constant";
+import { companyData } from "../../constants";
 import {FiExternalLink} from "react-icons/fi"
 import { Link } from "react-router-dom";
 import { getImageUrl } from "../../utils/getImageUrl";
+import { ADMIN_ROUTES, USER_ROUTES } from "../../constants/routes";
 
 function JobSidebar({ job }) {
   const navigate = useNavigate();
@@ -20,7 +21,7 @@ function JobSidebar({ job }) {
     }
 
     savedJobs.push(job);
-    if (!company) return null;
+    if (!job?.company) return null;
 
     localStorage.setItem("savedJobs", JSON.stringify(savedJobs));
     alert("Job saved successfully!");
@@ -30,7 +31,7 @@ function JobSidebar({ job }) {
     <div className="bg-white dark:bg-slate-900 rounded-xl p-6 border border-slate-200 dark:border-slate-800 shadow-sm sticky top-24">
       <div className="space-y-4">
         <button
-          onClick={() => navigate(`/jobs/${job._id}/apply`)}
+          onClick={() => navigate(USER_ROUTES.APPLY_JOB.replace(":slug", job.slug))}
           className="w-full py-3 px-4 bg-blue-600 hover:bg-blue-600/90 text-white font-bold rounded-lg transition-all flex items-center justify-center gap-2"
         >
           Apply Now

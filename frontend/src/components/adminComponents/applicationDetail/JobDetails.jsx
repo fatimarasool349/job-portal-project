@@ -1,5 +1,7 @@
 function JobDetails({ application }) {
 
+  if (!application) return null;
+
   return (
     <section className="bg-white rounded-xl p-6 border">
       <h3 className="text-xs font-bold uppercase mb-4">Job Details</h3>

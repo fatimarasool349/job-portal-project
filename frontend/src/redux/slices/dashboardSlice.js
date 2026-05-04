@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { stats, actions, activities } from "../../constant";
+import { stats, actions, activities } from "../../constants";
 
 const initialState = {
   stats: stats,

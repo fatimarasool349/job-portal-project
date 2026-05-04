@@ -1,24 +1,46 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import ReviewTable from "../../components/adminComponents/reviewdashboard/ReviewTable";
 import ReviewModal from "../../modal/ReviewModal";
-import { userReviews } from "../../constant/index.js";
+import { userReviews } from "../../constants/index.js";
 import { useRole } from "../../hooks/useRole";
 import Pagination from "../../components/adminComponents/common/Pagination";
 import { usePagination } from "../../hooks/usePagination";
-
+import { getAllReviews, getRecruiterReviews } from "../../api/reviewApi";
 function ReviewsDashboard() {
-  const [reviews, setReviews] = useState(userReviews);
+  const [reviews, setReviews] = useState([]);
   const [selectedReview, setSelectedReview] = useState(null);
-  const { role, recruiterId, canViewAll } = useRole();
-  const roleFilteredreview = useMemo(() => {
-    return canViewAll
-      ? reviews
-      : reviews.filter((review) => review.recruiter_id == recruiterId);
-  }, [reviews, canViewAll, recruiterId]);
+  const { role, recruiterCompanyId, canViewAll } = useRole();
+
+
+  useEffect(() => {
+    const fetchReviews = async () => {
+       try {
+        const res = canViewAll
+          ? await getAllReviews()
+          : await getRecruiterReviews();
+
+        console.log("API:", res.data);
+        setReviews(res.data);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+
+    fetchReviews();
+  }, [canViewAll]);
+
+    const filteredReviews = canViewAll
+    ? reviews
+    : reviews.filter((r) => r.company?._id === recruiterCompanyId);
+
   const { currentPage, paginatedData, setCurrentPage } = usePagination(
-    roleFilteredreview,
-    10,
+    filteredReviews,
+    10
   );
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [reviews, canViewAll]);
   const pageSize = 10;
   const handleFlag = (id) => {
     console.log("Flag review:", id);
@@ -27,6 +49,7 @@ function ReviewsDashboard() {
   const handleVerify = (id) => {
     console.log("Verify review:", id);
   };
+  console.log("PAGINATED:", paginatedData);
 
   return (
     <div className="p-8 flex-1">
@@ -36,7 +59,7 @@ function ReviewsDashboard() {
 
       <Pagination
         currentPage={currentPage}
-        totalEntries={roleFilteredreview.length}
+        totalEntries={filteredReviews.length}
         pageSize={pageSize}
         onPageChange={setCurrentPage}
       />

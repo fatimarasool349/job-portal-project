@@ -1,9 +1,10 @@
-import { heroData } from "../../constant/index.js";
+import { heroData } from "../../constants/index.js";
 import { useState } from "react";
 import { useSearch } from "../../hooks/useSearch.js";
 import SearchBar from "./SearchBar";
 import SearchResults from "./SearchResults";
 import { useNavigate } from "react-router-dom";
+import { USER_ROUTES } from "../../constants/routes.js";
 
 function HeroSection() {
   const [job, setJob] = useState("");
@@ -17,7 +18,7 @@ function HeroSection() {
     const data = await handleSearch();
 
     if (data && data.length > 0) {
-navigate(`/findjob?job=${job}&location=${location}`);
+      navigate(`${USER_ROUTES.FIND_JOBS}?job=${job}&location=${location}`);
     } else {
       setError("No jobs found. Try different keywords.");
     }

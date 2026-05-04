@@ -2,7 +2,7 @@ import { useState, useMemo, useCallback, useEffect } from "react";
 import CandidateTable from "../../components/adminComponents/candidate/CandidateTable";
 import CandidateFilters from "../../components/adminComponents/candidate/CandidateFilters";
 import Pagination from "../../components/adminComponents/common/Pagination";
-import { initialCandidates } from "../../constant/index.js";
+import { initialCandidates } from "../../constants/index.js";
 import AddCandidateModal from "../../modal/AddCandidateModal";
 import { useRole } from "../../hooks/useRole";
 import { usePagination } from "../../hooks/usePagination";

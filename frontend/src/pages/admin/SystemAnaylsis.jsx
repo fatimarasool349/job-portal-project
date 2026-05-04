@@ -3,7 +3,7 @@ import BarChartCard from "../../components/adminComponents/systemAnalysis/BarCha
 import LineChartCard from "../../components/adminComponents/systemAnalysis/LineChartCard";
 import PieChartCard from "../../components/adminComponents/systemAnalysis/PieChartCard";
 import CategoriesTable from "../../components/adminComponents/systemAnalysis/CategoriesTable";
-import { stats } from "../../constant/index.js";
+import { stats } from "../../constants/index.js";
 import {useRole} from "../../hooks/useRole";
 
 

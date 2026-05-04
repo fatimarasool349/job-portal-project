@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import AOS from "aos";
 import "aos/dist/aos.css";
-import { statsData } from "../../constant/index.js";
+import { statsData } from "../../constants/index.js";
 
 function Stats() {
   useEffect(() => {

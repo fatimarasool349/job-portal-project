@@ -3,7 +3,7 @@ import { FaArrowRight } from "react-icons/fa";
 import { getAllJobs } from "../../api/jobApi";
 
 
-import { jobData, companyData } from "../../constant/index.js";
+import { jobData, companyData } from "../../constants/index.js";
 import JobCard from "./JobCard.jsx";
 
 function FeaturedJobs() {

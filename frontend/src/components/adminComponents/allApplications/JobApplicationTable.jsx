@@ -1,10 +1,11 @@
 import { FaFileAlt, FaGlobe, FaLinkedin } from "react-icons/fa";
 import { GrView } from "react-icons/gr";
 import { Link } from "react-router-dom";
-import { getStatusStyle } from "../../../constant/index.js";
+import { getStatusStyle } from "../../../constants/index.js";
 import { useDispatch } from "react-redux";
 
 import { deleteApplication } from "../../../redux/slices/applicationSlice";
+import { ADMIN_ROUTES } from "../../../constants/routes.js";
 
 import { MdDelete } from "react-icons/md";
 function JobApplicationTable({ applications, role }) {
@@ -123,7 +124,7 @@ function JobApplicationTable({ applications, role }) {
                 </td>
 
                 <td className="px-6 py-4 text-sm text-slate-600 text-right space-x-2">
-                  <Link to={`/dashboard/applications/${app._id}`} title="View">
+                  <Link to={`${ADMIN_ROUTES.APPLICATION_DETAIL.replace(':publicId', app.publicId)}`} title="View">
                     <button className="p-2 text-blue-600 hover:bg-gray-100  rounded-lg transition-all">
                       <GrView />
                     </button>

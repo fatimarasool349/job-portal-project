@@ -1,6 +1,7 @@
 import Job from "../models/job.model.js";
 import Users from "../models/users.model.js";
 import Company from "../models/company.model.js";
+import { v4 as uuidv4 } from "uuid";
 
 export const createJob = async (req, res) => {
   console.log("CREATE JOB API HIT");
@@ -19,6 +20,8 @@ export const createJob = async (req, res) => {
       position,
     } = req.body;
     console.log("REQ BODY:", req.body);
+    const slug = `${title.toLowerCase().replace(/\s+/g, "-")}-${uuidv4().slice(0, 6)}`;
+
     console.log("RESPONSIBILITIES:", req.body.responsibilities);
     if (!title || !description) {
       return res.status(400).json({
@@ -55,6 +58,7 @@ export const createJob = async (req, res) => {
       position,
       company: companyId,
       createdBy: req.user.id,
+      slug,
     });
 
     res.status(201).json({
@@ -88,6 +92,7 @@ export const getAllJobs = async (req, res) => {
 };
 
 export const getJobById = async (req, res) => {
+  console.log("REQ PARAM ID:", req.params.id);
   try {
     const job = await Job.findById(req.params.id)
       .populate("company")
@@ -105,6 +110,15 @@ export const getJobById = async (req, res) => {
     console.log("GET JOB ERROR:", error);
     res.status(500).json({ message: error.message });
   }
+};
+export const getJobBySlug = async (req, res) => {
+  const job = await Job.findOne({ slug: req.params.slug })
+    .populate("company")
+    .populate("createdBy", "fullName email");
+
+  if (!job) return res.status(404).json({ message: "Job not found" });
+
+  res.status(200).json({ job }); 
 };
 
 export const getMyJobs = async (req, res) => {

@@ -2,11 +2,12 @@ import Application from "../models/application.model.js";
 import Job from "../models/job.model.js";
 import Company from "../models/company.model.js";
 import mongoose from "mongoose";
+import { v4 as uuidv4 } from "uuid";
 
 export const applyJob = async (req, res) => {
   try {
     const {
-      jobId,
+      jobSlug,
       firstName,
       lastName,
       email,
@@ -19,8 +20,7 @@ export const applyJob = async (req, res) => {
       candidate,
     } = req.body;
     // find job to get recruiter
-    const job = await Job.findById(jobId);
-
+    const job = await Job.findOne({ slug: jobSlug });
     if (!job) {
       return res.status(404).json({ message: "Job not found" });
     }
@@ -30,10 +30,11 @@ export const applyJob = async (req, res) => {
     }
 
     const application = await Application.create({
-      job: jobId,
+      job: job._id,
       company: job.company,
       recruiter: job.createdBy,
       candidate: req.user?.id,
+      publicId: uuidv4(),
       firstName,
       lastName,
       email,
@@ -44,7 +45,7 @@ export const applyJob = async (req, res) => {
       linkedin,
       coverLetter,
     });
-    console.log("USER:", req.candidate);
+    console.log("USER:", req.user);
 
     res.status(201).json({
       message: "Application submitted successfully",
@@ -99,7 +100,7 @@ export const getRecruiterApplications = async (req, res) => {
 
 export const deleteApplication = async (req, res) => {
   try {
-    await Application.findByIdAndDelete(req.params.id);
+    await Application.findOneAndDelete({ publicId: req.params.publicId });
 
     res.json({ message: "Application deleted" });
   } catch (error) {
@@ -109,14 +110,14 @@ export const deleteApplication = async (req, res) => {
 export const updateApplicationStatus = async (req, res) => {
   try {
     const { status } = req.body;
-    console.log("CONTROLLER HIT:", req.params.id, req.body);
-    console.log("ID RECEIVED:", req.params.id);
+    console.log("CONTROLLER HIT:", req.params.publicId, req.body);
+    console.log("ID RECEIVED:", req.params.publicId);
     if (!status) {
       return res.status(400).json({ message: "Status required" });
     }
 
-    const application = await Application.findByIdAndUpdate(
-      req.params.id,
+    const application = await Application.findOneAndUpdate(
+      { publicId: req.params.publicId },
       { status },
       { new: true },
     )

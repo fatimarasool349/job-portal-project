@@ -14,7 +14,7 @@ function ProfessionalLinks({ register }) {
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
         <div className="space-y-2">
           <label className="text-sm font-semibold text-slate-700 dark:text-slate-300">
-            LinkedIn Profile
+            LinkedIn Profile (optional)
           </label>
           <div className="relative">
             <span className="absolute inset-y-0 left-3 flex items-center text-neutral-soft pointer-events-none">
@@ -31,7 +31,7 @@ function ProfessionalLinks({ register }) {
 
         <div className="space-y-2 relative">
           <label className="text-sm font-semibold text-slate-700 dark:text-slate-300">
-            GitHub URL
+            GitHub URL (optional)
           </label>
           <div className="relative">
             <span className="absolute inset-y-0 left-3 flex items-center text-neutral-soft pointer-events-none">

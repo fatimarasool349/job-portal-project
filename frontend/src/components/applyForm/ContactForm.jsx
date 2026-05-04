@@ -1,7 +1,7 @@
 import { IoPersonSharp } from "react-icons/io5";
-import { contactFields } from "../../constant";
+import { contactFields } from "../../constants";
 
-function ContactForm({ register, errors }) {
+function ContactForm({ register, errors,dirtyFields }) {
   return (
     <div className="p-6 sm:p-8 border-b border-slate-200 dark:border-slate-700">
       <div className="flex items-center gap-3 mb-6">
@@ -26,7 +26,7 @@ function ContactForm({ register, errors }) {
               type={field.type}
               className="w-full rounded-lg border border-slate-300 dark:border-slate-700 dark:bg-slate-800 focus:border-blue-600 focus:ring-blue-600 h-12 px-3 text-slate-900 dark:text-slate-50"
             />
-            {errors[field.name] && (
+            {errors[field.name] && dirtyFields[field.name] &&  (
               <p className="text-xs text-red-500">{errors[field.name].message}</p>
             )}
           </div>

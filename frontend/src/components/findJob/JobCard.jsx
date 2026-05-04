@@ -1,7 +1,8 @@
 import { Link } from "react-router-dom";
-import { getBadgeColor } from "../../constant";
+import { getBadgeColor } from "../../constants";
 import { FaBuilding, FaMapMarkerAlt } from "react-icons/fa";
 import { getImageUrl } from "../../utils/getImageUrl";
+import { USER_ROUTES } from "../../constants/routes";
 
 function JobCard({ job }) {
   return (
@@ -52,7 +53,7 @@ function JobCard({ job }) {
         <div className="text-sm font-bold text-slate-900 dark:text-white">
           {job.salary ? `Rs ${job.salary}` : "Negotiable"}
         </div>
-        <Link to={`/viewdetailpage/${job._id}`}>
+        <Link to={USER_ROUTES.JOB_DETAIL.replace(":slug", job.slug)}>
           <button className="rounded-lg bg-blue-600 px-3 py-1 text-sm font-bold text-white hover:opacity-90">
             View Details
           </button>

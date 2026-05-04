@@ -6,7 +6,7 @@ import {
   PointElement,
 } from "chart.js";
 import { Line } from "react-chartjs-2";
-import { lineChartData } from "../../../constant/index.js";
+import { lineChartData } from "../../../constants/index.js";
 
 ChartJS.register(LineElement, CategoryScale, LinearScale, PointElement);
 

@@ -1,6 +1,6 @@
 import { useState, useMemo, useEffect } from "react";
 import JobCard from "./JobCard.jsx";
-import { jobData as initialJobs , companyData } from "../../constant/index.js"; // replace with API later
+import { jobData as initialJobs , companyData } from "../../constants/index.js"; // replace with API later
 
 function JobListing({ jobs }) {
   const [sortBy, setSortBy] = useState("Most Relevant");

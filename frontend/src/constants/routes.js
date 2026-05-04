@@ -1,25 +1,21 @@
-/**
- * Application route paths
- * Centralized route definitions for consistency and maintainability
- */
 
-// Public routes
+
 export const PUBLIC_ROUTES = {
   HOME: "/",
   LOGIN: "/login/:role",
   SIGNUP: "/signup/:role",
   LOGOUT: "/logout/:role",
-  FORGOT_PASSWORD: "/forgotPassword",
+  FORGOT_PASSWORD: "/forgot-password",
 };
 
-// User routes (accessible to authenticated users)
 export const USER_ROUTES = {
-  PROFILE: "/userprofile",
-  FIND_JOBS: "/findjob",
+  PROFILE: "/user-profile",
+  FIND_JOBS: "/find-job",
   COMPANIES: "/companies",
   COMPANY_JOBS: "/companies/:id",
-  JOB_DETAIL: "/viewdetailpage/:id",
-  APPLY_JOB: "/jobs/:jobId/apply",
+  JOBS: "/jobs",
+  JOB_DETAIL: "/job-detail-page/:slug",
+  APPLY_JOB: "/jobs/:slug/apply",
   BOOKMARKS: "/bookmark",
   NOTIFICATIONS: "/notifications/:tab",
   MESSAGES: "/messages",
@@ -27,7 +23,6 @@ export const USER_ROUTES = {
   REVIEW: "/review/:id",
 };
 
-// Admin routes
 export const ADMIN_ROUTES = {
   DASHBOARD: "/dashboard",
   RECRUITERS: "/dashboard/recruiters",
@@ -35,7 +30,7 @@ export const ADMIN_ROUTES = {
   CANDIDATES: "/dashboard/candidates",
   JOBS: "/dashboard/jobs",
   APPLICATIONS: "/dashboard/applications",
-  APPLICATION_DETAIL: "/dashboard/applications/:id",
+  APPLICATION_DETAIL: "/dashboard/applications/:publicId",
   REVIEWS: "/dashboard/reviews",
   NOTIFICATIONS: "/dashboard/notifications",
   ANALYTICS: "/dashboard/analytics",
@@ -43,13 +38,11 @@ export const ADMIN_ROUTES = {
   MESSAGES: "/dashboard/messages/:id",
 };
 
-// Error routes
 export const ERROR_ROUTES = {
   UNAUTHORIZED: "/unauthorized",
   NOT_FOUND: "/404",
 };
 
-// All routes combined
 export const ALL_ROUTES = {
   ...PUBLIC_ROUTES,
   ...USER_ROUTES,

@@ -10,8 +10,8 @@ const jobSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-   responsibilities: { type: [String], default: [] },
-   requirements: { type: [String], default: [] },
+    responsibilities: { type: [String], default: [] },
+    requirements: { type: [String], default: [] },
     // requirements: {
     //   type: String,
     // },
@@ -43,6 +43,10 @@ const jobSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "Company",
       required: true,
+    },
+    slug: {
+      type: String,
+      unique: true,
     },
   },
   { timestamps: true },

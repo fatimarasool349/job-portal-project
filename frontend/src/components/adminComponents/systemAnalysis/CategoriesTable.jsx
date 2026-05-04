@@ -1,5 +1,5 @@
 import { TrendingUp, TrendingDown } from "lucide-react";
-import {categoryTableData} from "../../../constant/index.js";
+import {categoryTableData} from "../../../constants/index.js";
 
 export default function CategoriesTable() {
  

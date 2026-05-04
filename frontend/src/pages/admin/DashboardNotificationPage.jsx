@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { dummyNotifications } from "../../constant";
+import { dummyNotifications } from "../../constants";
 
 import NotificationHeader from "../../components/adminComponents/notificationComponents/NotificationHeader";
 import NotificationFilters from "../../components/adminComponents/notificationComponents/NotificationFilters";

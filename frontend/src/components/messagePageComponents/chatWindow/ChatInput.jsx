@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { IoSend } from "react-icons/io5";
 import { FiPaperclip } from "react-icons/fi";
-import { sendMessage, getMessages } from "../../../constant";
+import { sendMessage, getMessages } from "../../../constants";
 
 function ChatInput({setMessages, currentUserId, chatUserId}) {
   const [text, setText] = useState("");

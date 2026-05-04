@@ -2,7 +2,7 @@ import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import AdminSidebar from "../adminComponents/common/AdminSidebar.jsx";
 import Navbar from "../adminComponents/common/Navbar.jsx";
 import AdminFooter from "../AdminComponents/common/AdminFooter.jsx";
-import { titles } from "../../constant/index.js";
+import { titles } from "../../constants/index.js";
 import { useRole } from "../../hooks/useRole.js";
 import { useSelector } from "react-redux";
 import defaultImage from "/src/assets/Images/default_img.png";

@@ -2,7 +2,7 @@ import { useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import AsideFilters from "../../components/findJob/AsideFilters";
 import JobListing from "../../components/findJob/JobListing";
-import { jobData, companyData } from "../../constant";
+import { jobData, companyData } from "../../constants";
 import { getAllJobs } from "../../api/jobApi";
 
 function FindJob() {

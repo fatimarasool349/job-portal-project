@@ -1,26 +1,28 @@
 import { useState, useEffect } from "react";
-import { jobData,companyData } from "../../constant";     
 import JobCard from "../../components/bookMark/JobCard";
 
 function BookMark() {
   const [activeTab, setActiveTab] = useState("jobs");
   const [savedJobs, setSavedJobs] = useState(() => {
     const stored = localStorage.getItem("savedJobs");
-    return stored ? JSON.parse(stored) : []; 
+    return stored ? JSON.parse(stored) : [];
   });
 
   useEffect(() => {
     localStorage.setItem("savedJobs", JSON.stringify(savedJobs));
   }, [savedJobs]);
+  console.log("savedJobs:", savedJobs);
 
-const bookmarkedJobs = savedJobs.map((job) => {
-  const company = companyData.find((c) => c.id === job.companyId);
-  return { ...job, company };
-});   
+  const bookmarkedJobs = savedJobs.map((job) => ({
+    ...job,
+    id: job._id,
+  }));
 
-  const removeBookmark = (jobId) => {
-    setSavedJobs((prev) => prev.filter((job) => job.id !== jobId));
-  };
+const removeBookmark = (jobId) => {
+  setSavedJobs((prev) =>
+    prev.filter((job) => job._id !== jobId)
+  );
+};
 
   return (
     <main className="mx-auto w-full max-w-7xl flex-grow px-4 py-8 sm:px-6 lg:px-8">
@@ -62,7 +64,7 @@ const bookmarkedJobs = savedJobs.map((job) => {
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
           {bookmarkedJobs.map((job) => (
             <JobCard
-              key={job.id}
+              key={job._id}
               job={job}
               savedJobs={savedJobs}
               removeBookmark={removeBookmark}

@@ -1,5 +1,5 @@
 import { ArrowUp, ArrowDown } from "lucide-react";
-import { colorMap } from "../../../constant/index.js";
+import { colorMap } from "../../../constants/index.js";
 
 function StatsCards({
   title,

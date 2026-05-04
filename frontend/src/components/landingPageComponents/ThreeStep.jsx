@@ -1,7 +1,7 @@
 import  { useEffect } from "react";
 import AOS from "aos";
 import "aos/dist/aos.css";
-import { steps } from "../../constant/index.js";
+import { steps } from "../../constants/index.js";
 
 function ThreeStep() {
   useEffect(() => {

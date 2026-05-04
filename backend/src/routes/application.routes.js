@@ -26,8 +26,8 @@ router.get("/", getAllApplications);
 router.get("/recruiter", getRecruiterApplications);
 
 // DELETE
-router.delete("/:id",  deleteApplication);
+router.delete("/:publicId",  deleteApplication);
 console.log("PATCH ROUTE HIT");
-router.patch("/:id", updateApplicationStatus);
+router.patch("/:publicId", updateApplicationStatus);
 
 export default router;

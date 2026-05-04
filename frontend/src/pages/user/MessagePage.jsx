@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Sidebar from "../../components/messagePageComponents/sidebar/Sidebar";
 import ChatWindow from "../../components/messagePageComponents/chatWindow/ChatWindow";
-import { chats } from "../../constant";
+import { chats } from "../../constants";
 
 function MessagePage() {
     const role = localStorage.getItem("role") || "jobSeeker";

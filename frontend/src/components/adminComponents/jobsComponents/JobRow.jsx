@@ -1,8 +1,8 @@
 import { FaEdit } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
-import { statusColors } from "../../../constant";
+import { statusColors } from "../../../constants";
 import { formatDate } from "../../../utils/formatDate";
-import { getStatusStyle } from "../../../constant";
+import { getStatusStyle } from "../../../constants";
 
 function JobRow({ job, onDeleteJob, onEditJob }) {
   return (

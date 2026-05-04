@@ -1,6 +1,7 @@
-import { getBadgeColor } from "../../constant";
+import { getBadgeColor } from "../../constants";
 import { FaRegBookmark } from "react-icons/fa";
 import { Link } from "react-router";
+import { USER_ROUTES } from "../../constants/routes";
 
 function JobCard({ job }) {
   const handleSaveJob = () => {
@@ -47,7 +48,7 @@ function JobCard({ job }) {
           </div>
         </div>
         <div className="flex flex-row sm:flex-col gap-2 w-full sm:w-auto">
-          <Link to={`/viewdetailpage/${job.id}`}>
+          <Link to={USER_ROUTES.JOB_DETAIL.replace(":id", job.id)}>
             <button className="flex-1 bg-blue-600 text-white px-6 py-2.5 rounded-lg font-semibold hover:bg-blue-700 transition-colors whitespace-nowrap">
               View Details
             </button>

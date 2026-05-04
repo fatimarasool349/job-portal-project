@@ -1,5 +1,5 @@
 import { Link, useLocation } from "react-router-dom";
-import { sidebarItems } from "../../../constant/index.js";
+import { sidebarItems } from "../../../constants/index.js";
 import { useRole } from "../../../hooks/useRole";
 function AdminSidebar() {
   const location = useLocation();

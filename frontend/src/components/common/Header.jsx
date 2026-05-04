@@ -5,7 +5,9 @@ import { CiLogout, CiBookmark } from "react-icons/ci";
 import { MdArrowDropDown } from "react-icons/md";
 import { IoIosSettings } from "react-icons/io";
 import { FaUser } from "react-icons/fa";
-import { initialUserData } from "../../constant";
+import { initialUserData} from "../../constants";
+import { PUBLIC_ROUTES, USER_ROUTES } from "../../constants/routes";
+
 
 function Header() {
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -37,31 +39,31 @@ function Header() {
 
           <nav className="hidden md:flex space-x-6">
             <Link
-              to="/"
+              to={PUBLIC_ROUTES.HOME}
               className="text-gray-700 hover:text-blue-600  transition"
             >
               Home
             </Link>
             <Link
-              to="/findjob"
+              to={USER_ROUTES.FIND_JOBS}
               className="text-gray-700 hover:text-blue-600  transition"
             >
               Find Jobs
             </Link>
             <Link
-              to="/companies"
+              to={USER_ROUTES.COMPANIES}
               className="text-gray-700 hover:text-blue-600  transition"
             >
               Companies
             </Link>
             <Link
-              to={"notifications/:tab"}
+              to={USER_ROUTES.NOTIFICATIONS}
               className="text-gray-700 hover:text-blue-600  transition"
             >
               Notifications
             </Link>
             <Link
-              to="/messages"
+              to={USER_ROUTES.MESSAGES}
               className="text-gray-700 hover:text-blue-600  transition"
             >
               Messages
@@ -70,7 +72,7 @@ function Header() {
 
           <div className="flex items-center space-x-6 relative">
             <Link
-              to="/login/jobseeker"
+              to={PUBLIC_ROUTES.LOGIN.replace(":role", role.toLowerCase())}
               className="text-sm font-medium text-gray-700 hover:text-blue-600"
             >
               Login
@@ -107,14 +109,14 @@ function Header() {
                   {/* Menu links */}
                   <div className="p-2">
                     <Link
-                      to="/userprofile"
+                      to={USER_ROUTES.PROFILE}
                       className="flex items-center gap-3 px-3 py-2 text-sm text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 rounded-lg transition-colors"
                     >
                       <FaUser className="text-lg" />
                       My Profile
                     </Link>
                     <Link
-                      to="/bookmark"
+                      to={USER_ROUTES.BOOKMARKS}
                       className="flex items-center gap-3 px-3 py-2 text-sm text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 rounded-lg transition-colors"
                     >
                       <CiBookmark className="text-lg" />
@@ -126,9 +128,8 @@ function Header() {
                   {/* Logout button */}
                   <div className="p-2 border-t border-slate-100 dark:border-slate-800">
                     <Link
-                      to={`/logout/${role.toLowerCase()}`} // Dynamic based on role
-                        state={{ from: location.pathname }} // <-- pass current page
-
+                      to={PUBLIC_ROUTES.LOGOUT.replace(":role", role.toLowerCase())}
+                      state={{ from: location.pathname }}
                       className="flex w-full items-center gap-3 px-3 py-2 text-sm text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors"
                     >
                       <CiLogout className="text-lg" />

@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import ChatMessages from "./ChatMessages";
 import ChatInput from "./ChatInput";
-import { chats, getMessages } from "../../../constant";
+import { chats, getMessages } from "../../../constants";
 import ChatHeader from "./ChatHeader";
 
 function ChatWindow({ activeChat, setActiveChat, role }) {

@@ -1,6 +1,7 @@
 import { Bell, LogOut } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useRole } from "../../../hooks/useRole.js";
+import { ADMIN_ROUTES } from "../../../constants/routes.js";
 
 function Navbar({
   title = "Dashboard",
@@ -15,9 +16,9 @@ function Navbar({
 
   const profileLink =
     role === "admin"
-      ? "/dashboard/settings"
+      ? ADMIN_ROUTES.SETTINGS
       : role === "recruiter"
-        ? "/dashboard/settings"
+        ? ADMIN_ROUTES.SETTINGS
         : "/profile";
 
   return (
@@ -27,7 +28,7 @@ function Navbar({
       <div className="flex items-center space-x-6">
         {role !== "Job Seeker" && (
           <Link
-            to="/dashboard/notifications"
+            to={`${ADMIN_ROUTES.NOTIFICATIONS}`}
             className="text-gray-400 hover:text-gray-600 relative"
           >
             <Bell className="w-6 h-6" />

@@ -3,7 +3,7 @@ import Description from "./Description";
 import Company from "./Company";
 import Reviews from "./Review";
 import JobSidebar from "./JobSidebar.jsx";
-import { getTabs ,companyData} from "../../constant/index.js";
+import { getTabs ,companyData} from "../../constants/index.js";
 
 function ViewDetail({ job  }) {
   const [activeTab, setActiveTab] = useState("description");

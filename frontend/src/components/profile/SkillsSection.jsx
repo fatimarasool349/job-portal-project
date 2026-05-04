@@ -1,7 +1,7 @@
 import { useRef, useState, useEffect } from "react";
 import skillIcon from "./../../assets/icons/skill.svg";
 import close from "./../../assets/icons/close.svg";
-import { initialSkills,colors} from "../../constant";
+import { initialSkills,colors} from "../../constants";
 import SkillModel from "../../modal/SkillModal";
 
 function SkillsSection() {

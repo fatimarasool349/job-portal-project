@@ -1,6 +1,6 @@
 import JobListing from "../../components/CompanyJobListing/JobListing";
 import CompanyHero from "../../components/companyJobListing/CompanyHero";
-import { companyData, jobData } from "../../constant";
+import { companyData, jobData } from "../../constants";
 import { useParams } from "react-router";
 
 function CompanyJobListing() {

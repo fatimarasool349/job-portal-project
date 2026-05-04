@@ -3,8 +3,8 @@ import { MdDelete } from "react-icons/md";
 import { TfiEmail } from "react-icons/tfi";
 import { FaPhoneAlt } from "react-icons/fa";
 import { memo } from "react";
-import { getStatusStyle } from "../../../constant";
-import { statusColors } from "../../../constant";
+import { getStatusStyle } from "../../../constants";
+import { statusColors } from "../../../constants";
 const CandidateRow = memo(({ candidate, onEdit, onDelete, role }) => {
   return (
     <tr className="hover:bg-slate-50 transition">

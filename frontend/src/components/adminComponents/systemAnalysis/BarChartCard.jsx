@@ -5,7 +5,7 @@ import {
   LinearScale,
 } from "chart.js";
 import { Bar } from "react-chartjs-2";
-import { barChartData } from "../../../constant/index.js";
+import { barChartData } from "../../../constants/index.js";
 
 ChartJS.register(BarElement, CategoryScale, LinearScale);
 

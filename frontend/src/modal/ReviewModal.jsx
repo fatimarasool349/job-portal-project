@@ -13,7 +13,7 @@ function ReviewModal({ review, onClose, onVerify, onFlag }) {
         <div className="flex justify-between items-center p-6 border-b border-slate-200">
           <div>
             <h2 className="text-xl font-bold">Full Review Detail</h2>
-            <p className="text-xs text-gray-500">Submission ID: #{review.id}</p>
+            <p className="text-xs text-gray-500">Submission ID: #{review._id}</p>
           </div>
 
           <button onClick={onClose}>
@@ -30,7 +30,7 @@ function ReviewModal({ review, onClose, onVerify, onFlag }) {
             </div>
 
             <div>
-              <h3 className="text-xl font-bold">{review.company}</h3>
+              <h3 className="text-xl font-bold">{review.company.name}</h3>
               <p className="text-sm text-gray-500">
                 {review.role} •{" "}
                 {review.anonymous ? "Anonymous" : "Verified Employee"}
@@ -43,9 +43,9 @@ function ReviewModal({ review, onClose, onVerify, onFlag }) {
             <h4 className="font-bold mb-2">Overall Rating</h4>
             <div className="flex items-center gap-4">
               <span className="text-3xl font-bold text-indigo-600">
-                {review.rating}.0
+                {review.overallRating}.0
               </span>
-              <RatingStar stars={review.rating} readonly={true} />
+              <RatingStar stars={review.overallRating} readonly={true} />
             </div>
           </div>
 
@@ -85,12 +85,12 @@ function ReviewModal({ review, onClose, onVerify, onFlag }) {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="bg-green-50 p-4 rounded-xl border-l-4 border-green-400">
               <h5 className="font-bold text-green-600 mb-2">Pros</h5>
-              <p>{review.pro}</p>
+              <p>{review.pros}</p>
             </div>
 
             <div className="bg-red-50 p-4 rounded-xl border-l-4 border-red-400">
               <h5 className="font-bold text-red-600 mb-2">Cons</h5>
-              <p>{review.con}</p>
+              <p>{review.cons}</p>
             </div>
           </div>
         </div>

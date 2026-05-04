@@ -1,10 +1,12 @@
 import { Link } from "react-router-dom";
+import { USER_ROUTES } from "../../constants/routes";
+import { getImageUrl } from "../../utils/getImageUrl";
 
 function JobCard({ job, savedJobs = [], removeBookmark }) {
-const isBookmarked = savedJobs.some(savedJob => savedJob.id === job.id);
+const isBookmarked = savedJobs.some(savedJob => savedJob._id === job._id);
   const handleBookmarkClick = () => {
     if (isBookmarked) {
-      removeBookmark(job.id);
+      removeBookmark(job._id);
     } 
   };
 
@@ -12,10 +14,10 @@ const isBookmarked = savedJobs.some(savedJob => savedJob.id === job.id);
     <div className="group flex flex-col justify-between rounded-xl border border-slate-200 bg-white p-5 shadow-sm hover:shadow-md dark:border-slate-800 dark:bg-slate-900">
       <div>
         <div className="mb-4 flex items-start justify-between">
-          <div className="h-12 w-12 rounded-lg bg-slate-100 p-2 dark:bg-slate-800">
+          <div className="h-12 w-12 rounded-lg bg-slate-100 dark:bg-slate-800 flex items-center justify-center">
             <div
-              className="h-full w-full bg-contain bg-center bg-no-repeat"
-              style={{ backgroundImage: `url(${job.icon})` }}
+              className="h-10 w-10 bg-contain rounded bg-center bg-no-repeat"
+              style={{ backgroundImage: `url(${getImageUrl(job.company?.logo)})` }}
             ></div>
           </div>
         </div>
@@ -23,11 +25,11 @@ const isBookmarked = savedJobs.some(savedJob => savedJob.id === job.id);
           {job.title}
         </h3>
         <p className="mt-1 text-sm font-medium text-slate-600 dark:text-slate-400">
-          {job.company.name} • {job.company.location}
+          {job.company?.name} • {job.company?.location}
         </p>
         <div className="mt-4 flex flex-wrap gap-2">
           <span className="rounded-full bg-slate-100 px-2.5 py-0.5 text-xs font-medium text-slate-600 dark:bg-slate-800 dark:text-slate-400">
-            {job.type}
+            {job.jobType}
           </span>
           <span className="rounded-full bg-slate-100 px-2.5 py-0.5 text-xs font-medium text-slate-600 dark:bg-slate-800 dark:text-slate-400">
             {job.salary}
@@ -36,7 +38,7 @@ const isBookmarked = savedJobs.some(savedJob => savedJob.id === job.id);
       </div>
       <div className="mt-6 flex items-center justify-between">
         <Link
-          to={`/jobs/${job.id}`}
+          to={`${USER_ROUTES.JOBS}/${job._id}`}
           className="flex items-center gap-1.5 text-sm font-semibold text-blue-600 hover:underline"
         >
           View Details

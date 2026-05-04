@@ -1,5 +1,6 @@
 import { Link, useLocation } from "react-router-dom";
-import { tabs } from "../../constant"; 
+import { tabs } from "../../constants"; 
+import { USER_ROUTES } from "../../constants/routes";
 
 const slugify = (str) => str.toLowerCase().replace(/\s+/g, "-");
 
@@ -10,7 +11,7 @@ function NotificationTabs  () {
     <div className="mb-6 border-b border-slate-200 dark:border-slate-800">
       <nav className="-mb-px flex space-x-8 overflow-x-auto">
         {tabs.map((tab) => {
-          const path = `/notifications/${slugify(tab)}`;
+          const path = `${USER_ROUTES.NOTIFICATIONS.replace(":tab", slugify(tab))}`;
           const isActive = location.pathname === path;
 
           return (

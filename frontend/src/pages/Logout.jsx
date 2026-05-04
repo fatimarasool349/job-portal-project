@@ -1,15 +1,18 @@
 import { useNavigate, useParams } from "react-router-dom";
 import LogoutCard from "../components/Logout/LogoutCard";
+import { persistor } from "../redux/store";
+import { logout } from "../redux/slices/authSlice";
+import { useDispatch } from "react-redux";
 
 function Logout() {
   const navigate = useNavigate();
   const { role } = useParams();
   const urlRole = role?.trim().toLowerCase();
+  const dispatch = useDispatch();
   const handleLogout = () => {
-    console.log(`${urlRole} logged out`);
-
-    localStorage.removeItem("authToken");
-    localStorage.removeItem("role");
+  
+    dispatch(logout());
+    persistor.purge();
 
     navigate(`/login/${urlRole}`);
   };

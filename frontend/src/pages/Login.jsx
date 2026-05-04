@@ -2,6 +2,7 @@ import { useForm } from "react-hook-form";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { FaEnvelope, FaLock } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
+import { PUBLIC_ROUTES, ADMIN_ROUTES } from "../constants/routes";
 
 import { loginSuccess } from "../redux/slices/authSlice";
 import axios from "axios";
@@ -64,11 +65,11 @@ function LoginPage() {
 
       if (user.role === "recruiter") {
         localStorage.setItem("recruiter_id", user._id);
-        navigate("/dashboard");
+        navigate(ADMIN_ROUTES.DASHBOARD);
       } else if (user.role === "admin") {
-        navigate("/dashboard");
+        navigate(ADMIN_ROUTES.DASHBOARD);
       } else {
-        navigate("/");
+        navigate(PUBLIC_ROUTES.HOME);
       }
     } catch (error) {
       const backendErrors = error.response?.data?.errors;
@@ -172,7 +173,7 @@ function LoginPage() {
             )}
             <div className="text-right mt-1">
               <Link
-                to={`/forgotPassword?role=${role.toLowerCase().replace(" ", "")}`}
+                to={`${PUBLIC_ROUTES.FORGOT_PASSWORD}?role=${role.toLowerCase().replace(" ", "")}`}
                 className="text-blue-600 text-sm"
               >
                 Forgot Password?
@@ -201,7 +202,7 @@ function LoginPage() {
         <p className="text-center text-gray-500 text-sm mt-6">
           Don't have an account?{" "}
           <Link
-            to={`/signup/${role.toLowerCase().replace(" ", "")}`}
+            to={PUBLIC_ROUTES.SIGNUP.replace(":role", role.toLowerCase().replace(" ", ""))}
             className="text-blue-600 font-semibold"
           >
             Create an account

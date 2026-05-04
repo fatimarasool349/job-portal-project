@@ -18,9 +18,9 @@ export const getAllApplicationsApi = () =>
 export const getRecruiterApplicationsApi = () =>
   API.get("/application/recruiter");
 
-export const deleteApplicationApi = (id) =>
-  API.delete(`/application/${id}`);
+export const deleteApplicationApi = (publicId) =>
+  API.delete(`/application/${publicId}`);
 
-export const updateApplicationStatusApi = (id, status) =>
-  API.patch(`/application/${id}`, { status });
+export const updateApplicationStatusApi = (publicId, status) =>
+  API.patch(`/application/${publicId}`, { status });
 

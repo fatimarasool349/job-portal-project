@@ -6,6 +6,7 @@ import { useState } from "react";
 import axios from "axios";
 
 import AppRoutes from "./routes/AppRoutes";
+
 import ScrollToTop from "./components/common/ScrollToTop";
 import { loginSuccess } from "./redux/slices/authSlice";
 
@@ -60,10 +61,11 @@ function App() {
     fetchUser();
   }, [dispatch]);
 
+
   return (
     <BrowserRouter>
       <ScrollToTop />
-      <AppRoutes />
+        <AppRoutes />
     </BrowserRouter>
   );
 }

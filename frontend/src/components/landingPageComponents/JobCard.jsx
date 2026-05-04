@@ -1,7 +1,8 @@
 import { FaMapMarkerAlt, FaMoneyBillWave } from "react-icons/fa";
-import { getBadgeColor } from "../../constant/index.js";
+import { getBadgeColor } from "../../constants/index.js";
 import { Link } from "react-router";
 import { getImageUrl } from "../../utils/getImageUrl.js";
+import { USER_ROUTES } from "../../constants/routes.js";
 
 function JobCard({ job }) {
   const company = job.company || {};
@@ -38,7 +39,7 @@ function JobCard({ job }) {
           {job.salary}
         </div>
       </div>
-      <Link to={`/viewdetailpage/${job._id}`}>
+      <Link to={USER_ROUTES.JOB_DETAIL.replace(":slug", job.slug)}>
         <button className="w-full mt-6 py-3 border border-blue-600 text-blue-600 font-bold rounded-xl hover:bg-blue-600 hover:text-white transition-colors">
           Apply Now
         </button>

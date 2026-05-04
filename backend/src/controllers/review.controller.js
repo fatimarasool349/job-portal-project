@@ -1,4 +1,6 @@
 import Review from "../models/review.model.js";
+import User from "../models/users.model.js";
+import Company from "../models/company.model.js";
 
 export const createReview = async (req, res) => {
   try {
@@ -14,10 +16,15 @@ export const createReview = async (req, res) => {
       anonymous,
     } = req.body;
 
-    const userId = req.user.id; // from JWT middleware
+    if (!companyId || !overallRating) {
+      return res.status(400).json({
+        success: false,
+        message: "Company and rating are required",
+      });
+    }
 
     const newReview = await Review.create({
-      user: userId,
+      user: req.user.id,
       job: jobId,
       company: companyId,
       title,
@@ -26,12 +33,11 @@ export const createReview = async (req, res) => {
       cons,
       overallRating,
       categoryRatings,
-      anonymous,
+      anonymous: anonymous || false,
     });
 
     res.status(201).json({
       success: true,
-      message: "Review submitted successfully",
       review: newReview,
     });
   } catch (error) {
@@ -52,13 +58,112 @@ export const getAllReviews = async (req, res) => {
 };
 
 export const getCompanyReviews = async (req, res) => {
-  const { companyId } = req.params;
+  try {
+    const { companyId } = req.params;
 
-  const reviews = await Review.find({ company: companyId })
-    .populate("user", "name")
-    .sort({ createdAt: -1 });
-      const ratingBar = []; // calculate later if needed
+    const reviews = await Review.find({ company: companyId })
+      .populate("user", "name")
+      .populate("company", "name")
+      .sort({ createdAt: -1 });
 
+    const avgRating =
+      reviews.reduce((acc, r) => acc + r.overallRating, 0) /
+      (reviews.length || 1);
 
-  res.json(reviews);
+    res.json({
+      reviews,
+      total: reviews.length,
+      averageRating: avgRating.toFixed(1),
+    });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+export const getReviewById = async (req, res) => {
+  try {
+    const review = await Review.findById(req.params.id)
+      .populate("user", "name email")
+      .populate("company", "name");
+
+    if (!review) {
+      return res.status(404).json({ message: "Review not found" });
+    }
+
+    res.json(review);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+export const verifyReview = async (req, res) => {
+  try {
+    const review = await Review.findByIdAndUpdate(
+      req.params.id,
+      { verified: true },
+      { new: true },
+    );
+
+    res.json({ success: true, review });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+export const flagReview = async (req, res) => {
+  try {
+    const review = await Review.findByIdAndUpdate(
+      req.params.id,
+      { flagged: true },
+      { new: true },
+    );
+
+    res.json({ success: true, review });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+export const deleteReview = async (req, res) => {
+  try {
+    await Review.findByIdAndDelete(req.params.id);
+
+    res.json({ success: true, message: "Review deleted" });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+export const getUserReviews = async (req, res) => {
+  try {
+    const reviews = await Review.find({ user: req.params.userId })
+      .populate("company", "name")
+      .sort({ createdAt: -1 });
+
+    res.json(reviews);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+export const getRecruiterReviews = async (req, res) => {
+  try {
+    console.log("USER IN RECRUITER API:", req.user);
+
+    const companyId = req.user.company;
+
+    if (!companyId) {
+      return res.status(400).json({ message: "Company not found for recruiter" });
+    }
+
+    const companyIds = [companyId];
+
+    const reviews = await Review.find({
+      company: { $in: companyIds },
+    })
+      .populate("user", "name")
+      .populate("company", "name")
+      .sort({ createdAt: -1 });
+
+    res.json(reviews);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
 };

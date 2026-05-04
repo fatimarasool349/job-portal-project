@@ -1,61 +1,81 @@
 import React from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import Swal from "sweetalert2";
 import { useDispatch } from "react-redux";
-
 
 import ContactForm from "../../components/ApplyForm/ContactForm";
 import Documents from "../../components/ApplyForm/Documents";
 import ProfessionalLinks from "../../components/ApplyForm/ProfessionalLinks";
 import AdditionalInformation from "../../components/ApplyForm/AdditionalInformation";
 import JobHeader from "../../components/ApplyForm/JobHeader";
-import { getJobById } from "../../api/jobApi";
+import { getJobBySlug } from "../../api/jobApi";
 import { applyJob } from "../../redux/slices/applicationSlice";
 import { useSelector } from "react-redux";
+import { PUBLIC_ROUTES, USER_ROUTES } from "../../constants/routes";
 
 import { useEffect, useState } from "react";
 import axios from "axios";
 
-import { jobData,companyData } from "../../constant";
+import { jobData, companyData } from "../../constants";
 
 function ApplyForm() {
-const { jobId } = useParams();
-const [job, setJob] = useState(null);
+  const { slug } = useParams();
+  const [job, setJob] = useState(null);
   const navigate = useNavigate();
-  const dispatch = useDispatch()
+  const location = useLocation();
 
-  const user = useSelector(state => state.auth.user);
+  const dispatch = useDispatch();
 
+  const user = useSelector((state) => state.auth.user);
+  const role = useSelector((state) => state.auth.user?.role);
+  const safeRole = role?.toLowerCase().replace(" ", "") || "user";
 
+  useEffect(() => {
+    const fetchJob = async () => {
+      try {
+        const res = await getJobBySlug(slug);
+        setJob(res);
+      } catch (err) {
+        console.log(err);
+      }
+    };
 
-useEffect(() => {
-  const fetchJob = async () => {
-    try {
-      const res = await getJobById(jobId);
-      setJob(res);
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
-  fetchJob();
-}, [jobId]);
+    fetchJob();
+  }, [slug]);
 
   const {
     register,
     handleSubmit,
     watch,
-    formState: { errors },
-  } = useForm();
+    formState: { errors, dirtyFields },
+  } = useForm({
+    mode: "onChange",
+  });
 
   const file = watch("resume");
+  const loginPath = PUBLIC_ROUTES.LOGIN.replace(":role", safeRole);
+  console.log("Redirecting to:", loginPath);
 
-   const onSubmit = async (data) => {
+  const onSubmit = async (data) => {
+    if (!user) {
+      const role = user?.role || "jobseeker"; // fallback
+      const safeRole = role.toLowerCase().replace(" ", "");
+      Swal.fire({
+        icon: "warning",
+        title: "Login Required",
+        text: "Please login to apply for this job.",
+      }).then(() => {
+        navigate(PUBLIC_ROUTES.LOGIN.replace(":role", safeRole), {
+          state: { from: location.pathname },
+        });
+      });
+      return; // ⛔ stop further execution
+    }
     try {
       const formData = new FormData();
 
-      formData.append("jobId", jobId);
+      formData.append("jobSlug", slug);
       formData.append("candidate", user._id); // from Redux or auth
       formData.append("firstName", data.firstName);
       formData.append("lastName", data.lastName);
@@ -82,9 +102,7 @@ useEffect(() => {
 
   if (!job) {
     return (
-      <div className="text-center py-20 text-gray-500">
-        Job not found!
-      </div>
+      <div className="text-center py-20 text-gray-500">Job not found!</div>
     );
   }
 
@@ -97,7 +115,12 @@ useEffect(() => {
         onSubmit={handleSubmit(onSubmit)}
         className="bg-white dark:bg-slate-900 shadow-xl shadow-slate-200/50 dark:shadow-none border border-slate-200 dark:border-slate-800 rounded-xl overflow-hidden"
       >
-        <ContactForm register={register} errors={errors} resume={file} />
+        <ContactForm
+          register={register}
+          errors={errors}
+          resume={file}
+          dirtyFields={dirtyFields}
+        />
         <Documents register={register} errors={errors} />
         <ProfessionalLinks register={register} />
         <AdditionalInformation register={register} />

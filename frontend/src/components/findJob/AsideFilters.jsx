@@ -4,7 +4,7 @@ import {
   experienceLevels,
   clearFilters,
   initialFilterData,
-} from "../../constant/index.js";
+} from "../../constants/index.js";
 
 function AsideFilters() {
   const [filters, setFilters] = useState(initialFilterData);

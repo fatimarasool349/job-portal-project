@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { jobData, companyData } from "../constant";
+import { jobData, companyData } from "../constants";
 
 export function useSearch(job, location) {
   const [results, setResults] = useState([]);
