@@ -1,9 +1,12 @@
 import { MdOutlineSchedule } from "react-icons/md";
 import { Link } from "react-router-dom";
+import { USER_ROUTES } from "../../constants/routes";
+import { getImageUrl } from "../../utils/getImageUrl";
+
 
 function CompanyCard({ company }) {
   return (
-    <div className="group relative flex flex-col overflow-hidden rounded-xl border bg-white shadow-sm hover:shadow-md">
+    <div className="group relative flex flex-col overflow-hidden rounded-xl border border-gray-300 bg-white shadow-sm hover:shadow-md">
 
       {/* Bookmark */}
       {/* <button className="absolute right-4 top-4 rounded-full bg-white/80 p-1.5 text-slate-400 hover:text-blue-600">
@@ -18,7 +21,7 @@ function CompanyCard({ company }) {
 
           <div className="h-16 w-16 rounded-lg bg-slate-50 p-2">
             <img
-              src={company.logo}
+              src={getImageUrl(company.logo) || "/default-company.png"}
               alt={company.name}
               className="h-full w-full object-contain"
             />
@@ -53,8 +56,8 @@ function CompanyCard({ company }) {
 
       </div>
 
-      <div className="mt-auto border-t p-4">
-        <Link to={`/companies/${company.id}`}>
+      <div className="mt-auto border-t border-t-gray-300 p-4">
+        <Link to={USER_ROUTES.COMPANY_JOBS.replace(":slug", company.slug)} className="block">
 
         <button className="w-full rounded-lg bg-blue-600 py-2 text-sm font-bold text-white hover:opacity-90">
           View Openings

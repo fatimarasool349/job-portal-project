@@ -6,12 +6,11 @@ export const getAllJobs = async () => {
 };
 
 export const getJobById = async (id) => {
-
   const res = await API.get(`/job/${id}`);
   return res.data.job;
 };
 export const getJobBySlug = async (slug) => {
-      console.log("SLUG IN API:", slug); // 👈 debug
+  console.log("SLUG IN API:", slug); // 👈 debug
 
   const res = await API.get(`/job/${slug}`);
   console.log("API RESPONSE:", res.data);
@@ -31,4 +30,20 @@ export const deleteJob = async (id) => {
 export const updateJob = async (id, data) => {
   const res = await API.put(`/job/${id}`, data);
   return res.data;
+};
+
+export const getJobsByCompany = async (companyId) => {
+  const res = await API.get(`/job/company/${companyId}`);
+
+  return res.data.jobs;
+};
+export const searchJobs = async (job, location) => {
+  const res = await API.get("/job/search", {
+    params: {
+      job,
+      location,
+    },
+  });
+
+  return res.data.jobs;
 };

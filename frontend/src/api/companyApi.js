@@ -10,6 +10,11 @@ export const getCompanyById = async (id) => {
   const res = await API.get(`/company/${id}`);
   return res.data;
 };
+export const getCompanyBySlug = async (slug) => {
+  const res = await API.get(`/company/${slug}`);
+
+  return res.data;
+};
 
 export const createCompany = async (data) => {
   const res = await API.post("/company", data);

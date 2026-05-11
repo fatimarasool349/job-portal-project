@@ -9,12 +9,12 @@ import { USER_ROUTES } from "../../constants/routes.js";
 function HeroSection() {
   const [job, setJob] = useState("");
   const [location, setLocation] = useState("");
-  const [error, setError] = useState("");
+  // const [error, setError] = useState("");
 
   const navigate = useNavigate();
 
-  const { results, handleSearch } = useSearch(job, location);
-   const onSearchClick = async () => {
+  const { results, error, handleSearch } = useSearch(job, location);
+  const onSearchClick = async () => {
     const data = await handleSearch();
 
     if (data && data.length > 0) {
@@ -42,6 +42,9 @@ function HeroSection() {
           setLocation={setLocation}
           onSearch={onSearchClick}
         />
+        {error && (
+          <p className="text-red-500 mt-3 text-sm font-medium">{error}</p>
+        )}
 
         <SearchResults results={results} />
       </div>

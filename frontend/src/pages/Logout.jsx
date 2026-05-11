@@ -3,6 +3,8 @@ import LogoutCard from "../components/Logout/LogoutCard";
 import { persistor } from "../redux/store";
 import { logout } from "../redux/slices/authSlice";
 import { useDispatch } from "react-redux";
+import { toast } from "react-hot-toast";
+import { PUBLIC_ROUTES } from "../constants/routes";
 
 function Logout() {
   const navigate = useNavigate();
@@ -10,11 +12,11 @@ function Logout() {
   const urlRole = role?.trim().toLowerCase();
   const dispatch = useDispatch();
   const handleLogout = () => {
-  
     dispatch(logout());
     persistor.purge();
+    toast.success("You have been logged out successfully!");
 
-    navigate(`/login/${urlRole}`);
+    navigate(PUBLIC_ROUTES.LOGIN.replace(":role", urlRole));
   };
 
   // Function to handle cancel

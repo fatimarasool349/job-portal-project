@@ -91,6 +91,59 @@ export const getAllJobs = async (req, res) => {
   }
 };
 
+export const getJobsByCompany = async (req, res) => {
+  try {
+    const { companyId } = req.params;
+
+    const jobs = await Job.find({
+      company: companyId,
+    })
+      .sort({ createdAt: -1 })
+      .populate("company")
+      .populate("createdBy", "fullName email");
+
+    res.status(200).json({
+      jobs,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: error.message,
+    });
+  }
+};
+export const searchJobs = async (req, res) => {
+  try {
+    const { job, location } = req.query;
+
+    const query = {};
+
+    if (job) {
+      query.title = { $regex: job, $options: "i" };
+    }
+
+    if (location) {
+      query.location = { $regex: location, $options: "i" };
+    }
+
+    const jobs = await Job.find(query).populate("company");
+
+    res.json({
+      success: true,
+      jobs,
+      count: jobs.length,
+      search: {
+        job,
+        location,
+      },
+    });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: "Search failed",
+    });
+  }
+};
+
 export const getJobById = async (req, res) => {
   console.log("REQ PARAM ID:", req.params.id);
   try {
@@ -118,7 +171,7 @@ export const getJobBySlug = async (req, res) => {
 
   if (!job) return res.status(404).json({ message: "Job not found" });
 
-  res.status(200).json({ job }); 
+  res.status(200).json({ job });
 };
 
 export const getMyJobs = async (req, res) => {

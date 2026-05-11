@@ -1,7 +1,8 @@
 import Users from "../models/users.model.js";
+import sendEmail from "../utils/sendEmail.js";
+import { recruiterSignupEmail } from "../templates/recruiterSignupEmail.js";
 
 export const getRecruiters = async (req, res) => {
-
   try {
     const { search, status } = req.query;
 
@@ -34,8 +35,25 @@ export const getRecruiters = async (req, res) => {
 export const updateRecruiter = async (req, res) => {
   try {
     const { id } = req.params;
+    if (req.body.companyId === "") {
+      return res.status(400).json({
+        field: "companyId",
+        message: "Please select a company",
+      });
+    }
 
     const updated = await Users.findByIdAndUpdate(id, req.body, { new: true });
+    console.log("UPDATED USER:", updated);
+    console.log("EMAIL FIELD:", updated.email);
+
+    // ✅ ADD EMAIL HERE (after update)
+    if (updated) {
+      await sendEmail(
+        updated.email,
+        "Profile Updated",
+        `Hi ${updated.fullName}, your recruiter profile was updated successfully.`,
+      );
+    }
 
     res.json({
       success: true,
@@ -45,6 +63,7 @@ export const updateRecruiter = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
 export const deleteRecruiter = async (req, res) => {
   try {
     const { id } = req.params;
@@ -83,12 +102,28 @@ export const toggleRecruiterStatus = async (req, res) => {
 export const assignCompanyToRecruiter = async (req, res) => {
   try {
     const { companyId } = req.body;
+    if (!companyId) {
+      return res.status(400).json({
+        field: "companyId",
+        message: "Please select a company",
+      });
+    }
 
     const user = await Users.findOneAndUpdate(
       { _id: req.params.id, role: "recruiter" },
       { companyId },
       { new: true },
-    ).populate("companyId", "name");;
+    ).populate("companyId", "name");
+
+    try {
+      await sendEmail(
+        user.email,
+        "Company Assigned 🏢",
+        recruiterSignupEmail(user.fullName, user.companyId.name),
+      );
+    } catch (emailErr) {
+      console.log("Email failed:", emailErr.message);
+    }
 
     res.json({ success: true, user });
   } catch (err) {

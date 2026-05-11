@@ -3,10 +3,16 @@ import RecentActivity from "../../components/adminComponents/dashboard/RecentAct
 import QuickAction from "../../components/adminComponents/dashboard/QuickAction";
 import StorageWidget from "../../components/adminComponents/dashboard/StorageWidget";
 import { useRole } from "../../hooks/useRole";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { useEffect } from "react";
+import { getDashboardData } from "../../redux/slices/dashboardSlice";
+
 
 function Dashboard() {
   const { role } = useRole();
+  
+    const dispatch = useDispatch();
+
   const stats = useSelector((state) => state.dashboard.stats);
   const actions = useSelector((state) => state.dashboard.actions);
   const activities = useSelector((state) => state.dashboard.activities);
@@ -17,6 +23,10 @@ function Dashboard() {
 
     return allowedRoles.map((roles) => roles.toLowerCase()).includes(role);
   });
+
+  useEffect(() => {
+    dispatch(getDashboardData());
+  }, [dispatch]);
 
   const filteredActions = actions.filter((item) => {
     if (!item.for) return true;

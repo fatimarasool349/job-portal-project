@@ -5,6 +5,7 @@ import {
   getMyCompany,
   updateCompany,
   deleteCompany,
+  getCompanyBySlug,
 } from "../controllers/company.controller.js";
 import { upload } from "../middleware/upload.js";
 
@@ -29,5 +30,7 @@ router.put(
   updateCompany,
 );
 router.delete("/:id", deleteCompany);
+router.get("/:slug", getCompanyBySlug);
+
 
 export default router;

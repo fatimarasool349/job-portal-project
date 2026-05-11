@@ -1,5 +1,3 @@
-
-
 export const PUBLIC_ROUTES = {
   HOME: "/",
   LOGIN: "/login/:role",
@@ -12,7 +10,7 @@ export const USER_ROUTES = {
   PROFILE: "/user-profile",
   FIND_JOBS: "/find-job",
   COMPANIES: "/companies",
-  COMPANY_JOBS: "/companies/:id",
+  COMPANY_JOBS: "/companies/:slug",
   JOBS: "/jobs",
   JOB_DETAIL: "/job-detail-page/:slug",
   APPLY_JOB: "/jobs/:slug/apply",
@@ -20,7 +18,7 @@ export const USER_ROUTES = {
   NOTIFICATIONS: "/notifications/:tab",
   MESSAGES: "/messages",
   MESSAGE_DETAIL: "/messages/:id",
-  REVIEW: "/review/:id",
+  REVIEW: "/review/:slug",
 };
 
 export const ADMIN_ROUTES = {
@@ -38,6 +36,11 @@ export const ADMIN_ROUTES = {
   MESSAGES: "/dashboard/messages/:id",
 };
 
+export const AUTH_STATUS_ROUTES = {
+  PENDING: "/pending",
+  BLOCKED: "/blocked",
+};
+
 export const ERROR_ROUTES = {
   UNAUTHORIZED: "/unauthorized",
   NOT_FOUND: "/404",
@@ -48,4 +51,5 @@ export const ALL_ROUTES = {
   ...USER_ROUTES,
   ...ADMIN_ROUTES,
   ...ERROR_ROUTES,
+  ...AUTH_STATUS_ROUTES,
 };

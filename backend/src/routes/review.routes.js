@@ -1,5 +1,5 @@
 import express from "express";
-import { createReview ,getAllReviews,getCompanyReviews,verifyReview,flagReview,deleteReview,getUserReviews,getReviewById,getRecruiterReviews} from "../controllers/review.controller.js";
+import { createReview ,getAllReviews,getCompanyReviews,verifyReview,flagReview,deleteReview,getUserReviews,getReviewById,getRecruiterReviews,getReviewByUUID} from "../controllers/review.controller.js";
 
 const router = express.Router();
 
@@ -16,6 +16,7 @@ router.delete("/:id", deleteReview);
 // 👇 ALWAYS LAST (VERY IMPORTANT)
 router.get("/:id", getReviewById);
 router.get("/", getAllReviews);
+router.get("/uuid/:reviewId", getReviewByUUID);
 
 
 export default router;

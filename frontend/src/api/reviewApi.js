@@ -15,7 +15,7 @@ export const getAllReviews = async () => {
 };
 
 export const getCompanyReviews = async (companyId) => {
-  return API.get(`/reviews/${companyId}`);
+  return API.get(`/reviews/company/${companyId}`);
   const res = await getCompanyReviews(companyId);
 
   setReviews(res.data.reviews);
@@ -45,4 +45,7 @@ export const getUserReviews = async (userId) => {
 export const getRecruiterReviews = async () => {
   return API.get("/reviews/recruiter");
   
+};
+export const getReviewByUUID = async (reviewId) => {
+  return API.get(`/reviews/uuid/${reviewId}`);
 };

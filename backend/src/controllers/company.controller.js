@@ -2,6 +2,7 @@ import Company from "../models/company.model.js";
 import Users from "../models/users.model.js";
 import fs from "fs";
 import path from "path";
+import slugify from "slugify";
 
 // CREATE
 export const createCompany = async (req, res) => {
@@ -22,8 +23,14 @@ export const createCompany = async (req, res) => {
     const stats = req.body.stats ? JSON.parse(req.body.stats) : [];
     const culture = req.body.culture ? JSON.parse(req.body.culture) : [];
 
+    const slug = slugify(req.body.name, {
+      lower: true,
+      strict: true,
+    });
+
     const company = await Company.create({
       name: req.body.name,
+      slug,
       industry: req.body.industry,
       location: req.body.location,
       website: req.body.website,
@@ -31,7 +38,7 @@ export const createCompany = async (req, res) => {
       about2: req.body.about2,
       size: req.body.size,
       businessHours: req.body.businessHours,
-      recruiterId: req.user.id, 
+      recruiterId: req.user.id,
 
       stats,
       culture,
@@ -55,6 +62,25 @@ export const getCompanies = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+export const getCompanyBySlug = async (req, res) => {
+  try {
+    const company = await Company.findOne({
+      slug: req.params.slug,
+    });
+
+    if (!company) {
+      return res.status(404).json({
+        message: "Company not found",
+      });
+    }
+
+    res.status(200).json(company);
+  } catch (error) {
+    res.status(500).json({
+      message: error.message,
+    });
+  }
+};
 
 // GET ONE
 export const getMyCompany = async (req, res) => {
@@ -66,9 +92,9 @@ export const getMyCompany = async (req, res) => {
     const user = await Users.findOne({
       _id: userId,
     }).populate("companyId");
-    
+
     console.log(`User found:`, user);
-    
+
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }

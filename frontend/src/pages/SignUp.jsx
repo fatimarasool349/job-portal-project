@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate, Link, useParams } from "react-router-dom";
-import { PUBLIC_ROUTES, ADMIN_ROUTES } from "../constants/routes";
+import { PUBLIC_ROUTES, ADMIN_ROUTES, AUTH_STATUS_ROUTES } from "../constants/routes";
+import toast from "react-hot-toast";
 
 import axios from "axios";
 import {
@@ -35,7 +36,7 @@ export default function SignUp() {
     try {
       const response = await axios.post(
         "http://localhost:5000/api/auth/register",
-        { ...data, role },
+        { ...data, role: role.toLowerCase() },
       );
       console.log("ROLE FROM PARAMS:", role);
       console.log("USER FROM BACKEND:", response.data.user);
@@ -49,12 +50,16 @@ export default function SignUp() {
         loginSuccess({
           user,
           token,
+          role: user.role,
+          company: user.companyId || null,
         }),
       );
+      localStorage.setItem("companyId", user.companyId);
+      toast.success("Account created successfully!");
 
       if (user.role === "recruiter") {
         localStorage.setItem("recruiter_id", user._id);
-        navigate(ADMIN_ROUTES.DASHBOARD);
+        navigate(AUTH_STATUS_ROUTES.PENDING);
       } else if (user.role === "admin") {
         navigate(ADMIN_ROUTES.DASHBOARD);
       } else {
@@ -73,6 +78,7 @@ export default function SignUp() {
           });
         });
       } else {
+        toast.error(res?.data?.message || "Something went wrong");
         setError("root", {
           type: "manual",
           message: res?.data?.message || "Something went wrong",
@@ -81,9 +87,9 @@ export default function SignUp() {
     }
   };
   const emailPattern =
-    role === "recruiter"
-      ? /^[a-zA-Z0-9._%+-]+@(?!email\.com|gmail\.com|yahoo\.com|hotmail\.com)[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
-      : /^[a-zA-Z0-9._%+-]+@(?!gmail\.com|yahoo\.com|hotmail\.com|outlook\.com)[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    role === "recruiter";
+      // ? /^[a-zA-Z0-9._%+-]+@(?!email\.com|gmail\.com|yahoo\.com|hotmail\.com)[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
+      // : /^[a-zA-Z0-9._%+-]+@(?!gmail\.com|yahoo\.com|hotmail\.com|outlook\.com)[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
   return (
     <div className="min-h-screen bg-gray-100 flex items-center justify-center px-4">
       <div className="bg-white w-full max-w-md rounded-2xl shadow-xl p-8">
@@ -263,7 +269,10 @@ export default function SignUp() {
         <p className="text-center text-gray-500 text-sm mt-6">
           Already have an account?{" "}
           <Link
-            to={PUBLIC_ROUTES.LOGIN.replace(":role", role.toLowerCase().replace(" ", ""))}
+            to={PUBLIC_ROUTES.LOGIN.replace(
+              ":role",
+              role.toLowerCase().replace(" ", ""),
+            )}
             className="text-blue-600  cursor-pointer hover:underline"
           >
             Log In

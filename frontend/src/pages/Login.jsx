@@ -2,7 +2,8 @@ import { useForm } from "react-hook-form";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { FaEnvelope, FaLock } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
-import { PUBLIC_ROUTES, ADMIN_ROUTES } from "../constants/routes";
+import { PUBLIC_ROUTES, ADMIN_ROUTES, AUTH_STATUS_ROUTES } from "../constants/routes";
+import toast from "react-hot-toast";
 
 import { loginSuccess } from "../redux/slices/authSlice";
 import axios from "axios";
@@ -19,7 +20,7 @@ function LoginPage() {
     setError,
     formState: { errors },
   } = useForm();
-  
+
   const onSubmit = async (data) => {
     try {
       console.log("Sending login request...");
@@ -32,17 +33,18 @@ function LoginPage() {
       const { token, user } = res.data;
       console.log("LOGIN USER:", res.data.user);
 
-   dispatch(
-  loginSuccess({
-    user: user,   // keep full object
-    token,
-    role: user.role,
-    company: user.companyId || null,
-
-  }),
-);
+      dispatch(
+        loginSuccess({
+          user: user, // keep full object
+          token,
+          role: user.role,
+          company: user.companyId || null,
+          status: user.status || null,
+        }),
+      );
       localStorage.setItem("token", token);
       localStorage.setItem("companyId", user.companyId);
+      localStorage.setItem("status", user.status || null);
 
       // localStorage.setItem(
       //   "auth",
@@ -62,9 +64,19 @@ function LoginPage() {
       // );
 
       localStorage.setItem("role", user.role);
+      localStorage.setItem("status", user.status || null);
 
-      if (user.role === "recruiter") {
+      toast.success("Login successful!");
+
+      if (user.status === "blocked") {
         localStorage.setItem("recruiter_id", user._id);
+
+        navigate(AUTH_STATUS_ROUTES.BLOCKED);
+      } else if (user.role === "recruiter" && user.status === "pending") {
+        localStorage.setItem("recruiter_id", user._id);
+        toast("Your account is waiting for admin approval");
+        navigate(AUTH_STATUS_ROUTES.PENDING);
+      } else if (user.role === "recruiter") {
         navigate(ADMIN_ROUTES.DASHBOARD);
       } else if (user.role === "admin") {
         navigate(ADMIN_ROUTES.DASHBOARD);
@@ -84,7 +96,7 @@ function LoginPage() {
           });
         });
       } else {
-        alert(error.response?.data?.message || "Something went wrong");
+        toast.error(error.response?.data?.message || "Login failed");
       }
     }
   };
@@ -98,10 +110,10 @@ function LoginPage() {
 
   const emailPattern =
     role === "recruiter"
-      ? /^[a-zA-Z0-9._%+-]+@(?!yourdomain\.com|email\.com|yahoo\.com|hotmail\.com)[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
-      : role === "admin"
-        ? /^[a-zA-Z0-9._%+-]+@yourdomain\.com$/ // only allow your domain for admin
-        : /^[a-zA-Z0-9._%+-]+@(?!yourdomain\.com$)[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+      // ? /^[a-zA-Z0-9._%+-]+@(?!yourdomain\.com|email\.com|yahoo\.com|hotmail\.com)[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
+      // : role === "admin"
+      //   ? /^[a-zA-Z0-9._%+-]+@yourdomain\.com$/ // only allow your domain for admin
+      //   : /^[a-zA-Z0-9._%+-]+@(?!yourdomain\.com$)[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
   const emailErrorMessage =
     role === "recruiter"
       ? "Please use a company email address"
@@ -202,7 +214,10 @@ function LoginPage() {
         <p className="text-center text-gray-500 text-sm mt-6">
           Don't have an account?{" "}
           <Link
-            to={PUBLIC_ROUTES.SIGNUP.replace(":role", role.toLowerCase().replace(" ", ""))}
+            to={PUBLIC_ROUTES.SIGNUP.replace(
+              ":role",
+              role.toLowerCase().replace(" ", ""),
+            )}
             className="text-blue-600 font-semibold"
           >
             Create an account

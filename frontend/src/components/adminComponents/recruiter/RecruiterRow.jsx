@@ -35,7 +35,7 @@ function RecruiterRow({ recruiter, onEdit, onDeleteRecruiter }) {
           </button>
 
           <button
-            onClick={() => onDeleteRecruiter(recruiter.id)}
+            onClick={() => onDeleteRecruiter(recruiter._id)}
             className="p-2 text-gray-500 hover:bg-gray-100 hover:text-red-600 rounded-lg transition-all"
           >
             <MdDelete />

@@ -1,6 +1,8 @@
 import { IoLocationSharp } from "react-icons/io5";
 import { HiOutlineUserGroup } from "react-icons/hi";
 import { BiWorld } from "react-icons/bi";
+import { getImageUrl } from "../../utils/getImageUrl";
+
 
 
 
@@ -12,7 +14,7 @@ import { BiWorld } from "react-icons/bi";
           {/* Company Logo */}
           <div className="w-24 h-24 bg-blue-50 rounded-xl flex items-center justify-center border border-slate-100 shadow-sm overflow-hidden flex-shrink-0">
             <img
-              src={company.logo}
+              src={getImageUrl(company.logo) || "/default-company.png"}
               alt={`${company.name} Logo`}
               className="w-full h-full object-cover"
             />

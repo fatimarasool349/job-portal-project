@@ -3,14 +3,29 @@ import {
   BarElement,
   CategoryScale,
   LinearScale,
+  Tooltip,
+  Legend,
 } from "chart.js";
 import { Bar } from "react-chartjs-2";
-import { barChartData } from "../../../constants/index.js";
 
-ChartJS.register(BarElement, CategoryScale, LinearScale);
+ChartJS.register(BarElement, CategoryScale, LinearScale, Tooltip, Legend);
 
- function BarChartCard() {
- 
+function BarChartCard({ data = [] }) {
+
+  const months = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+
+  // Convert API → Chart format
+  const chartData = {
+    labels: data.map((item) => months[item._id - 1]),
+    datasets: [
+      {
+        label: "Jobs",
+        data: data.map((item) => item.count),
+        backgroundColor: "#3b82f6",
+        borderRadius: 6,
+      },
+    ],
+  };
 
   return (
     <div className="bg-white p-6 rounded-xl shadow-md border">
@@ -21,8 +36,9 @@ ChartJS.register(BarElement, CategoryScale, LinearScale);
         </select>
       </div>
 
-      <Bar data={barChartData} />
+      <Bar data={chartData} />
     </div>
   );
 }
+
 export default BarChartCard;

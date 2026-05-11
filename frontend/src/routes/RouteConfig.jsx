@@ -31,6 +31,8 @@ const MessagePage = lazy(() => import("../pages/user/MessagePage"));
 
 // Admin pages (lazy)
 const Dashboard = lazy(() => import("../pages/admin/Dashboard"));
+const PendingApproval = lazy(() => import("../pages/admin/PendingApproval"));
+const BlockedPage = lazy(() => import("../pages/admin/BlockedPage"));
 const ManageRecruiter = lazy(() => import("../pages/admin/ManageRecuiter"));
 const ManageCompany = lazy(() => import("../pages/admin/ManageCompany"));
 const ManageCandidate = lazy(() => import("../pages/admin/ManageCandidate"));
@@ -101,6 +103,8 @@ export const adminRoutes = [
     element: <AdminLayout />, 
     children: [
       { path: ADMIN_ROUTES.DASHBOARD, index: true, element: <Dashboard /> },
+      { path: ADMIN_ROUTES.PENDING_APPROVAL, element: <PendingApproval /> },
+      { path: ADMIN_ROUTES.BLOCKED, element: <BlockedPage /> },
       { path: ADMIN_ROUTES.RECRUITERS, element: <ManageRecruiter /> },
       { path: ADMIN_ROUTES.COMPANIES, element: <ManageCompany /> },
       { path: ADMIN_ROUTES.CANDIDATES, element: <ManageCandidate /> },
@@ -121,6 +125,14 @@ export const errorRoutes = [
   {
     path: "/unauthorized",
     element: <Unauthorized />,
+  },
+  {
+    path: "/pending",
+    element: <PendingApproval />,
+  },
+  {
+    path: "/blocked",
+    element: <BlockedPage />,
   },
   {
     path: "*",

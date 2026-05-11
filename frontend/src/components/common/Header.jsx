@@ -9,7 +9,7 @@ import { initialUserData} from "../../constants";
 import { PUBLIC_ROUTES, USER_ROUTES } from "../../constants/routes";
 
 
-function Header() {
+function Header({ profileImage, user }) {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef();
   const navigate = useNavigate();
@@ -88,7 +88,7 @@ function Header() {
                 <img
                   alt="User Profile"
                   className="w-10 h-10 object-cover rounded-full"
-                  src={initialUserData.profilePic}
+                  src={profileImage}
                 />
                 <MdArrowDropDown className="text-gray-600 text-xl" />
               </button>
@@ -99,10 +99,10 @@ function Header() {
                   {/* User info */}
                   <div className="p-4 border-b border-slate-100 dark:border-slate-800">
                     <p className="text-sm font-bold text-slate-900 dark:text-white">
-                      {initialUserData.name}
+                      {user?.fullName || initialUserData.fullName}
                     </p>
                     <p className="text-xs text-slate-400 dark:text-slate-400">
-                      {initialUserData.email}
+                      {user?.email || initialUserData.email}
                     </p>
                   </div>
 

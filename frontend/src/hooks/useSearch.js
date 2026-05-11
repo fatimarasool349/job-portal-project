@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
-import { jobData, companyData } from "../constants";
+import { searchJobs } from "../api/jobApi";
 
 export function useSearch(job, location) {
   const [results, setResults] = useState([]);
+  const [error, setError] = useState("");
 
   useEffect(() => {
     const delay = setTimeout(() => {
@@ -12,45 +13,52 @@ export function useSearch(job, location) {
     return () => clearTimeout(delay);
   }, [job, location]);
 
- const handleSearch = () => {
-  const searchJob = job.toLowerCase().trim();
-  const searchLocation = location.toLowerCase().trim();
+  const handleSearch = async () => {
+    try {
+      const searchJob = job.trim();
+      const searchLocation = location.trim();
 
-  if (!searchJob && !searchLocation) {
-    setResults([]);
-    return []; 
-  }
+      // Empty search
+      if (!searchJob && !searchLocation) {
+        setResults([]);
+        setError("");
+        return [];
+      }
 
-  const jobResults = jobData
-    .map((job) => {
-      const company = companyData.find((c) => c.id === job.companyId);
-      return { ...job, company, type: "job" };
-    })
-    .filter((item) => {
-      const jobTitle = item.title?.toLowerCase() || "";
-      const jobLocation = item.location?.toLowerCase() || "";
-      return (
-        (!searchJob || jobTitle.includes(searchJob)) &&
-        (!searchLocation || jobLocation.includes(searchLocation))
-      );
-    });
+      const jobs = await searchJobs(searchJob, searchLocation);
 
-  const companyResults = companyData
-    .map((item) => ({ ...item, type: "company" }))
-    .filter((item) => {
-      const name = item.name?.toLowerCase() || "";
-      const loc = item.location?.toLowerCase() || "";
-      return (
-        (!searchJob || name.includes(searchJob)) &&
-        (!searchLocation || loc.includes(searchLocation))
-      );
-    });
+      // No results found
+      if (!jobs || jobs.length === 0) {
+        if (searchLocation && searchJob) {
+          setError(`No jobs found for "${searchJob}" in "${searchLocation}"`);
+        } else if (searchLocation) {
+          setError(`No jobs found in "${searchLocation}"`);
+        } else {
+          setError(`No jobs found for "${searchJob}"`);
+        }
 
-  const finalResults = [...jobResults, ...companyResults];
+        setResults([]);
+        return [];
+      }
 
-  setResults(finalResults);
-  return finalResults; // 👈 important
-};
+      const formattedJobs = jobs.map((item) => ({
+        ...item,
+        type: "job",
+      }));
 
-  return { results, handleSearch };
+      setResults(formattedJobs);
+      setError(""); // clear error if success
+
+      return formattedJobs;
+    } catch (error) {
+      console.error(error);
+
+      setResults([]);
+      setError("Something went wrong. Please try again.");
+
+      return [];
+    }
+  };
+
+  return { results, error, handleSearch };
 }

@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { useRole } from "../../../hooks/useRole";
+import * as Icons from "lucide-react";
 
 function QuickAction({ actions }) {
   const navigate = useNavigate();
@@ -15,12 +16,12 @@ function QuickAction({ actions }) {
     );
   }
 
-  const visibleActions = actions.filter(action => {
+  const visibleActions = actions.filter((action) => {
     if (!action.for) return false;
 
     const allowedRoles = Array.isArray(action.for) ? action.for : [action.for];
 
-    return allowedRoles.some(role => role?.trim().toLowerCase() === role);
+    return allowedRoles.some((r) => r?.trim().toLowerCase() === role);
   });
 
   return (
@@ -32,19 +33,19 @@ function QuickAction({ actions }) {
       ) : (
         <div className="space-y-3">
           {visibleActions.map((action, index) => {
-            const Icon = action.icon;
+            const IconComponent = Icons[action.icon] || Icons.Plus;
             return (
               <button
                 key={index}
-                onClick={() => navigate(action.path)}
+                onClick={() => navigate(action.link)}
                 className={`w-full py-3 px-4 rounded-xl font-semibold flex items-center justify-center ${
                   action.primary
                     ? "bg-blue-600 text-white hover:bg-blue-700"
                     : "bg-white border border-blue-600 text-blue-600 hover:bg-blue-50"
                 }`}
               >
-                <Icon className="w-5 h-5 mr-2" />
-                {action.label}
+                <IconComponent className="w-5 h-5 mr-2" />
+                {action.title}
               </button>
             );
           })}

@@ -29,14 +29,22 @@ function CompanyRow({ company, onDelete, onEdit }) {
         </a>
       </td>
 
-      <td className="px-6 py-4 text-right">
-        <button onClick={() => onEdit(company)} className="text-blue-600 mr-3">
-          <FaEdit />
-        </button>
+      <td className="px-6 py-4">
+        <div className="flex items-center justify-end gap-3 h-full">
+          <button
+            onClick={() => onEdit(company)}
+            className="text-blue-600 text-lg hover:scale-110 transition"
+          >
+            <FaEdit />
+          </button>
 
-        <button onClick={() => onDelete(company._id)} className="text-red-600">
-          <MdDelete />
-        </button>
+          <button
+            onClick={() => onDelete(company._id)}
+            className="text-red-600 text-lg hover:scale-110 transition"
+          >
+            <MdDelete />
+          </button>
+        </div>
       </td>
     </tr>
   );

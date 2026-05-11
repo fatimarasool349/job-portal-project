@@ -2,21 +2,22 @@ import { getBadgeColor } from "../../constants";
 import { FaRegBookmark } from "react-icons/fa";
 import { Link } from "react-router";
 import { USER_ROUTES } from "../../constants/routes";
+import toast from "react-hot-toast";
 
 function JobCard({ job }) {
   const handleSaveJob = () => {
     const savedJobs = JSON.parse(localStorage.getItem("savedJobs")) || [];
 
-    const isAlreadySaved = savedJobs.some((j) => j.id === job.id);
+    const isAlreadySaved = savedJobs.some((j) => j._id === job._id);
     if (isAlreadySaved) {
-      alert("Job already saved!");
+      toast.error("Job already saved!");
       return;
     }
 
     savedJobs.push(job);
 
     localStorage.setItem("savedJobs", JSON.stringify(savedJobs));
-    alert("Job saved successfully!");
+    toast.success("Job saved successfully!");
   };
 
   return (
@@ -25,11 +26,11 @@ function JobCard({ job }) {
         <div className="flex-1">
           <div className="flex items-center gap-2 mb-2">
             <span
-              className={`px-2 py-1 text-xs font-bold uppercase rounded ${
+              className={`px-2 py-1 text-xs font-bold capitalize rounded ${
                 getBadgeColor(job.jobType)
               }`}
             >
-              {job.type}
+              {job.jobType}
             </span>
             <span className="text-slate-400 text-sm">Posted recently</span>
           </div>
@@ -48,7 +49,7 @@ function JobCard({ job }) {
           </div>
         </div>
         <div className="flex flex-row sm:flex-col gap-2 w-full sm:w-auto">
-          <Link to={USER_ROUTES.JOB_DETAIL.replace(":id", job.id)}>
+          <Link to={USER_ROUTES.JOB_DETAIL.replace(":slug", job.slug)}>
             <button className="flex-1 bg-blue-600 text-white px-6 py-2.5 rounded-lg font-semibold hover:bg-blue-700 transition-colors whitespace-nowrap">
               View Details
             </button>

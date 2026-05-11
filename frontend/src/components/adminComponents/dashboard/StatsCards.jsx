@@ -1,15 +1,19 @@
 import { ArrowUp, ArrowDown } from "lucide-react";
 import { colorMap } from "../../../constants/index.js";
+import * as Icons from "lucide-react";
 
 function StatsCards({
   title,
   value,
-  icon: Icon,
+  icon,
   change,
   isPositive = true,
   color = "blue",
 })
  {
+    const IconComponent = Icons[icon]; // 🔥 convert string to component
+console.log("ICON VALUE:", icon);
+console.log("ICON COMPONENT:", Icons[icon]);
   return (
     
     <div
@@ -17,7 +21,7 @@ function StatsCards({
     >
       <div className="flex items-center justify-between mb-4">
         <div className={`p-3 ${colorMap[color].bg} rounded-lg`}>
-          <Icon className={`w-6 h-6 ${colorMap[color].text}`} />
+          <IconComponent className={`w-6 h-6 ${colorMap[color].text}`} />
         </div>
 
         <span

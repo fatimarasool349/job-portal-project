@@ -3,6 +3,8 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import fs from "fs";
 import path from "path";
+import { userSignupEmail } from "../templates/userSignupEmail.js";
+import sendEmail from "../utils/sendEmail.js";
 
 // REGISTER
 export const register = async (req, res) => {
@@ -27,6 +29,11 @@ export const register = async (req, res) => {
       status: role === "recruiter" ? "pending" : "active",
       companyId: role === "recruiter" ? companyId || null : null,
     });
+    await sendEmail(
+      user.email,
+      "Welcome to Job Portal 🎉",
+      userSignupEmail(user.fullName),
+    );
 
     res.json({
       message: "User registered",
@@ -84,7 +91,7 @@ export const login = async (req, res) => {
       {
         id: user._id,
         role: user.role,
-        company: user.companyId 
+        company: user.companyId,
       },
       process.env.JWT_SECRET,
       { expiresIn: "1d" },
@@ -99,8 +106,9 @@ export const login = async (req, res) => {
         email: user.email,
         phone: user.phone,
         role: user.role,
+        status: user.status,
         profileImage: user.profileImage || null,
-        companyId: user.companyId || null
+        companyId: user.companyId || null,
       },
     });
   } catch (err) {

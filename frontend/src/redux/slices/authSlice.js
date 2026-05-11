@@ -15,12 +15,14 @@ const initialState = safeAuth
       token: savedAuth.token,
       role: savedAuth.role,
       isAuthenticated: true,
+      status: savedAuth.status || null,
     }
   : {
       user: null,
       token: null,
       role: null,
       isAuthenticated: false,
+      status: null,
     };
 
 const authSlice = createSlice({
@@ -37,10 +39,12 @@ const authSlice = createSlice({
     phone: user.phone,
     role: user.role,
     profileImage: user.profileImage||null,
+    status: user.status || null,
   };
 
   state.token = action.payload.token;
   state.role = user.role;
+  state.status = user.status || null;
   state.isAuthenticated = true;
 },
 
@@ -48,6 +52,7 @@ const authSlice = createSlice({
       state.user = null;
       state.token = null;
       state.role = null;
+      state.status = null;
       state.isAuthenticated = false;
         localStorage.removeItem("auth"); 
     },

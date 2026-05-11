@@ -2,6 +2,7 @@ import Star from "./../../components/ViewDetail/Star";
 import RatingBar from "./../../components/ViewDetail/RatingBar";
 import { Link } from "react-router-dom";
 import API from "../../api/axiosConfig";
+import { getCompanyReviews } from "../../api/reviewApi";
 import { useEffect, useState } from "react";
 import { USER_ROUTES } from "../../constants/routes";
 
@@ -16,17 +17,15 @@ export default function Reviews({ company, job }) {
   useEffect(() => {
     const fetchReviews = async () => {
       try {
-        const res = await API.get(
-          `/reviews/${company?._id}`
-        );
+        const res = await getCompanyReviews(company?._id);
 
         const data = res.data;
 
         setReviews({
-          overallRating: data?.overallRating || 0,
+          overallRating: data?.averageRating || 0,
           total: data?.total || 0,
           ratingBar: data?.ratingBar || [],
-          list: data?.list || [],
+          list: data?.reviews || [],
         });
       } catch (error) {
         console.log(error);
@@ -40,9 +39,7 @@ export default function Reviews({ company, job }) {
 
   if (!company) {
     return (
-      <div className="text-center py-10 text-gray-500">
-        Company not found
-      </div>
+      <div className="text-center py-10 text-gray-500">Company not found</div>
     );
   }
 
@@ -53,8 +50,8 @@ export default function Reviews({ company, job }) {
           Employee Reviews
         </h3>
 
-        <Link to={`${USER_ROUTES.REVIEW.replace(":id", job?._id)}`}>
-          <button className="flex-1 text-md text-blue-600 border-2 border-blue-600">
+        <Link to={`${USER_ROUTES.REVIEW.replace(":slug", job?.slug)}`}>
+          <button className="flex-1 px-4 py-2 text-md bg-blue-600 border-2 border-blue-600 text-white rounded-lg hover:bg-transparent hover:text-blue-600 transition">
             Write a Review
           </button>
         </Link>
@@ -74,30 +71,48 @@ export default function Reviews({ company, job }) {
           </p>
         </div>
 
-        <RatingBar bar={reviews.ratingBar || []} />
+        {/* <RatingBar bar={reviews.ratingBar || []} /> */}
       </div>
 
       {/* REVIEW LIST */}
-      <div className="space-y-6">
+      <div className=" mx-auto space-y-6">
+        {" "}
         {reviews?.list?.length === 0 ? (
-          <div className="text-center text-gray-500 py-6 border rounded-xl">
-            No reviews yet. Be the first to review this company ⭐
+          <div className="text-center py-10 border border-gray-200 rounded-xl bg-gray-50">
+            <p className="text-lg font-medium">No reviews yet</p>
+            <p className="text-sm text-gray-500 mb-3">
+              Be the first to share your experience
+            </p>
+            <Link to={`${USER_ROUTES.REVIEW.replace(":slug", job?.slug)}`}>
+              <button className="px-4 py-2 bg-blue-600 text-white rounded-lg">
+                Write Review
+              </button>
+            </Link>
           </div>
         ) : (
           reviews?.list?.map((rev, idx) => (
-            <div key={idx} className="p-6 border rounded-xl">
-              <Star stars={rev.rating} />
+            <div
+              key={idx}
+              className="p-6 border border-gray-200 rounded-xl shadow-sm hover:shadow-md transition"
+            >
+              <Star stars={rev.overallRating} />
 
               <h5 className="font-semibold mt-2">{rev.title}</h5>
 
+              <p className="text-sm text-gray-500">
+                {rev.user?.name || "Anonymous"} •{" "}
+                {rev.createdAt
+                  ? new Date(rev.createdAt).toLocaleDateString()
+                  : ""}
+              </p>
               <div className="mt-3">
-                <p className="text-green-600 font-bold">Pros</p>
-                <p>{rev.pros}</p>
+                <p className="text-green-600 font-semibold">Pros</p>
+                <p className="text-sm text-gray-700">{rev.pros}</p>
               </div>
 
               <div className="mt-2">
-                <p className="text-red-600 font-bold">Cons</p>
-                <p>{rev.cons}</p>
+                <p className="text-red-600 font-semibold">Cons</p>
+                <p className="text-sm text-gray-700">{rev.cons}</p>
               </div>
             </div>
           ))

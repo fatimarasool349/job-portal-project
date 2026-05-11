@@ -1,8 +1,10 @@
 import { useNavigate } from "react-router-dom";
 import { USER_ROUTES } from "../../constants/routes";
+import { useParams } from "react-router-dom";
 
 function SearchResults({ results }) {
   const navigate = useNavigate();
+  const { slug } = useParams();
 
   if (results.length === 0) return null;
 
@@ -11,10 +13,10 @@ function SearchResults({ results }) {
       {results.map((item) => (
         <div
           key={item.id}
-          className="p-4 border rounded mb-2 hover:bg-gray-50 cursor-pointer"
+          className="p-4 border text-lg  border-gray-300 rounded mb-2 hover:bg-gray-50  hover:border-blue-500 cursor-pointer"
           onClick={() => {
             if (item.type === "job") {
-              navigate(USER_ROUTES.JOB_DETAIL.replace(":id", item.id));
+              navigate(USER_ROUTES.JOB_DETAIL.replace(":slug", item.slug));
             }
           }}
         >

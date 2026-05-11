@@ -1,12 +1,15 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
+import API from "../api/axiosConfig";
 import { updateRecruiter } from "../api/recruiterApi";
 
 function AddRecruiterModal({ onClose, setData, existingData }) {
   const [companies, setCompanies] = useState([]);
+  const token = localStorage.getItem("token");
+  const [errors, setErrors] = useState({});
 
   const [form, setForm] = useState({
-    company: "",
+    companyId: "",
     fullName: "",
     email: "",
     status: "Active",
@@ -16,9 +19,11 @@ function AddRecruiterModal({ onClose, setData, existingData }) {
   useEffect(() => {
     const fetchCompanies = async () => {
       try {
-        const res = await axios.get(
-          "http://localhost:5000/api/company"
-        );
+        const res = await API.get("/company", {
+          // headers: {
+          //   Authorization: `Bearer ${token}`,
+          // },
+        });
         setCompanies(res.data);
       } catch (error) {
         console.log(error);
@@ -26,52 +31,68 @@ function AddRecruiterModal({ onClose, setData, existingData }) {
     };
 
     fetchCompanies();
-  }, []);
+  }, [token]);
 
   // Fill form when editing
   useEffect(() => {
     if (existingData) {
       setForm({
-        company: existingData.company?._id || "",
-        name: existingData.name,
+        companyId: existingData.companyId?._id || "",
+        fullName: existingData.fullName,
         email: existingData.email,
         status: existingData.status || "Active",
       });
     }
   }, [existingData]);
 
-const handleSubmit = async (e) => {
-  e.preventDefault();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-  try {
-    await updateRecruiter(existingData._id, {
-      company: form.company,
-      status: form.status,
-    });
+    try {
+      await updateRecruiter(existingData._id, {
+        companyId: form.companyId,
+        status: form.status,
+      });
 
-    await setData(); // refetch from backend
-    onClose();
-  } catch (error) {
-    console.log(error);
-  }
-};
+      await setData(); // refetch from backend
+      onClose();
+    } catch (error) {
+      const res = error.response;
+
+      const field = res?.data?.field;
+      const message = res?.data?.message;
+
+      // ✅ field-level error (BEST CASE)
+      if (field) {
+        setErrors((prev) => ({
+          ...prev,
+          [field]: message,
+        }));
+        return;
+      }
+
+      // fallback error
+      console.log(error);
+    }
+  };
 
   return (
     <div className="fixed inset-0 bg-black/40 flex justify-center items-center z-50">
       <div className="bg-white p-6 rounded-xl w-[420px]">
-
-        <h2 className="text-lg font-semibold mb-4">
-          Edit Recruiter
-        </h2>
+        <h2 className="text-lg font-semibold mb-4">Edit Recruiter</h2>
 
         <form onSubmit={handleSubmit} className="space-y-3">
-
           {/* Company (assign only) */}
           <select
-            value={form.company}
-            onChange={(e) =>
-              setForm({ ...form, company: e.target.value })
-            }
+            value={form.companyId}
+            onChange={(e) => {
+              setForm({ ...form, companyId: e.target.value });
+
+              setErrors((prev) => ({
+                ...prev,
+                companyId: "",
+              }));
+            }}
             className="w-full border p-2 rounded"
           >
             <option value="">Select Company</option>
@@ -82,6 +103,9 @@ const handleSubmit = async (e) => {
               </option>
             ))}
           </select>
+          {errors.companyId && (
+            <p className="text-red-500 text-sm mt-1">{errors.companyId}</p>
+          )}
 
           {/* Name (read-only) */}
           <input
@@ -100,14 +124,12 @@ const handleSubmit = async (e) => {
           {/* Status */}
           <select
             value={form.status}
-            onChange={(e) =>
-              setForm({ ...form, status: e.target.value })
-            }
+            onChange={(e) => setForm({ ...form, status: e.target.value })}
             className="w-full border p-2 rounded"
           >
             <option value="Active">Active</option>
             <option value="pending">Pending</option>
-            <option value = "blocked">Blocked</option>
+            <option value="blocked">Blocked</option>
           </select>
 
           {/* Buttons */}
@@ -127,7 +149,6 @@ const handleSubmit = async (e) => {
               Save
             </button>
           </div>
-
         </form>
       </div>
     </div>

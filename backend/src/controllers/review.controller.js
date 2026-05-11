@@ -1,6 +1,8 @@
 import Review from "../models/review.model.js";
 import User from "../models/users.model.js";
 import Company from "../models/company.model.js";
+import { v4 as uuidv4 } from "uuid";
+import slugify from "slugify";
 
 export const createReview = async (req, res) => {
   try {
@@ -34,6 +36,11 @@ export const createReview = async (req, res) => {
       overallRating,
       categoryRatings,
       anonymous: anonymous || false,
+      reviewId: uuidv4(), // 👈 UUID here
+      slug: slugify(title + "-" + Date.now(), {
+        lower: true,
+        strict: true,
+      }),
     });
 
     res.status(201).json({
@@ -150,7 +157,9 @@ export const getRecruiterReviews = async (req, res) => {
     const companyId = req.user.company;
 
     if (!companyId) {
-      return res.status(400).json({ message: "Company not found for recruiter" });
+      return res
+        .status(400)
+        .json({ message: "Company not found for recruiter" });
     }
 
     const companyIds = [companyId];
@@ -163,6 +172,21 @@ export const getRecruiterReviews = async (req, res) => {
       .sort({ createdAt: -1 });
 
     res.json(reviews);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+export const getReviewByUUID = async (req, res) => {
+  try {
+    const review = await Review.findOne({
+      reviewId: req.params.reviewId,
+    });
+
+    if (!review) {
+      return res.status(404).json({ message: "Review not found" });
+    }
+
+    res.json(review);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
