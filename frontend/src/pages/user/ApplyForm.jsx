@@ -31,6 +31,8 @@ function ApplyForm() {
   const role = useSelector((state) => state.auth.user?.role);
   const safeRole = role?.toLowerCase().replace(" ", "") || "user";
 
+  const token = useSelector((state) => state.auth.token);
+
   useEffect(() => {
     const fetchJob = async () => {
       try {
@@ -58,7 +60,7 @@ function ApplyForm() {
   console.log("Redirecting to:", loginPath);
 
   const onSubmit = async (data) => {
-    if (!user) {
+    if (!user || !token) {
       const role = user?.role || "jobseeker"; // fallback
       const safeRole = role.toLowerCase().replace(" ", "");
       Swal.fire({
@@ -96,7 +98,14 @@ function ApplyForm() {
         navigate(-1);
       });
     } catch (error) {
-      Swal.fire("Error", "Failed to submit application", "error");
+      const message =
+        error?.response?.data?.message || "Failed to submit application";
+
+      Swal.fire({
+        icon: "warning",
+        title: "Already Applied",
+        text: message,
+      });
     }
   };
 

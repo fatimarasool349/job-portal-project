@@ -11,13 +11,14 @@ function ManageJobApplications() {
   const [roleFilter, setRoleFilter] = useState("All");
   const [search, setSearch] = useState("");
   const { role, recruiterId, canViewAll } = useRole();
- 
-
+  
 const dispatch = useDispatch();
 
 const applications = useSelector(
   (state) => state.applications.applications
 );
+ 
+
 
   useEffect(() => {
     if (canViewAll) {

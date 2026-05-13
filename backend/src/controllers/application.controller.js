@@ -3,6 +3,7 @@ import Job from "../models/job.model.js";
 import Company from "../models/company.model.js";
 import mongoose from "mongoose";
 import { v4 as uuidv4 } from "uuid";
+import { sendStatusEmail } from "../templates/sendStatusEmail.js";
 
 export const applyJob = async (req, res) => {
   try {
@@ -27,6 +28,17 @@ export const applyJob = async (req, res) => {
 
     if (!req.file) {
       return res.status(400).json({ message: "Resume file missing" });
+    }
+    const alreadyApplied = await Application.findOne({
+      candidate: req.user?.id,
+      job: job._id,
+    });
+
+    if (alreadyApplied) {
+      return res.status(400).json({
+        success: false,
+        message: "You already applied for this job.",
+      });
     }
 
     const application = await Application.create({
@@ -71,6 +83,30 @@ export const getAllApplications = async (req, res) => {
   }
 };
 
+export const getMyApplications = async (req, res) => {
+  try {
+    const userId = req.user?.id;
+
+    const applications = await Application.find({
+      candidate: userId,
+    })
+      .populate({
+        path: "job",
+        select: "title location jobType",
+      })
+      .populate({
+        path: "company",
+        select: "name logo ",
+      })
+      .populate("recruiter", "fullName email");
+
+    res.json(applications);
+  } catch (error) {
+    console.error("GET MY APPLICATIONS ERROR:", error);
+    res.status(500).json({ message: error.message });
+  }
+};
+
 export const getRecruiterApplications = async (req, res) => {
   try {
     const companyId = req.user?.company;
@@ -100,18 +136,35 @@ export const getRecruiterApplications = async (req, res) => {
 
 export const deleteApplication = async (req, res) => {
   try {
-    await Application.findOneAndDelete({ publicId: req.params.publicId });
+    console.log("DELETE HIT:", req.params.id);
 
-    res.json({ message: "Application deleted" });
+    const deletedApplication = await Application.findByIdAndDelete(
+      req.params.id,
+    );
+
+    if (!deletedApplication) {
+      return res.status(404).json({
+        message: "Application not found",
+      });
+    }
+
+    res.json({
+      success: true,
+      id: req.params.id,
+      message: "Application deleted",
+    });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(500).json({
+      message: error.message,
+    });
   }
 };
 export const updateApplicationStatus = async (req, res) => {
   try {
     const { status } = req.body;
+
     console.log("CONTROLLER HIT:", req.params.publicId, req.body);
-    console.log("ID RECEIVED:", req.params.publicId);
+
     if (!status) {
       return res.status(400).json({ message: "Status required" });
     }
@@ -131,8 +184,81 @@ export const updateApplicationStatus = async (req, res) => {
       .populate("candidate")
       .populate("recruiter");
 
+    // 🚨 check if application exists
+    if (!application) {
+      return res.status(404).json({ message: "Application not found" });
+    }
+
+    console.log("UPDATED APPLICATION:", application.status);
+
+    // 👇 send email after update
+    await sendStatusEmail(application);
+
+    return res.json({
+      success: true,
+      message: "Status updated successfully",
+      application,
+    });
+  } catch (err) {
+    console.error("STATUS UPDATE ERROR:", err);
+    return res.status(500).json({ message: err.message });
+  }
+};
+
+export const getApplicationById = async (req, res) => {
+  try {
+    const application = await Application.findOne({
+      publicId: req.params.publicId,
+    })
+      .populate("job")
+      .populate("company")
+      .populate("candidate");
+
+    if (!application) {
+      return res.status(404).json({ message: "Application not found" });
+    }
+
     res.json(application);
   } catch (err) {
-    res.status(500).json({ message: err.message });
+    res.status(500).json({ error: err.message });
+  }
+};
+
+export const withdrawApplication = async (req, res) => {
+  try {
+    const { publicId } = req.params;
+
+    const application = await Application.findOne({
+      publicId,
+      candidate: req.user.id,
+    });
+
+    if (!application) {
+      return res.status(404).json({
+        success: false,
+        message: "Application not found",
+      });
+    }
+
+    // Prevent deleting accepted applications
+    if (application.status === "accepted") {
+      return res.status(400).json({
+        success: false,
+        message: "Accepted applications cannot be withdrawn",
+      });
+    }
+
+    // ✅ Delete application
+    await Application.findByIdAndDelete(application._id);
+
+    res.status(200).json({
+      success: true,
+      message: "Application withdrawn successfully",
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
   }
 };

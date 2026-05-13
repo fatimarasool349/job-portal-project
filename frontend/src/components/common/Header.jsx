@@ -7,6 +7,7 @@ import { IoIosSettings } from "react-icons/io";
 import { FaUser } from "react-icons/fa";
 import { initialUserData} from "../../constants";
 import { PUBLIC_ROUTES, USER_ROUTES } from "../../constants/routes";
+import { FileText } from "lucide-react";
 
 
 function Header({ profileImage, user }) {
@@ -57,17 +58,17 @@ function Header({ profileImage, user }) {
               Companies
             </Link>
             <Link
-              to={USER_ROUTES.NOTIFICATIONS}
+              to={USER_ROUTES.APPLICATIONS}
               className="text-gray-700 hover:text-blue-600  transition"
             >
-              Notifications
+              My Applications
             </Link>
-            <Link
+            {/* <Link
               to={USER_ROUTES.MESSAGES}
               className="text-gray-700 hover:text-blue-600  transition"
             >
               Messages
-            </Link>
+            </Link> */}
           </nav>
 
           <div className="flex items-center space-x-6 relative">
@@ -122,7 +123,14 @@ function Header({ profileImage, user }) {
                       <CiBookmark className="text-lg" />
                       Saved Items
                     </Link>
+                    <Link
                     
+                      to={USER_ROUTES.APPLICATIONS}
+                      className="flex items-center gap-3 px-3 py-2 text-sm text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 rounded-lg transition-colors"
+                    >
+                      <FileText className="text-lg" />
+                      My Applications
+                    </Link>
                   </div>
 
                   {/* Logout button */}

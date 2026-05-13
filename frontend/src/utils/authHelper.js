@@ -5,7 +5,6 @@ export const loadAuth = () => {
 
     const parsed = JSON.parse(data);
 
-    // 🚨 safety check (VERY IMPORTANT)
     if (!parsed || typeof parsed !== "object") return null;
     if (!parsed.user || typeof parsed.user !== "object") return null;
 

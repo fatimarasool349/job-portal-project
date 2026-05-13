@@ -123,25 +123,30 @@ function JobApplicationTable({ applications, role }) {
                   </span>
                 </td>
 
-                <td className="px-6 py-4 text-sm text-slate-600 text-right space-x-2">
-                  <Link to={`${ADMIN_ROUTES.APPLICATION_DETAIL.replace(':publicId', app.publicId)}`} title="View">
-                    <button className="p-2 text-blue-600 hover:bg-gray-100  rounded-lg transition-all">
-                      <GrView />
-                    </button>
-                  </Link>
-
-                  {role === "recruiter" && (
-                    <>
-                      {/* Delete */}
-                      <button
-                        onClick={() => handleDelete(app._id)}
-                        className=" text-gray-500 hover:bg-gray-100 hover:text-red-600 rounded-lg transition-all"
-                        title="Delete"
-                      >
-                        <MdDelete size={16} />
+                <td className="px-6 py-4 text-sm text-slate-600">
+                  <div className="flex items-center justify-end gap-2">
+                    {" "}
+                    <Link
+                      to={`${ADMIN_ROUTES.APPLICATION_DETAIL.replace(":publicId", app.publicId)}`}
+                      title="View"
+                    >
+                      <button className="p-2 text-blue-600 hover:bg-gray-100  rounded-lg transition-all">
+                        <GrView />
                       </button>
-                    </>
-                  )}
+                    </Link>
+                    {role === "recruiter" && (
+                      <>
+                        {/* Delete */}
+                        <button
+                          onClick={() => handleDelete(app._id)}
+                          className=" text-gray-500 hover:bg-gray-100 hover:text-red-600 rounded-lg transition-all"
+                          title="Delete"
+                        >
+                          <MdDelete size={16} />
+                        </button>
+                      </>
+                    )}
+                  </div>
                 </td>
               </tr>
             ))}

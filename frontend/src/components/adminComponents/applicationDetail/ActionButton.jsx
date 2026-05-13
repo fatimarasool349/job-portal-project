@@ -36,13 +36,13 @@ function ActionButton({ status, onApprove, onReject, onMessage }) {
         Reject
       </button>
 
-      <button
+      {/* <button
         onClick={onMessage}
         className="px-4 py-2.5 bg-gray-300 font-bold border border-gray-200 rounded-xl"
       >
         <MdOutlineMessage className="inline-block mr-1" />
         Message
-      </button>
+      </button> */}
     </div>
   );
 }

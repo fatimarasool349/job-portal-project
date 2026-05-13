@@ -30,7 +30,7 @@ function Header({ status, onApprove, onReject, onMessage }) {
           status={status}
           onApprove={onApprove}
           onReject={onReject}
-          onMessage={onMessage}
+          // onMessage={onMessage}
         />
       )}
     </div>

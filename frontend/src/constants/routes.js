@@ -19,6 +19,8 @@ export const USER_ROUTES = {
   MESSAGES: "/messages",
   MESSAGE_DETAIL: "/messages/:id",
   REVIEW: "/review/:slug",
+  APPLICATIONS: "/my-applications",
+  APPLICATION_DETAIL: "/my-applications/:publicId",
 };
 
 export const ADMIN_ROUTES = {

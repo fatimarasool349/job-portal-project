@@ -41,6 +41,8 @@ app.get("/api/healthcheck", (req, res) => {
 // PUBLIC routes
 app.use("/api/auth", publicAuthRoutes);
 app.use("/api/job", jobRoutes);
+app.use("/api/company", companyRoutes)
+
 
 
 // Apply authentication middleware to ALL routes below this
@@ -50,7 +52,6 @@ app.use(isAuthenticated);
 app.use("/api/auth", protectedAuthRoutes);
 
 app.use("/api/candidate", candidateRoutes);
-app.use("/api/company", companyRoutes)
 app.use("/api/users", userRoutes);
 app.use("/api/recruiters", recruiterRoutes);
 app.use("/api/application", applicationRoutes);

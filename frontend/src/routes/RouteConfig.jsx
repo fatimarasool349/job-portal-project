@@ -27,8 +27,9 @@ const Review = lazy(() => import("../pages/user/Review"));
 const BookMark = lazy(() => import("../pages/user/BookMark"));
 const CompanyJobListing = lazy(() => import("../pages/user/CompanyJobListing"));
 const NotificationsPage = lazy(() => import("../pages/user/NotificationsPage"));
+const MyApplicationsPage = lazy(() => import("../pages/user/MyApplications"));
 const MessagePage = lazy(() => import("../pages/user/MessagePage"));
-
+const UserApplicationDetail = lazy(() => import("../pages/user/UserApplicationDetail"));
 // Admin pages (lazy)
 const Dashboard = lazy(() => import("../pages/admin/Dashboard"));
 const PendingApproval = lazy(() => import("../pages/admin/PendingApproval"));
@@ -91,6 +92,8 @@ export const userRoutes = [
       { path: USER_ROUTES.BOOKMARKS, element: <BookMark /> },
       { path: USER_ROUTES.NOTIFICATIONS, element: <NotificationsPage /> },
       { path: USER_ROUTES.MESSAGES, element: <MessagePage /> },
+      { path: USER_ROUTES.APPLICATIONS, element: <MyApplicationsPage /> },
+      { path: USER_ROUTES.APPLICATION_DETAIL, element: <UserApplicationDetail /> },
       { path: USER_ROUTES.MESSAGE_DETAIL, element: <MessagePage /> },
       { path: USER_ROUTES.REVIEW, element: <Review /> },
     ],

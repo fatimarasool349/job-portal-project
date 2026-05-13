@@ -12,15 +12,16 @@ import { useParams } from "react-router-dom";
 import { ADMIN_ROUTES } from "../../constants/routes.js";
 
 function ApplicationDetail() {
+  const dispatch = useDispatch();
+
+  const navigate = useNavigate();
   const { publicId } = useParams();
   console.log("URL publicId:", publicId);
- const application = useSelector((state) => {
-  console.log("Redux applications:", state.applications.applications);
+  const application = useSelector((state) => {
+    console.log("Redux applications:", state.applications.applications);
 
-  return state.applications.applications.find(
-    (a) => a.publicId === publicId
-  );
-});
+    return state.applications.applications.find((a) => a.publicId === publicId);
+  });
 
   if (!application) {
     return (
@@ -30,9 +31,6 @@ function ApplicationDetail() {
     );
   }
 
-  const dispatch = useDispatch();
-
-  const navigate = useNavigate();
   return (
     <main className="max-w-7xl mx-auto w-full px-8 py-8 flex-1">
       <Header
@@ -57,12 +55,12 @@ function ApplicationDetail() {
             }),
           );
         }}
-        onMessage={() =>
-          application &&
-          navigate(
-            ADMIN_ROUTES.MESSAGES.replace(":publicId", application.publicId),
-          )
-        }
+        // onMessage={() =>
+        //   application &&
+        //   navigate(
+        //     ADMIN_ROUTES.MESSAGES.replace(":publicId", application.publicId),
+        //   )
+        // }
       />
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">

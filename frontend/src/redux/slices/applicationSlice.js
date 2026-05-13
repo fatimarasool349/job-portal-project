@@ -37,9 +37,9 @@ export const deleteApplication = createAsyncThunk("delete", async (id) => {
 export const updateApplicationStatus = createAsyncThunk(
   "updateStatus",
   async ({ id, status }) => {
-    const res = await updateApplicationStatusApi(id,status);
-    return res.data;
-  }
+    const res = await updateApplicationStatusApi(id, status);
+    return res.data.application;
+  },
 );
 
 const applicationSlice = createSlice({
@@ -73,16 +73,17 @@ const applicationSlice = createSlice({
         );
       })
       .addCase(updateApplicationStatus.fulfilled, (state, action) => {
-  const index = state.applications.findIndex(
-    (app) => app._id === action.payload._id
-  );if (index !== -1) {
-    state.applications[index] = action.payload;
-  }
+        const updatedApp = action.payload;
+
+        const index = state.applications.findIndex(
+          (app) => app.publicId === updatedApp.publicId,
+        );
+
+        if (index !== -1) {
+          state.applications[index] = updatedApp;
+        }
+      });
+  },
 });
-}
-});
-
-
-
 
 export default applicationSlice.reducer;
