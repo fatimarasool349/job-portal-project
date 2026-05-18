@@ -1,9 +1,11 @@
 import Application from "../models/application.model.js";
 import Job from "../models/job.model.js";
 import Company from "../models/company.model.js";
+import User from "../models/users.model.js";
 import mongoose from "mongoose";
 import { v4 as uuidv4 } from "uuid";
 import { sendStatusEmail } from "../templates/sendStatusEmail.js";
+import Notification from "../models/notification.model.js";
 
 export const applyJob = async (req, res) => {
   try {
@@ -21,7 +23,7 @@ export const applyJob = async (req, res) => {
       candidate,
     } = req.body;
     // find job to get recruiter
-    const job = await Job.findOne({ slug: jobSlug });
+    const job = await Job.findOne({ slug: jobSlug }).populate("company");
     if (!job) {
       return res.status(404).json({ message: "Job not found" });
     }
@@ -57,8 +59,53 @@ export const applyJob = async (req, res) => {
       linkedin,
       coverLetter,
     });
-    console.log("USER:", req.user);
+    const admin = await User.findOne({ role: "admin" });
+    const user = await User.findById(req.user.id);
 
+    const company = await Company.findById(job.company);
+
+    if (!company) {
+      return res.status(404).json({
+        message: "Company not found",
+      });
+    }
+
+    if (!company.recruiterId) {
+      return res.status(400).json({
+        message: "Recruiter not assigned to company",
+      });
+    }
+
+    console.log("RECRUITER ID:", company.recruiterId);
+    console.log("APPLICANT ID:", req.user.id);
+    console.log("JOB COMPANY:", job.company);
+    console.log("COMPANY:", company);
+    console.log("RECRUITER ID:", company?.recruiterId);
+    console.log("LOGIN USER:", req.user.id);
+
+    const notifications = [
+      {
+        receiver: company.recruiterId, // MUST be valid ObjectId
+        sender: req.user.id,
+        type: "application",
+        title: "New Application",
+        message: `${user.fullName} applied for ${job.title}`,
+        link: "/recruiter/applications",
+      },
+    ];
+
+    await Notification.insertMany(notifications);
+
+    if (admin) {
+      await Notification.create({
+        receiver: admin._id, // admin
+        sender: req.user.id,
+        type: "application",
+        title: "New Application",
+        message: `${user.fullName} applied for ${job.title} at ${job.company.name}`,
+        link: "/admin/applications",
+      });
+    }
     res.status(201).json({
       message: "Application submitted successfully",
       application,
@@ -193,6 +240,15 @@ export const updateApplicationStatus = async (req, res) => {
 
     // 👇 send email after update
     await sendStatusEmail(application);
+    console.log("CANDIDATE:", application.candidate);
+    await Notification.create({
+      receiver: application.candidate._id,
+      sender: req.user.id,
+      type: "status_update",
+      title: "Application Updated",
+      message: `Your application for ${application.job.title} at ${application.job.company.name} was ${req.body.status}`,
+      link: `/my-applications`,
+    });
 
     return res.json({
       success: true,

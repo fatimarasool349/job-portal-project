@@ -29,9 +29,14 @@ const companySchema = new mongoose.Schema(
     ],
 
     photos: [String],
+    createdBy: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Users",
+    },
     recruiterId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Users",
+      default: null,
     },
     slug: {
       type: String,

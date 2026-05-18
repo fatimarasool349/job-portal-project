@@ -116,6 +116,7 @@ useEffect(() => {
       ? form.requirements.split("\n").filter(Boolean)
       : [],
   };
+  console.log("UPDATE PAYLOAD:", payload);
 
   await onSave(payload, existingData?._id);
   onClose();

@@ -15,12 +15,13 @@ export const USER_ROUTES = {
   JOB_DETAIL: "/job-detail-page/:slug",
   APPLY_JOB: "/jobs/:slug/apply",
   BOOKMARKS: "/bookmark",
-  NOTIFICATIONS: "/notifications/:tab",
+  NOTIFICATIONS: "/notifications",
   MESSAGES: "/messages",
   MESSAGE_DETAIL: "/messages/:id",
   REVIEW: "/review/:slug",
   APPLICATIONS: "/my-applications",
   APPLICATION_DETAIL: "/my-applications/:publicId",
+
 };
 
 export const ADMIN_ROUTES = {

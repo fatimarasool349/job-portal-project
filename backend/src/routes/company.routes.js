@@ -8,11 +8,12 @@ import {
   getCompanyBySlug,
 } from "../controllers/company.controller.js";
 import { upload } from "../middleware/upload.js";
+import { isAuthenticated } from "../middleware/authMiddleware.js";
 
 const router = express.Router();
 
 router.post(
-  "/",
+  "/", isAuthenticated,
   upload.fields([
     { name: "logo", maxCount: 1 },
     { name: "photos", maxCount: 10 },
@@ -20,9 +21,9 @@ router.post(
   createCompany,
 );
 router.get("/", getCompanies);
-router.get("/my-company", getMyCompany);
+router.get("/my-company", isAuthenticated, getMyCompany);
 router.put(
-  "/:id",
+  "/:id", isAuthenticated,
   upload.fields([
     { name: "logo", maxCount: 1 },
     { name: "photos", maxCount: 10 },

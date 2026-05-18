@@ -1,6 +1,8 @@
 import Users from "../models/users.model.js";
+import Company from "../models/company.model.js";
 import sendEmail from "../utils/sendEmail.js";
 import { recruiterSignupEmail } from "../templates/recruiterSignupEmail.js";
+import mongoose from "mongoose";
 
 export const getRecruiters = async (req, res) => {
   try {
@@ -45,6 +47,18 @@ export const updateRecruiter = async (req, res) => {
     const updated = await Users.findByIdAndUpdate(id, req.body, { new: true });
     console.log("UPDATED USER:", updated);
     console.log("EMAIL FIELD:", updated.email);
+
+    if (req.body.companyId) {
+      await Company.findByIdAndUpdate(
+        req.body.companyId,
+        {
+          recruiterId: updated._id,
+        },
+        { new: true },
+      );
+    }
+
+    console.log("UPDATED USER:", updated);
 
     // ✅ ADD EMAIL HERE (after update)
     if (updated) {
@@ -113,20 +127,104 @@ export const assignCompanyToRecruiter = async (req, res) => {
       { _id: req.params.id, role: "recruiter" },
       { companyId },
       { new: true },
-    ).populate("companyId", "name");
+    );
+
+    // Update company
+    await Company.findByIdAndUpdate(
+      companyId,
+      {
+        recruiterId: user._id,
+      },
+      { new: true },
+    );
+
+    const populatedUser = await Users.findById(user._id).populate(
+      "companyId",
+      "name",
+    );
 
     try {
       await sendEmail(
-        user.email,
+        populatedUser.email,
         "Company Assigned 🏢",
-        recruiterSignupEmail(user.fullName, user.companyId.name),
+        recruiterSignupEmail(
+          populatedUser.fullName,
+          populatedUser.companyId.name,
+        ),
       );
     } catch (emailErr) {
       console.log("Email failed:", emailErr.message);
     }
 
-    res.json({ success: true, user });
+    res.json({ success: true, user: populatedUser });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
 };
+// export const assignCompanyToRecruiter = async (req, res) => {
+//   try {
+//     const { companyId } = req.body;
+
+//     if (!companyId) {
+//       return res.status(400).json({
+//         field: "companyId",
+//         message: "Please select a company",
+//       });
+//     }
+
+//     // 1. Assign company to recruiter (USER)
+//     const user = await Users.findOneAndUpdate(
+//       { _id: req.params.id, role: "recruiter" },
+//       { companyId },
+//       { new: true },
+//     ).populate("companyId", "name");
+
+//     if (!user) {
+//       return res.status(404).json({
+//         message: "Recruiter not found",
+//       });
+//     }
+//     console.log("companyId:", companyId);
+//     console.log("user id:", user._id);
+
+//     if (!user.companyId.equals(companyId)) {
+//   return res.status(400).json({ message: "User company mismatch" });
+// }
+
+//     if (!mongoose.Types.ObjectId.isValid(companyId)) {
+//       return res.status(400).json({ message: "Invalid companyId" });
+//     }
+
+//     // 2. IMPORTANT: Assign recruiter to company (FIX FOR recruiterId = null)
+//     const updatedCompany = await Company.findByIdAndUpdate(
+//       companyId,
+//       { recruiterId: user._id },
+//       { new: true, runValidators: true },
+//     );
+
+//     console.log("UPDATED COMPANY:", updatedCompany);
+//     if (!updatedCompany) {
+//       console.log("❌ COMPANY NOT FOUND FOR UPDATE");
+//     } else {
+//       console.log("✅ COMPANY UPDATED:", updatedCompany.recruiterId);
+//     }
+
+//     // 3. Send email safely
+//     try {
+//       await sendEmail(
+//         user.email,
+//         "Company Assigned 🏢",
+//         recruiterSignupEmail(user.fullName, user.companyId?.name || "Company"),
+//       );
+//     } catch (emailErr) {
+//       console.log("Email failed:", emailErr.message);
+//     }
+
+//     return res.json({
+//       success: true,
+//       user,
+//     });
+//   } catch (err) {
+//     return res.status(500).json({ message: err.message });
+//   }
+// };

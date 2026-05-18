@@ -78,7 +78,7 @@ function ApplyForm() {
       const formData = new FormData();
 
       formData.append("jobSlug", slug);
-      formData.append("candidate", user._id); // from Redux or auth
+      // formData.append("candidate", user._id); // from Redux or auth
       formData.append("firstName", data.firstName);
       formData.append("lastName", data.lastName);
       formData.append("email", data.email);
@@ -98,13 +98,12 @@ function ApplyForm() {
         navigate(-1);
       });
     } catch (error) {
-      const message =
-        error?.response?.data?.message || "Failed to submit application";
+      const isAlreadyApplied = error.toLowerCase().includes("already");
 
       Swal.fire({
-        icon: "warning",
-        title: "Already Applied",
-        text: message,
+        icon: isAlreadyApplied ? "warning" : "error",
+        title: isAlreadyApplied ? "Already Applied" : "Application Failed",
+        text: error,
       });
     }
   };
@@ -117,7 +116,6 @@ function ApplyForm() {
 
   return (
     <main className="max-w-4xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
-      {/* Pass single job object to JobHeader */}
       <JobHeader job={job} company={job.company} />
 
       <form

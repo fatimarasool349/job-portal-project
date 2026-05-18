@@ -201,6 +201,7 @@ export const updateJob = async (req, res) => {
     const {
       title,
       description,
+      company,
       requirements,
       responsibilities,
       status,
@@ -215,6 +216,7 @@ export const updateJob = async (req, res) => {
 
     if (title) updateData.title = title;
     if (description) updateData.description = description;
+    if (company) updateData.company = company;
     if (requirements) updateData.requirements = requirements;
     if (responsibilities) updateData.responsibilities = responsibilities;
     if (salary) updateData.salary = salary;

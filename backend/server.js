@@ -13,6 +13,7 @@ import applicationRoutes from "./src/routes/application.routes.js"
 import { isAuthenticated } from "./src/middleware/authMiddleware.js";
 import reviewRoutes from "./src/routes/review.routes.js";
 import dashboardRoutes from "./src/routes/dashboard.routes.js";
+import notificationRoutes from "./src/routes/notification.routes.js";
 
 
 
@@ -57,6 +58,7 @@ app.use("/api/recruiters", recruiterRoutes);
 app.use("/api/application", applicationRoutes);
 app.use("/api/reviews",reviewRoutes)
 app.use("/api/dashboard", dashboardRoutes);
+app.use("/api/notifications",notificationRoutes);
 
 console.log("ALL ROUTES MOUNTED");
 

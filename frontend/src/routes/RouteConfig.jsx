@@ -30,6 +30,7 @@ const NotificationsPage = lazy(() => import("../pages/user/NotificationsPage"));
 const MyApplicationsPage = lazy(() => import("../pages/user/MyApplications"));
 const MessagePage = lazy(() => import("../pages/user/MessagePage"));
 const UserApplicationDetail = lazy(() => import("../pages/user/UserApplicationDetail"));
+const UserNotificationPage = lazy(() => import("../pages/Notifications"));
 // Admin pages (lazy)
 const Dashboard = lazy(() => import("../pages/admin/Dashboard"));
 const PendingApproval = lazy(() => import("../pages/admin/PendingApproval"));
@@ -90,7 +91,7 @@ export const userRoutes = [
       { path: USER_ROUTES.JOB_DETAIL, element: <ViewDetailPage /> },
       { path: USER_ROUTES.APPLY_JOB, element: <ApplyForm /> },
       { path: USER_ROUTES.BOOKMARKS, element: <BookMark /> },
-      { path: USER_ROUTES.NOTIFICATIONS, element: <NotificationsPage /> },
+      { path: USER_ROUTES.NOTIFICATIONS, element: <UserNotificationPage /> },
       { path: USER_ROUTES.MESSAGES, element: <MessagePage /> },
       { path: USER_ROUTES.APPLICATIONS, element: <MyApplicationsPage /> },
       { path: USER_ROUTES.APPLICATION_DETAIL, element: <UserApplicationDetail /> },
@@ -114,7 +115,7 @@ export const adminRoutes = [
       { path: ADMIN_ROUTES.APPLICATIONS, element: <ManageJobApplications /> },
       { path: ADMIN_ROUTES.APPLICATION_DETAIL, element: <ApplicationDetail /> },
       { path: ADMIN_ROUTES.REVIEWS, element: <ReviewsDashboard /> },
-      { path: ADMIN_ROUTES.NOTIFICATIONS, element: <DashboardNotificationPage /> },
+      { path: ADMIN_ROUTES.NOTIFICATIONS, element: <UserNotificationPage /> },
       { path: ADMIN_ROUTES.JOBS, element: <ManageJobs /> },
       { path: ADMIN_ROUTES.ANALYTICS, element: <SystemAnalysis /> },
       { path: ADMIN_ROUTES.SETTINGS, element: <ProfilePage /> },

@@ -7,11 +7,19 @@ import {
   updateApplicationStatusApi,
 } from "../../api/applicationApi";
 import axios from "axios";
-// APPLY
-export const applyJob = createAsyncThunk("apply", async (formData) => {
-  const res = await applyJobApi(formData);
-  return res.data;
-});
+export const applyJob = createAsyncThunk(
+  "apply",
+  async (formData, { rejectWithValue }) => {
+    try {
+      const res = await applyJobApi(formData);
+      return res.data;
+    } catch (error) {
+      return rejectWithValue(
+        error?.response?.data?.message || "Something went wrong",
+      );
+    }
+  },
+);
 
 // GET ALL (Admin)
 export const fetchAllApplications = createAsyncThunk("fetchAll", async () => {
@@ -19,7 +27,6 @@ export const fetchAllApplications = createAsyncThunk("fetchAll", async () => {
   return res.data;
 });
 
-// GET RECRUITER
 export const fetchRecruiterApplications = createAsyncThunk(
   "fetchRecruiter",
   async () => {
@@ -55,18 +62,18 @@ const applicationSlice = createSlice({
       .addCase(applyJob.fulfilled, (state, action) => {
         state.applications.unshift(action.payload.application);
       })
+      .addCase(applyJob.rejected, (state, action) => {
+        // Handle rejection if needed
+      })
 
-      // GET ALL
       .addCase(fetchAllApplications.fulfilled, (state, action) => {
         state.applications = action.payload;
       })
 
-      // GET RECRUITER
       .addCase(fetchRecruiterApplications.fulfilled, (state, action) => {
         state.applications = action.payload;
       })
 
-      // DELETE
       .addCase(deleteApplication.fulfilled, (state, action) => {
         state.applications = state.applications.filter(
           (app) => app._id !== action.payload,

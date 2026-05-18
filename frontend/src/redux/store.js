@@ -2,6 +2,7 @@ import { configureStore, combineReducers } from "@reduxjs/toolkit";
 import authReducer from "./slices/authSlice";
 import applicationReducer from "./slices/applicationSlice";
 import dashboardReducer from "./slices/dashboardSlice";
+import notificationReducer from "./slices/notificationSlice";
 
 import {
   persistStore,
@@ -23,6 +24,7 @@ const rootReducer = combineReducers({
   auth: authReducer,
   applications: applicationReducer,
   dashboard: dashboardReducer,
+  notifications: notificationReducer,
 });
 
 const persistConfig = {

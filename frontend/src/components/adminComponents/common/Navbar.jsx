@@ -2,17 +2,27 @@ import { Bell, LogOut } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useRole } from "../../../hooks/useRole.js";
 import { ADMIN_ROUTES } from "../../../constants/routes.js";
+import { FaBell } from "react-icons/fa";
+import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { useEffect } from "react";
+import { fetchNotifications } from "../../../redux/slices/notificationSlice";
 
 function Navbar({
   title = "Dashboard",
   userName = "Admin",
   profileImage = "",
-  notifications = 0,
+  // notifications = 0,
   onLogout,
 }) {
   const { role } = useRole();
+  const dispatch = useDispatch();
 
-  const notificationCount = role === "admin" ? notifications : 0;
+  const { notifications } = useSelector((state) => state.notifications);
+  const notificationCount =
+    role === "admin"|| role === "recruiter" ? notifications?.filter((n) => !n.isRead).length || 0 : 0;
+
+  // const notificationCount = role === "admin" ? notifications : 0;
 
   const profileLink =
     role === "admin"
@@ -21,6 +31,18 @@ function Navbar({
         ? ADMIN_ROUTES.SETTINGS
         : "/profile";
 
+  useEffect(() => {
+    dispatch(fetchNotifications());
+
+    const interval = setInterval(() => {
+      dispatch(fetchNotifications());
+    }, 10000);
+
+    return () => {
+      clearInterval(interval);
+    };
+  }, [dispatch]);
+
   return (
     <header className="h-16 bg-white border-b border-gray-200 px-8 flex items-center justify-between sticky top-0 z-10">
       <h2 className="text-xl font-semibold text-gray-800">{title}</h2>
@@ -28,10 +50,10 @@ function Navbar({
       <div className="flex items-center space-x-6">
         {role !== "Job Seeker" && (
           <Link
-            to={`${ADMIN_ROUTES.NOTIFICATIONS}`}
+            to={ADMIN_ROUTES.NOTIFICATIONS}
             className="text-gray-400 hover:text-gray-600 relative"
           >
-            <Bell className="w-6 h-6" />
+            <FaBell className="w-6 h-6" />
 
             {notificationCount > 0 && (
               <span className="absolute -top-1 -right-1 flex items-center justify-center text-[10px] bg-red-500 text-white rounded-full h-4 w-4">

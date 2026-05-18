@@ -7,6 +7,11 @@ import slugify from "slugify";
 // CREATE
 export const createCompany = async (req, res) => {
   try {
+    console.log("=== CREATE COMPANY START ===");
+
+    console.log("BODY:", req.body);
+    console.log("FILES:", req.files);
+    console.log("USER:", req.user);
     let logoPath = null;
     let photosPaths = [];
 
@@ -38,7 +43,7 @@ export const createCompany = async (req, res) => {
       about2: req.body.about2,
       size: req.body.size,
       businessHours: req.body.businessHours,
-      recruiterId: req.user.id,
+      createdBy: req.user.id,
 
       stats,
       culture,
@@ -151,17 +156,17 @@ export const updateCompany = async (req, res) => {
       }
     }
 
-    if (req.file) {
-      if (company.logo && !company.logo.startsWith("data:image")) {
-        const oldPath = path.join(process.cwd(), company.logo);
+   if (req.files?.logo?.[0]) {
+  if (company.logo && !company.logo.startsWith("data:image")) {
+    const oldPath = path.join(process.cwd(), company.logo);
 
-        if (fs.existsSync(oldPath)) {
-          fs.unlinkSync(oldPath);
-        }
-      }
-
-      updateData.logo = `/upload/company/${req.file.filename}`;
+    if (fs.existsSync(oldPath)) {
+      fs.unlinkSync(oldPath);
     }
+  }
+
+  updateData.logo = `/upload/company/${req.files.logo[0].filename}`;
+}
 
     const updatedCompany = await Company.findByIdAndUpdate(
       req.params.id,
