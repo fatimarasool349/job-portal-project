@@ -4,14 +4,10 @@ import fs from "fs";
 import path from "path";
 import slugify from "slugify";
 
-// CREATE
+
 export const createCompany = async (req, res) => {
   try {
-    console.log("=== CREATE COMPANY START ===");
 
-    console.log("BODY:", req.body);
-    console.log("FILES:", req.files);
-    console.log("USER:", req.user);
     let logoPath = null;
     let photosPaths = [];
 
@@ -87,7 +83,6 @@ export const getCompanyBySlug = async (req, res) => {
   }
 };
 
-// GET ONE
 export const getMyCompany = async (req, res) => {
   try {
     const userId = req.user?.id;
@@ -110,7 +105,7 @@ export const getMyCompany = async (req, res) => {
   }
 };
 
-// UPDATE
+
 export const updateCompany = async (req, res) => {
   try {
     const company = await Company.findById(req.params.id);
@@ -186,7 +181,6 @@ export const updateCompany = async (req, res) => {
   }
 };
 
-// DELETE
 export const deleteCompany = async (req, res) => {
   try {
     const company = await Company.findById(req.params.id);

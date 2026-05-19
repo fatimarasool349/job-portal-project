@@ -4,7 +4,6 @@ import { createReview ,getAllReviews,getCompanyReviews,verifyReview,flagReview,d
 const router = express.Router();
 
 router.post("/", createReview);
-// ✅ FIXED ORDER
 
 router.get("/recruiter", getRecruiterReviews);
 router.get("/user/:userId", getUserReviews);
@@ -13,7 +12,6 @@ router.patch("/:id/verify", verifyReview);
 router.patch("/:id/flag", flagReview);
 router.delete("/:id", deleteReview);
 
-// 👇 ALWAYS LAST (VERY IMPORTANT)
 router.get("/:id", getReviewById);
 router.get("/", getAllReviews);
 router.get("/uuid/:reviewId", getReviewByUUID);

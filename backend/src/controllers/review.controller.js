@@ -72,6 +72,7 @@ export const getCompanyReviews = async (req, res) => {
       .populate("user", "name")
       .populate("company", "name")
       .sort({ createdAt: -1 });
+    const total = await Review.countDocuments({ company: companyId });
 
     const avgRating =
       reviews.reduce((acc, r) => acc + r.overallRating, 0) /

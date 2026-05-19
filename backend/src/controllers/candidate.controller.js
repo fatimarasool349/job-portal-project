@@ -2,7 +2,7 @@ import Candidate from "../models/candidate.model.js";
 import mongoose from "mongoose";
 
 
-// ✅ GET ALL CANDIDATES
+// GET ALL CANDIDATES
 export const getCandidates = async (req, res) => {
   try {
     const { role, userId } = req.user;
@@ -21,7 +21,6 @@ export const getCandidates = async (req, res) => {
   }
 };
 
-// ✅ ADD CANDIDATE
 export const addCandidate = async (req, res) => {
   try {
     const { name, email, position, status } = req.body;
@@ -42,7 +41,6 @@ export const addCandidate = async (req, res) => {
   }
 };
 
-// ✅ UPDATE CANDIDATE
 export const updateCandidate = async (req, res) => {
   try {
     const { id } = req.params; 

@@ -48,8 +48,14 @@ const jobSchema = new mongoose.Schema(
       type: String,
       unique: true,
     },
+    
   },
   { timestamps: true },
+  
+);
+jobSchema.index(
+  { title: 1, company: 1,  },
+  { unique: true }
 );
 
 export default mongoose.model("Job", jobSchema);

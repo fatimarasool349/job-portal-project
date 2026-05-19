@@ -8,7 +8,6 @@ import { useState, useEffect } from "react";
 function ViewDetailPage() {
   const { slug } = useParams();
 
-  console.log("SLUG FROM URL:", slug); // 👈 must NOT be undefined
   const [job, setJob] = useState(null);
   const [loading, setLoading] = useState(true);
 

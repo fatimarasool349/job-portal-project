@@ -76,16 +76,16 @@ export const applyJob = async (req, res) => {
       });
     }
 
-    console.log("RECRUITER ID:", company.recruiterId);
-    console.log("APPLICANT ID:", req.user.id);
-    console.log("JOB COMPANY:", job.company);
-    console.log("COMPANY:", company);
-    console.log("RECRUITER ID:", company?.recruiterId);
-    console.log("LOGIN USER:", req.user.id);
+    // console.log("RECRUITER ID:", company.recruiterId);
+    // console.log("APPLICANT ID:", req.user.id);
+    // console.log("JOB COMPANY:", job.company);
+    // console.log("COMPANY:", company);
+    // console.log("RECRUITER ID:", company?.recruiterId);
+    // console.log("LOGIN USER:", req.user.id);
 
     const notifications = [
       {
-        receiver: company.recruiterId, // MUST be valid ObjectId
+        receiver: company.recruiterId, 
         sender: req.user.id,
         type: "application",
         title: "New Application",
@@ -98,7 +98,7 @@ export const applyJob = async (req, res) => {
 
     if (admin) {
       await Notification.create({
-        receiver: admin._id, // admin
+        receiver: admin._id, 
         sender: req.user.id,
         type: "application",
         title: "New Application",
@@ -231,16 +231,15 @@ export const updateApplicationStatus = async (req, res) => {
       .populate("candidate")
       .populate("recruiter");
 
-    // 🚨 check if application exists
     if (!application) {
       return res.status(404).json({ message: "Application not found" });
     }
 
     console.log("UPDATED APPLICATION:", application.status);
 
-    // 👇 send email after update
+    // send email after update
     await sendStatusEmail(application);
-    console.log("CANDIDATE:", application.candidate);
+    // console.log("CANDIDATE:", application.candidate);
     await Notification.create({
       receiver: application.candidate._id,
       sender: req.user.id,
@@ -296,7 +295,6 @@ export const withdrawApplication = async (req, res) => {
       });
     }
 
-    // Prevent deleting accepted applications
     if (application.status === "accepted") {
       return res.status(400).json({
         success: false,
@@ -304,7 +302,7 @@ export const withdrawApplication = async (req, res) => {
       });
     }
 
-    // ✅ Delete application
+    //  Delete application
     await Application.findByIdAndDelete(application._id);
 
     res.status(200).json({

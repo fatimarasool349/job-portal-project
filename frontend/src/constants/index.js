@@ -1130,10 +1130,11 @@ export const companyReviewData = [
 
 // view detail tabs
 // data.js
-export const getTabs = (job) => [
+export const getTabs = (job, reviewCount = 0) => [
+  
   { id: "description", label: "Job Description" },
   { id: "company", label: "Company" },
-  { id: "reviews", label: `Reviews (${companyReviewData.total})` },
+  { id: "reviews", label: `Reviews (${reviewCount})` },
 ];
 
 // Apply form data
@@ -1363,7 +1364,7 @@ export const sidebarItems = [
     name: "Manage Users",
     icon: Users,
     path: ADMIN_ROUTES.CANDIDATES,
-    roles: ["admin", "recruiter"], // both
+    roles: ["admin"], // both
   },
    {
     name: "Manage Companies",

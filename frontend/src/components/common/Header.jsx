@@ -43,8 +43,8 @@ function Header({ profileImage, user }) {
     };
   }, [dispatch]);
 
-  console.log("HEADER NOTIFICATIONS:", notifications);
-  console.log("UNREAD COUNT:", unreadCount);
+  // console.log("HEADER NOTIFICATIONS:", notifications);
+  // console.log("UNREAD COUNT:", unreadCount);
   return (
     <div className="font-sans bg-gray-50">
       <header className="bg-white shadow">

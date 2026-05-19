@@ -33,7 +33,27 @@ function ApplyForm() {
 
   const token = useSelector((state) => state.auth.token);
 
+  const {
+    register,
+    handleSubmit,
+    watch,
+    setValue,
+    formState: { errors, dirtyFields },
+  } = useForm({
+    mode: "onChange",
+  });
   useEffect(() => {
+    if (user) {
+      if (user?.fullName) {
+        const nameParts = user.fullName.split(" ");
+
+        setValue("firstName", nameParts[0] || "");
+        setValue("lastName", nameParts.slice(1).join(" ") || "");
+      }
+      
+      setValue("email", user.email || "");
+      setValue("phone", user.phone || "");
+    }
     const fetchJob = async () => {
       try {
         const res = await getJobBySlug(slug);
@@ -44,16 +64,7 @@ function ApplyForm() {
     };
 
     fetchJob();
-  }, [slug]);
-
-  const {
-    register,
-    handleSubmit,
-    watch,
-    formState: { errors, dirtyFields },
-  } = useForm({
-    mode: "onChange",
-  });
+  }, [slug, setValue, user]);
 
   const file = watch("resume");
   const loginPath = PUBLIC_ROUTES.LOGIN.replace(":role", safeRole);

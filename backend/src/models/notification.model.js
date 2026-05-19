@@ -15,12 +15,7 @@ const notificationSchema = new mongoose.Schema(
 
     type: {
       type: String,
-      enum: [
-        "application",
-        "status_update",
-        "job_alert",
-        "message",
-      ],
+      enum: ["application", "status_update", "job_alert", "message"],
     },
 
     title: String,
@@ -31,10 +26,15 @@ const notificationSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    audience: {
+      type: String,
+      enum: ["all", "jobseeker", "recruiter", "admin"],
+      default: "all",
+    },
 
     link: String,
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 export default mongoose.model("Notification", notificationSchema);

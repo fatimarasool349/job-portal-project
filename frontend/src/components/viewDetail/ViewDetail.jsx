@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Description from "./Description";
 import Company from "./Company";
 import Reviews from "./Review";
 import JobSidebar from "./JobSidebar.jsx";
 import { getTabs ,companyData} from "../../constants/index.js";
+import {getCompanyReviews} from "../../api/reviewApi.js"
 
 function ViewDetail({ job  }) {
   const [activeTab, setActiveTab] = useState("description");
@@ -12,8 +13,19 @@ function ViewDetail({ job  }) {
   if (!job) {
     return <div className="text-center py-10 text-gray-500">No job data available</div>;
   }
+  const [companyReviewData, setCompanyReviewData] = useState(null);
 
-  const tabs = getTabs(job);
+
+useEffect(() => {
+  const loadReviews = async () => {
+    const res = await getCompanyReviews(job.company._id);
+    setCompanyReviewData(res.data);
+  };
+
+  loadReviews();
+}, [job.company._id]);
+
+  const tabs = getTabs(job, companyReviewData?.total || 0);
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">

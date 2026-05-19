@@ -1,35 +1,45 @@
 import { useState, useMemo, useEffect } from "react";
 import JobCard from "./JobCard.jsx";
-import { jobData as initialJobs , companyData } from "../../constants/index.js"; // replace with API later
+import { jobData as initialJobs, companyData } from "../../constants/index.js"; // replace with API later
 import Pagination from "../common/Pagination.jsx";
-
 
 function JobListing({ jobs }) {
   const [sortBy, setSortBy] = useState("Most Relevant");
   const [currentPage, setCurrentPage] = useState(1);
   const jobsPerPage = 4;
 
-  // Load jobs (simulate API)
-  // useEffect(() => {
-  //   setJobs(initialJobs);
-  // }, []);
+ 
 
   useEffect(() => {
-  setCurrentPage(1);
-}, [jobs]);
+    setCurrentPage(1);
+  }, [jobs]);
 
-function getMinSalary(salaryStr) {
-  if (!salaryStr) return 0; 
-  const cleanStr = salaryStr.replace(/[\$,]/g, "").toLowerCase();
+  function getMinSalary(salary) {
+    // console.log("salary value:", salary, typeof salary);
 
-  if (cleanStr.includes("negotiable")) return 0;
-  const match = cleanStr.match(/(\d+)/);
-  if (match) return Number(match[1]);
-  return 0;
-}
+    if (!salary) return 0;
+
+    // If number → return directly
+    if (typeof salary === "number") {
+      return salary;
+    }
+
+    // If string → clean it
+    if (typeof salary === "string") {
+      const cleanStr = salary.replace(/[\$,]/g, "").toLowerCase();
+
+      if (cleanStr.includes("negotiable")) return 0;
+
+      const match = cleanStr.match(/\d+/);
+      return match ? Number(match[0]) : 0;
+    }
+
+    return 0;
+  }
 
   // Sorting
   const sortedJobs = useMemo(() => {
+    // console.log("SORT BY:", sortBy);
     let sorted = [...jobs];
 
     if (sortBy === "Highest Salary") {
@@ -37,13 +47,11 @@ function getMinSalary(salaryStr) {
     }
 
     if (sortBy === "Most Relevant") {
-  sorted.sort((a, b) => (b.score || 0) - (a.score || 0));
+      sorted.sort((a, b) => (b.score || 0) - (a.score || 0));
     }
 
     if (sortBy === "Most Recent") {
-      sorted.sort(
-        (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
-      );
+      sorted.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
     }
 
     return sorted;
@@ -53,7 +61,7 @@ function getMinSalary(salaryStr) {
   const totalPages = Math.ceil(sortedJobs.length / jobsPerPage);
   const paginatedJobs = sortedJobs.slice(
     (currentPage - 1) * jobsPerPage,
-    currentPage * jobsPerPage
+    currentPage * jobsPerPage,
   );
 
   return (
@@ -70,7 +78,9 @@ function getMinSalary(salaryStr) {
         </div>
 
         <div className="flex items-center gap-2">
-          <span className="text-sm text-slate-500 dark:text-slate-400">Sort by:</span>
+          <span className="text-sm text-slate-500 dark:text-slate-400">
+            Sort by:
+          </span>
           <select
             value={sortBy}
             onChange={(e) => setSortBy(e.target.value)}
@@ -86,7 +96,7 @@ function getMinSalary(salaryStr) {
       {/* Job Listings */}
       <div className="grid gap-4">
         {paginatedJobs.map((job) => (
-          <JobCard key={job._id} job={job}   />
+          <JobCard key={job._id} job={job} />
         ))}
       </div>
 
