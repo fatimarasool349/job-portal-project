@@ -85,7 +85,7 @@ export const applyJob = async (req, res) => {
 
     const notifications = [
       {
-        receiver: company.recruiterId, 
+        receiver: company.recruiterId,
         sender: req.user.id,
         type: "application",
         title: "New Application",
@@ -98,7 +98,7 @@ export const applyJob = async (req, res) => {
 
     if (admin) {
       await Notification.create({
-        receiver: admin._id, 
+        receiver: admin._id,
         sender: req.user.id,
         type: "application",
         title: "New Application",
@@ -208,7 +208,14 @@ export const deleteApplication = async (req, res) => {
 };
 export const updateApplicationStatus = async (req, res) => {
   try {
-    const { status } = req.body;
+    const {
+      status,
+      interviewDate,
+      interviewTime,
+      interviewMode,
+      meetingLink,
+      notes,
+    } = req.body;
 
     console.log("CONTROLLER HIT:", req.params.publicId, req.body);
 
@@ -216,11 +223,42 @@ export const updateApplicationStatus = async (req, res) => {
       return res.status(400).json({ message: "Status required" });
     }
 
-    const application = await Application.findOneAndUpdate(
-      { publicId: req.params.publicId },
-      { status },
-      { new: true },
-    )
+    const application = await Application.findOne({
+      publicId: req.params.publicId,
+    });
+
+    if (!application) {
+      return res.status(404).json({ message: "Application not found" });
+    }
+
+    if (application.status === "selected") {
+      if (status !== "hired") {
+        return res.status(400).json({
+          message: "After selected, only hired is allowed",
+        });
+      }
+    }
+
+    // ❗ VALIDATION FIRST (IMPORTANT FIX)
+    if (["rejected", "hired"].includes(application.status)) {
+      return res.status(400).json({
+        message: "Final status cannot be modified",
+      });
+    }
+
+    application.status = status;
+     if (status === "interview scheduled") {
+      application.interview = {
+        date: interviewDate,
+        time: interviewTime,
+        mode: interviewMode,
+        meetingLink,
+        notes,
+      };
+    }
+    await application.save();
+
+    const updatedApplication = await Application.findById(application._id)
       .populate({
         path: "job",
         populate: {
@@ -231,28 +269,23 @@ export const updateApplicationStatus = async (req, res) => {
       .populate("candidate")
       .populate("recruiter");
 
-    if (!application) {
-      return res.status(404).json({ message: "Application not found" });
-    }
+    console.log("UPDATED APPLICATION:", updatedApplication.status);
 
-    console.log("UPDATED APPLICATION:", application.status);
+    await sendStatusEmail(updatedApplication);
 
-    // send email after update
-    await sendStatusEmail(application);
-    // console.log("CANDIDATE:", application.candidate);
     await Notification.create({
-      receiver: application.candidate._id,
+      receiver: updatedApplication.candidate._id,
       sender: req.user.id,
       type: "status_update",
       title: "Application Updated",
-      message: `Your application for ${application.job.title} at ${application.job.company.name} was ${req.body.status}`,
+      message: `Your application for ${updatedApplication.job.title} at ${updatedApplication.job.company.name} was ${status}`,
       link: `/my-applications`,
     });
 
     return res.json({
       success: true,
       message: "Status updated successfully",
-      application,
+      application: updatedApplication,
     });
   } catch (err) {
     console.error("STATUS UPDATE ERROR:", err);
@@ -295,10 +328,10 @@ export const withdrawApplication = async (req, res) => {
       });
     }
 
-    if (application.status === "accepted") {
+    if (application.status === "selected") {
       return res.status(400).json({
         success: false,
-        message: "Accepted applications cannot be withdrawn",
+        message: "Selected applications cannot be withdrawn",
       });
     }
 

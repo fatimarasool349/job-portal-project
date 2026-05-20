@@ -15,8 +15,8 @@ export const deleteApplicationApi = (publicId) =>
 export const getApplicationById = (publicId) =>
   API.get(`/application/${publicId}`);
 
-export const updateApplicationStatusApi = (publicId, status) =>
-  API.patch(`/application/${publicId}`, { status });
+export const updateApplicationStatusApi = (publicId, data) =>
+  API.patch(`/application/${publicId}`, data);
 
 export const withdrawApplication = (publicId) =>
   API.delete(`/application/withdraw/${publicId}`);

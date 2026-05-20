@@ -54,7 +54,7 @@ export default function UserApplicationDetail() {
 
           <CompanyOverviewCard company={data.company} />
 
-          {data.status !== "accepted" && data.status !== "withdrawn" && (
+          {data.status !== "selected" && data.status !== "withdrawn" && (
             <WithdrawButton
               publicId={data.publicId}
             />

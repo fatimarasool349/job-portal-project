@@ -34,27 +34,27 @@ function ApplicationDetail() {
   return (
     <main className="max-w-7xl mx-auto w-full px-8 py-8 flex-1">
       <Header
-        status={application?.status}
-        onApprove={() => {
-          if (application?.status !== "pending") return;
+        application={application}
+        // onApprove={() => {
+        //   if (application?.status !== "pending") return;
 
-          dispatch(
-            updateApplicationStatus({
-              id: application.publicId,
-              status: "accepted",
-            }),
-          );
-        }}
-        onReject={() => {
-          if (application?.status !== "pending") return;
+        //   dispatch(
+        //     updateApplicationStatus({
+        //       id: application.publicId,
+        //       status: "accepted",
+        //     }),
+        //   );
+        // }}
+        // onReject={() => {
+        //   if (application?.status !== "pending") return;
 
-          dispatch(
-            updateApplicationStatus({
-              id: application.publicId,
-              status: "rejected",
-            }),
-          );
-        }}
+        //   dispatch(
+        //     updateApplicationStatus({
+        //       id: application.publicId,
+        //       status: "rejected",
+        //     }),
+        //   );
+        // }}
         // onMessage={() =>
         //   application &&
         //   navigate(

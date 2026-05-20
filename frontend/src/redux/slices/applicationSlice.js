@@ -43,8 +43,8 @@ export const deleteApplication = createAsyncThunk("delete", async (id) => {
 
 export const updateApplicationStatus = createAsyncThunk(
   "updateStatus",
-  async ({ id, status }) => {
-    const res = await updateApplicationStatusApi(id, status);
+  async ({ id, ...data }) => {
+    const res = await updateApplicationStatusApi(id, data);
     return res.data.application;
   },
 );
