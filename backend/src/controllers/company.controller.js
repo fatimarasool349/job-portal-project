@@ -4,10 +4,8 @@ import fs from "fs";
 import path from "path";
 import slugify from "slugify";
 
-
 export const createCompany = async (req, res) => {
   try {
-
     let logoPath = null;
     let photosPaths = [];
 
@@ -57,7 +55,17 @@ export const createCompany = async (req, res) => {
 // GET ALL
 export const getCompanies = async (req, res) => {
   try {
-    const companies = await Company.find().sort({ createdAt: -1 });
+    let companies;
+    console.log("User role:", req.user);
+
+    if (req.user.role === "admin") {
+      companies = await Company.find();
+    } else {
+      companies = await Company.find({
+        recruiterId: { $exists: true, $ne: null },
+      });
+    }
+
     res.json(companies);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -105,7 +113,6 @@ export const getMyCompany = async (req, res) => {
   }
 };
 
-
 export const updateCompany = async (req, res) => {
   try {
     const company = await Company.findById(req.params.id);
@@ -151,17 +158,17 @@ export const updateCompany = async (req, res) => {
       }
     }
 
-   if (req.files?.logo?.[0]) {
-  if (company.logo && !company.logo.startsWith("data:image")) {
-    const oldPath = path.join(process.cwd(), company.logo);
+    if (req.files?.logo?.[0]) {
+      if (company.logo && !company.logo.startsWith("data:image")) {
+        const oldPath = path.join(process.cwd(), company.logo);
 
-    if (fs.existsSync(oldPath)) {
-      fs.unlinkSync(oldPath);
+        if (fs.existsSync(oldPath)) {
+          fs.unlinkSync(oldPath);
+        }
+      }
+
+      updateData.logo = `/upload/company/${req.files.logo[0].filename}`;
     }
-  }
-
-  updateData.logo = `/upload/company/${req.files.logo[0].filename}`;
-}
 
     const updatedCompany = await Company.findByIdAndUpdate(
       req.params.id,

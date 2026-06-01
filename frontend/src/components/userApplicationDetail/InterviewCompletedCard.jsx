@@ -3,7 +3,7 @@ import { formatDate } from "../../utils/formatDate";
 
 export default function InterviewCompletedCard({ data }) {
   return (
-    <div className="bg-white p-6 rounded-2xl shadow-sm border-t-4 border-purple-500 border border-gray-200">
+    <div className="bg-white p-6 rounded-2xl shadow-sm border-t-4 border-purple-500 border">
 
       <div className="flex items-center gap-3 mb-4">
         <FaClipboardCheck className="text-purple-500 text-2xl" />

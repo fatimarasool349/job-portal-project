@@ -80,10 +80,16 @@ export const getAllJobs = async (req, res) => {
       criteria["company"] = req.user?.company;
     }
     console.log(`getAllJobs criteria ${JSON.stringify(criteria)}`);
-    const jobs = await Job.find(criteria)
+    let jobs = await Job.find(criteria)
       .sort({ createdAt: -1 })
       .populate("company")
       .populate("createdBy", "fullName email");
+    if (req.user?.role !== "admin") {
+      console.log("FIRST JOB:", jobs[0]);
+
+      jobs = jobs.filter((job) => job.company && job.company.recruiterId);
+      console.log("FIRST JOB:", jobs[0]);
+    }
 
     res.status(200).json({ jobs });
   } catch (error) {

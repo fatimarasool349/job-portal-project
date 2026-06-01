@@ -3,6 +3,7 @@ import { MdDelete } from "react-icons/md";
 import { TfiEmail } from "react-icons/tfi";
 import { FaPhoneAlt } from "react-icons/fa";
 import { memo } from "react";
+import {getImageUrl} from "../../../utils/getImageUrl";
 import { getStatusStyle } from "../../../constants";
 import { statusColors } from "../../../constants";
 const CandidateRow = memo(({ candidate, onEdit, onDelete, role }) => {
@@ -14,7 +15,7 @@ const CandidateRow = memo(({ candidate, onEdit, onDelete, role }) => {
             <img
               alt={candidate.fullName}
               className="w-10 h-10 rounded-full object-cover"
-              src={candidate.profileImage}
+              src={getImageUrl(candidate.profileImage)}
             />
           )}
           <span className="font-semibold text-on-surface">

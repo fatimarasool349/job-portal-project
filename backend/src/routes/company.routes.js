@@ -20,7 +20,7 @@ router.post(
   ]),
   createCompany,
 );
-router.get("/", getCompanies);
+router.get("/", isAuthenticated, getCompanies);
 router.get("/my-company", isAuthenticated, getMyCompany);
 router.put(
   "/:id", isAuthenticated,
@@ -30,7 +30,7 @@ router.put(
   ]),
   updateCompany,
 );
-router.delete("/:id", deleteCompany);
+router.delete("/:id", isAuthenticated, deleteCompany);
 router.get("/:slug", getCompanyBySlug);
 
 

@@ -2,6 +2,10 @@ import { Navigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { Suspense } from "react";
 import LoadingScreen from "../pages/LoadingScreen";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
+import { PUBLIC_ROUTES } from "../constants/routes";
 
 /**
  * ProtectedRoute Component
@@ -16,23 +20,33 @@ function ProtectedRoute({
   allowedRoles = [],
   fallback = <LoadingScreen />,
 }) {
+  const navigate = useNavigate();
   const { isAuthenticated, role, user } = useSelector((state) => state.auth);
 
   const normalizedRole = role?.trim()?.toLowerCase() || "";
   const normalizedAllowedRoles = allowedRoles.map((r) => r.toLowerCase());
 
+  useEffect(() => {
+    if (!isAuthenticated || !user) {
+      toast.error("Please login first");
+      navigate(
+        PUBLIC_ROUTES.LOGIN.replace(
+          ":role",
+          role?.toLowerCase()?.replace(" ", ""),
+        ),
+        { replace: true },
+      );
+    }
+  }, [isAuthenticated, user, navigate]);
+
   if (!isAuthenticated || !user) {
-    return <Navigate to="/" replace />;
+    return null;
   }
 
-  
   if (user.status === "blocked") {
     return <Navigate to="/blocked" replace />;
   }
-  if (
-    normalizedRole === "recruiter" &&
-    user.status === "pending"
-  ) {
+  if (normalizedRole === "recruiter" && user.status === "pending") {
     return <Navigate to="/pending" replace />;
   }
   if (

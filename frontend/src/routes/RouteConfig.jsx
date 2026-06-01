@@ -4,6 +4,7 @@ import { USER_ROLES } from "../constants/roles";
 // Layouts
 import AppLayout from "../components/layout/AppLayout";
 import AdminLayout from "../components/layout/AdminLayout";
+import ProtectedRoute from "./ProtectedRoute";
 
 // Auth pages
 import SignUp from "../pages/SignUp";
@@ -104,7 +105,9 @@ export const userRoutes = [
 /* ================= ADMIN ROUTES ================= */
 export const adminRoutes = [
   {
-    element: <AdminLayout />, 
+    element: (<ProtectedRoute allowedRoles={["admin", "recruiter"]}>
+        <AdminLayout />
+      </ProtectedRoute>), 
     children: [
       { path: ADMIN_ROUTES.DASHBOARD, index: true, element: <Dashboard /> },
       { path: ADMIN_ROUTES.PENDING_APPROVAL, element: <PendingApproval /> },
