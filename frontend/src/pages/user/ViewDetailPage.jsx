@@ -4,6 +4,7 @@ import ViewDetail from "../../components/viewDetail/ViewDetail";
 import JobHeaderCard from "../../components/viewDetail/JobHeaderCard";
 import { getJobBySlug } from "../../api/jobApi";
 import { useState, useEffect } from "react";
+import {trackJobView} from "../../api/recommendedJobApi";
 
 function ViewDetailPage() {
   const { slug } = useParams();
@@ -28,6 +29,12 @@ function ViewDetailPage() {
 
     fetchData();
   }, [slug]);
+
+    useEffect(() => {
+    if (job) {
+      trackJobView(job._id, job.title);
+    }
+  }, [job]);
 
   if (loading) return <div>Loading...</div>;
   if (!job) return <div>Job not found</div>;

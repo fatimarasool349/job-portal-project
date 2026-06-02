@@ -2,6 +2,7 @@ import Job from "../models/job.model.js";
 import Users from "../models/users.model.js";
 import Company from "../models/company.model.js";
 import { v4 as uuidv4 } from "uuid";
+import UserActivity from "../models/user.activity.model.js";
 
 export const createJob = async (req, res) => {
   console.log("CREATE JOB API HIT");
@@ -165,6 +166,14 @@ export const getJobById = async (req, res) => {
     }
 
     res.status(200).json({ job });
+       if (req.user?.id) {
+      await UserActivity.create({
+        userId: req.user.id,
+        jobId: job._id,
+        jobTitle: job.title,
+        actionType: "view",
+      });
+    }
   } catch (error) {
     console.log("GET JOB ERROR:", error);
     res.status(500).json({ message: error.message });
@@ -178,6 +187,14 @@ export const getJobBySlug = async (req, res) => {
   if (!job) return res.status(404).json({ message: "Job not found" });
 
   res.status(200).json({ job });
+     if (req.user?.id) {
+      await UserActivity.create({
+        userId: req.user.id,
+        jobId: job._id,
+        jobTitle: job.title,
+        actionType: "view",
+      });
+    }
 };
 
 export const getMyJobs = async (req, res) => {

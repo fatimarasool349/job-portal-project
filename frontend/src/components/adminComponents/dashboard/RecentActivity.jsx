@@ -9,7 +9,7 @@ function RecentActivity({ activities }) {
       </div>
 
       <div className="space-y-6">
-        {activities.map((item, index) => {
+        {activities.slice(0, 5).map((item, index) => {
           const IconComponent = Icons[item.icon] || Icons.FileText;
 
           return (

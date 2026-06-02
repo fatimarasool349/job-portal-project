@@ -55,7 +55,7 @@ function Dashboard() {
 
         <div className="space-y-8">
           <QuickAction actions={filteredActions} />
-          <StorageWidget />
+          {/* <StorageWidget /> */}
         </div>
       </div>
     </div>

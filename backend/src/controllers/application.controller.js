@@ -6,6 +6,7 @@ import mongoose from "mongoose";
 import { v4 as uuidv4 } from "uuid";
 import { sendStatusEmail } from "../templates/sendStatusEmail.js";
 import Notification from "../models/notification.model.js";
+import UserActivity from "../models/user.activity.model.js";
 
 export const applyJob = async (req, res) => {
   try {
@@ -58,6 +59,12 @@ export const applyJob = async (req, res) => {
       portfolio,
       linkedin,
       coverLetter,
+    });
+    await UserActivity.create({
+      userId: req.user.id,
+      jobId: job._id,
+      jobTitle: job.title,
+      actionType: "apply",
     });
     const admin = await User.findOne({ role: "admin" });
     const user = await User.findById(req.user.id);
@@ -247,7 +254,7 @@ export const updateApplicationStatus = async (req, res) => {
     }
 
     application.status = status;
-     if (status === "interview scheduled") {
+    if (status === "interview scheduled") {
       application.interview = {
         date: interviewDate,
         time: interviewTime,

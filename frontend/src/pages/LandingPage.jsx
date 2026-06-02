@@ -2,7 +2,7 @@
 import HeroSection from "../components/landingPageComponents/HeroSection";
 import Stats from "../components/landingPageComponents/Stats";
 import ThreeStep from "../components/landingPageComponents/ThreeStep";
-import FeaturedJobs from "../components/landingPageComponents/JobFeatures";
+import JobFeatures from "../components/landingPageComponents/JobFeatures";
 
 function LandingPage() {
   return (
@@ -10,7 +10,8 @@ function LandingPage() {
       <HeroSection />
       <Stats />
       <ThreeStep />
-      <FeaturedJobs />
+      <JobFeatures type="featured" />
+      <JobFeatures type="recommended" />
     </div>
   );
 }

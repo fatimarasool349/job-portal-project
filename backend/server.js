@@ -14,6 +14,7 @@ import { isAuthenticated } from "./src/middleware/authMiddleware.js";
 import reviewRoutes from "./src/routes/review.routes.js";
 import dashboardRoutes from "./src/routes/dashboard.routes.js";
 import notificationRoutes from "./src/routes/notification.routes.js";
+import recommendationRoutes from "./src/routes/recommendation.routes.js";
 
 
 
@@ -59,6 +60,8 @@ app.use("/api/application", applicationRoutes);
 app.use("/api/reviews",reviewRoutes)
 app.use("/api/dashboard", dashboardRoutes);
 app.use("/api/notifications",notificationRoutes);
+app.use("/api/recommendations", recommendationRoutes);
+
 
 console.log("ALL ROUTES MOUNTED");
 
