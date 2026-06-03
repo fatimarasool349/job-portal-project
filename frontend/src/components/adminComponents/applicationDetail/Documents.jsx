@@ -34,7 +34,7 @@ function Documents({ resume }) {
   };
 
   return (
-    <section className="bg-white rounded-xl p-6 border">
+    <section className="bg-white rounded-xl p-6 border border-gray-200 shadow-sm">
       <h3 className="text-xs font-bold uppercase mb-4">Documents</h3>
 
       <div className="flex flex-col gap-3 bg-white rounded-lg p-4">

@@ -7,6 +7,15 @@ import { v4 as uuidv4 } from "uuid";
 import { sendStatusEmail } from "../templates/sendStatusEmail.js";
 import Notification from "../models/notification.model.js";
 import UserActivity from "../models/user.activity.model.js";
+import fs from "fs";
+import { extractPdfText } from "../utils/pdfExtractor.js";
+
+const normalize = (text) =>
+  text
+    .toLowerCase()
+    .replace(/[^a-z0-9\s]/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
 
 export const applyJob = async (req, res) => {
   try {
@@ -32,6 +41,40 @@ export const applyJob = async (req, res) => {
     if (!req.file) {
       return res.status(400).json({ message: "Resume file missing" });
     }
+
+    const resumeText = await extractPdfText(req.file.path);
+    const resumeClean = normalize(resumeText);
+    const jobClean = normalize(job.requirements.join(" "));
+    console.log(resumeText);
+
+    const jobSkills = job.requirements
+      .join(" ")
+      .toLowerCase()
+      .split(/\s+|,|\.|\|/)
+      .filter((word) => word.length > 2);
+    const resumeTokens = resumeClean
+      .split(/\s+|,|\.|\|/)
+      .filter((word) => word.length > 2);
+    const matchedSkills = [];
+    const missingSkills = [];
+
+    jobSkills.forEach((skill) => {
+      const cleanSkill = normalize(skill);
+
+      const isMatched = resumeTokens.includes(cleanSkill);
+
+      if (isMatched) {
+        matchedSkills.push(skill);
+      } else {
+        missingSkills.push(skill);
+      }
+    });
+
+    const matchScore =
+      jobSkills.length > 0
+        ? Math.round((matchedSkills.length / jobSkills.length) * 100)
+        : 0;
+
     const alreadyApplied = await Application.findOne({
       candidate: req.user?.id,
       job: job._id,
@@ -59,6 +102,9 @@ export const applyJob = async (req, res) => {
       portfolio,
       linkedin,
       coverLetter,
+      matchScore,
+      matchedSkills,
+      missingSkills,
     });
     await UserActivity.create({
       userId: req.user.id,
@@ -116,6 +162,12 @@ export const applyJob = async (req, res) => {
     res.status(201).json({
       message: "Application submitted successfully",
       application,
+
+      // aiAnalysis: {
+      //   matchScore,
+      //   matchedSkills,
+      //   missingSkills,
+      // },
     });
   } catch (error) {
     console.error("APPLY ERROR:", error);
@@ -354,5 +406,17 @@ export const withdrawApplication = async (req, res) => {
       success: false,
       message: error.message,
     });
+  }
+};
+export const getMyApplicationForJob = async (req, res) => {
+  try {
+    const application = await Application.findOne({
+      job: req.params.jobId,
+      candidate: req.user.id,
+    });
+
+    res.json(application);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
   }
 };

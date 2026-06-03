@@ -26,6 +26,9 @@ function ApplyForm() {
   const location = useLocation();
 
   const dispatch = useDispatch();
+   const { aiAnalysis } = useSelector(
+    (state) => state.applications
+  );
 
   const user = useSelector((state) => state.auth.user);
   const role = useSelector((state) => state.auth.user?.role);
@@ -50,7 +53,7 @@ function ApplyForm() {
         setValue("firstName", nameParts[0] || "");
         setValue("lastName", nameParts.slice(1).join(" ") || "");
       }
-      
+
       setValue("email", user.email || "");
       setValue("phone", user.phone || "");
     }
@@ -99,7 +102,7 @@ function ApplyForm() {
       formData.append("coverLetter", data.coverLetter || "");
       formData.append("resume", data.resume[0]); // 👈 IMPORTANT
 
-      await dispatch(applyJob(formData)).unwrap();
+      const result =await dispatch(applyJob(formData)).unwrap();
 
       Swal.fire({
         icon: "success",
@@ -108,6 +111,7 @@ function ApplyForm() {
       }).then(() => {
         navigate(-1);
       });
+      console.log(result.aiAnalysis);
     } catch (error) {
       const isAlreadyApplied = error.toLowerCase().includes("already");
 
@@ -156,6 +160,21 @@ function ApplyForm() {
           </button>
         </div>
       </form>
+      {aiAnalysis && (
+        <div className="mt-6 p-4 border rounded-lg bg-green-50">
+          <h3>Match Score: {aiAnalysis.matchScore}%</h3>
+
+          <p>
+            Matching Skills:
+            {aiAnalysis.matchedSkills.join(", ")}
+          </p>
+
+          <p>
+            Missing Skills:
+            {aiAnalysis.missingSkills.join(", ")}
+          </p>
+        </div>
+      )}
     </main>
   );
 }

@@ -8,7 +8,9 @@ import {
   getMyApplications,
   getApplicationById,
   withdrawApplication,
+  getMyApplicationForJob,
 } from "../controllers/application.controller.js";
+
 
 import { upload } from "../middleware/upload.js";
 
@@ -26,9 +28,11 @@ router.post(
   applyJob,
 );
 
+
 // ADMIN
 router.get("/", getAllApplications);
 router.get("/my", getMyApplications);
+router.get("/job/:jobId", getMyApplicationForJob);
 
 // RECRUITER
 router.get("/recruiter", getRecruiterApplications);

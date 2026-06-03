@@ -2,14 +2,13 @@ import Header from "../../components/adminComponents/applicationDetail/Header";
 import CandidateCard from "../../components/adminComponents/applicationDetail/CandidateCard";
 import JobDetails from "../../components/adminComponents/applicationDetail/JobDetails";
 import Documents from "../../components/adminComponents/applicationDetail/Documents";
-import Notes from "../../components/adminComponents/applicationDetail/Notes";
-import Timeline from "../../components/adminComponents/applicationDetail/Timeline";
 import { updateApplicationStatus } from "../../redux/slices/applicationSlice.js";
 import { ApplicationData } from "../../constants/index.js";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { ADMIN_ROUTES } from "../../constants/routes.js";
+import AISidePanel from "../../components/adminComponents/applicationDetail/AISidePanel.jsx";
 
 function ApplicationDetail() {
   const dispatch = useDispatch();
@@ -64,22 +63,17 @@ function ApplicationDetail() {
       />
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-        {/* LEFT */}
+        {/* LEFT SIDE */}
         <div className="lg:col-span-8 flex flex-col gap-6">
           <CandidateCard data={application} />
-
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <JobDetails application={application} />
             <Documents resume={application?.resume} />
           </div>
 
-          <Notes candidateId={application?.publicId} />
         </div>
 
-        {/* RIGHT */}
-        {/* <div className="lg:col-span-4">
-          <Timeline items={application?.timeline||[]} />
-        </div> */}
+        <AISidePanel application={application} />
       </div>
     </main>
   );

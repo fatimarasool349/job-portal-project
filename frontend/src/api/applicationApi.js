@@ -20,3 +20,6 @@ export const updateApplicationStatusApi = (publicId, data) =>
 
 export const withdrawApplication = (publicId) =>
   API.delete(`/application/withdraw/${publicId}`);
+
+export const getMyApplicationForJobApi = (jobId) =>
+  API.get(`/application/job/${jobId}`);

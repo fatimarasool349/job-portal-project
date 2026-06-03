@@ -39,6 +39,22 @@ const applicationSchema = new mongoose.Schema(
     github: { type: String },
 
     coverLetter: { type: String },
+    matchScore: {
+      type: Number,
+      default: 0,
+    },
+
+    matchedSkills: [
+      {
+        type: String,
+      },
+    ],
+
+    missingSkills: [
+      {
+        type: String,
+      },
+    ],
 
     status: {
       type: String,
