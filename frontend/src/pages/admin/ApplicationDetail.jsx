@@ -34,32 +34,6 @@ function ApplicationDetail() {
     <main className="max-w-7xl mx-auto w-full px-8 py-8 flex-1">
       <Header
         application={application}
-        // onApprove={() => {
-        //   if (application?.status !== "pending") return;
-
-        //   dispatch(
-        //     updateApplicationStatus({
-        //       id: application.publicId,
-        //       status: "accepted",
-        //     }),
-        //   );
-        // }}
-        // onReject={() => {
-        //   if (application?.status !== "pending") return;
-
-        //   dispatch(
-        //     updateApplicationStatus({
-        //       id: application.publicId,
-        //       status: "rejected",
-        //     }),
-        //   );
-        // }}
-        // onMessage={() =>
-        //   application &&
-        //   navigate(
-        //     ADMIN_ROUTES.MESSAGES.replace(":publicId", application.publicId),
-        //   )
-        // }
       />
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
