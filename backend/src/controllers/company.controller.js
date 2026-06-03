@@ -1,0 +1,218 @@
+import Company from "../models/company.model.js";
+import Users from "../models/users.model.js";
+import fs from "fs";
+import path from "path";
+import slugify from "slugify";
+
+export const createCompany = async (req, res) => {
+  try {
+    let logoPath = null;
+    let photosPaths = [];
+
+    if (req.files?.logo?.[0]) {
+      logoPath = `/upload/company/${req.files.logo[0].filename}`;
+    }
+
+    if (req.files?.photos) {
+      photosPaths = req.files.photos.map(
+        (file) => `/upload/photos/${file.filename}`,
+      );
+    }
+
+    const stats = req.body.stats ? JSON.parse(req.body.stats) : [];
+    const culture = req.body.culture ? JSON.parse(req.body.culture) : [];
+
+    const slug = slugify(req.body.name, {
+      lower: true,
+      strict: true,
+    });
+
+    const company = await Company.create({
+      name: req.body.name,
+      slug,
+      industry: req.body.industry,
+      location: req.body.location,
+      website: req.body.website,
+      about1: req.body.about1,
+      about2: req.body.about2,
+      size: req.body.size,
+      businessHours: req.body.businessHours,
+      createdBy: req.user.id,
+
+      stats,
+      culture,
+      logo: logoPath,
+      photos: photosPaths,
+    });
+
+    res.status(201).json(company);
+  } catch (error) {
+    console.log("CREATE COMPANY ERROR:", error);
+    res.status(500).json({ message: error.message });
+  }
+};
+
+// GET ALL
+export const getCompanies = async (req, res) => {
+  try {
+    let companies;
+    console.log("User role:", req.user);
+
+    if (req.user.role === "admin") {
+      companies = await Company.find();
+    } else {
+      companies = await Company.find({
+        recruiterId: { $exists: true, $ne: null },
+      });
+    }
+
+    res.json(companies);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+export const getCompanyBySlug = async (req, res) => {
+  try {
+    const company = await Company.findOne({
+      slug: req.params.slug,
+    });
+
+    if (!company) {
+      return res.status(404).json({
+        message: "Company not found",
+      });
+    }
+
+    res.status(200).json(company);
+  } catch (error) {
+    res.status(500).json({
+      message: error.message,
+    });
+  }
+};
+
+export const getMyCompany = async (req, res) => {
+  try {
+    const userId = req.user?.id;
+    if (!userId) {
+      return res.status(401).json({ message: "User ID not found in token" });
+    }
+    const user = await Users.findOne({
+      _id: userId,
+    }).populate("companyId");
+
+    console.log(`User found:`, user);
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.json(user.companyId);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+export const updateCompany = async (req, res) => {
+  try {
+    const company = await Company.findById(req.params.id);
+
+    if (!company) {
+      return res.status(404).json({ message: "Company not found" });
+    }
+
+    const updateData = {
+      name: req.body.name,
+      industry: req.body.industry,
+      location: req.body.location,
+      website: req.body.website,
+      about1: req.body.about1,
+      about2: req.body.about2,
+      size: req.body.size,
+      businessHours: req.body.businessHours,
+    };
+
+    if (req.body.stats) {
+      try {
+        updateData.stats = JSON.parse(req.body.stats);
+      } catch {
+        updateData.stats = [];
+      }
+    }
+
+    if (req.body.culture) {
+      try {
+        updateData.culture = JSON.parse(req.body.culture);
+      } catch {
+        updateData.culture = [];
+      }
+    }
+
+    if (req.files?.photos) {
+      try {
+        updateData.photos = req.files.photos.map(
+          (file) => `/upload/photos/${file.filename}`,
+        );
+      } catch {
+        updateData.photos = [];
+      }
+    }
+
+    if (req.files?.logo?.[0]) {
+      if (company.logo && !company.logo.startsWith("data:image")) {
+        const oldPath = path.join(process.cwd(), company.logo);
+
+        if (fs.existsSync(oldPath)) {
+          fs.unlinkSync(oldPath);
+        }
+      }
+
+      updateData.logo = `/upload/company/${req.files.logo[0].filename}`;
+    }
+
+    const updatedCompany = await Company.findByIdAndUpdate(
+      req.params.id,
+      updateData,
+      {
+        new: true,
+        runValidators: true,
+      },
+    );
+
+    return res.status(200).json(updatedCompany);
+  } catch (error) {
+    console.log("UPDATE COMPANY ERROR:", error);
+    return res.status(500).json({
+      message: error.message || "Server Error",
+    });
+  }
+};
+
+export const deleteCompany = async (req, res) => {
+  try {
+    const company = await Company.findById(req.params.id);
+
+    if (!company) {
+      return res.status(404).json({ message: "Company not found" });
+    }
+
+    if (company.logo) {
+      const filePath = path.join(
+        process.cwd(),
+        "upload",
+        "company",
+        path.basename(company.logo),
+      );
+
+      if (fs.existsSync(filePath)) {
+        fs.unlinkSync(filePath);
+      }
+    }
+
+    await Company.findByIdAndDelete(req.params.id);
+
+    res.json({ message: "Company deleted successfully" });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};

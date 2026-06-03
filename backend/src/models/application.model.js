@@ -1,0 +1,94 @@
+import mongoose from "mongoose";
+
+const applicationSchema = new mongoose.Schema(
+  {
+    job: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Job",
+      required: true,
+    },
+
+    company: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Company",
+      required: true,
+    },
+
+    recruiter: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Users", // ✅ Changed from "User" to "Users" (matches the export)
+    },
+
+    // 🔥 ADD THIS (VERY IMPORTANT)
+    candidate: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Users", // ✅ Changed from "Use   r" to "Users"
+      required: true,
+    },
+
+    firstName: { type: String, required: true },
+    lastName: { type: String, required: true },
+
+    email: { type: String, required: true },
+    phone: { type: String },
+
+    resume: { type: String, required: true },
+    portfolio: { type: String },
+
+    linkedin: { type: String },
+    github: { type: String },
+
+    coverLetter: { type: String },
+    matchScore: {
+      type: Number,
+      default: 0,
+    },
+
+    matchedSkills: [
+      {
+        type: String,
+      },
+    ],
+
+    missingSkills: [
+      {
+        type: String,
+      },
+    ],
+
+    status: {
+      type: String,
+      enum: [
+        "applied",
+        "under review",
+        "interview scheduled",
+        "interview completed",
+        "selected",
+        "rejected",
+        "hired",
+      ],
+      default: "applied",
+    },
+    interview: {
+      date: Date,
+      time: String,
+      mode: {
+        type: String,
+        enum: ["Online", "Onsite"],
+      },
+      meetingLink: String,
+      notes: String,
+    },
+    appliedDate: {
+      type: Date,
+      default: Date.now,
+    },
+    publicId: {
+      type: String,
+      unique: true,
+    },
+  },
+  { timestamps: true },
+);
+
+export default mongoose.model("Application", applicationSchema);
