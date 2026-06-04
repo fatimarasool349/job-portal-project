@@ -1,4 +1,5 @@
 import User from "../models/users.model.js";
+import crypto from "crypto";
 
 // GET ALL JOBSEEKERS (for admin)
 export const getAllJobseekers = async (req, res) => {

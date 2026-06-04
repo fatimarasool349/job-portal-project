@@ -4,6 +4,7 @@ export const PUBLIC_ROUTES = {
   SIGNUP: "/signup/:role",
   LOGOUT: "/logout/:role",
   FORGOT_PASSWORD: "/forgot-password",
+  RESET_PASSWORD: "/reset-password/:token",
 };
 
 export const USER_ROUTES = {

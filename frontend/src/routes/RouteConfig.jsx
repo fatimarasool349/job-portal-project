@@ -11,6 +11,7 @@ import SignUp from "../pages/SignUp";
 import Login from "../pages/Login";
 import Logout from "../pages/Logout";
 import ForgotPassword from "../pages/ForgotPassword";
+import ResetPassword from "../pages/ResetPassword";
 import LandingPage from "../pages/LandingPage";
 
 // Error pages
@@ -76,6 +77,10 @@ export const publicRoutes = [
   {
     path: PUBLIC_ROUTES.FORGOT_PASSWORD,
     element: <ForgotPassword />,
+  },
+  {
+    path: PUBLIC_ROUTES.RESET_PASSWORD,
+    element: <ResetPassword />,
   },
 ];
 
