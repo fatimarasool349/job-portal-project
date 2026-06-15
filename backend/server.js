@@ -66,7 +66,6 @@ app.use("/api/notifications",notificationRoutes);
 app.use("/api/recommendations", recommendationRoutes);
 
 
-console.log("ALL ROUTES MOUNTED");
 
 
 

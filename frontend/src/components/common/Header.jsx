@@ -43,8 +43,7 @@ function Header({ profileImage, user }) {
     };
   }, [dispatch]);
 
-  // console.log("HEADER NOTIFICATIONS:", notifications);
-  // console.log("UNREAD COUNT:", unreadCount);
+ 
   return (
     <div className="font-sans bg-gray-50">
       <header className="bg-white shadow">
@@ -79,12 +78,7 @@ function Header({ profileImage, user }) {
             >
               My Applications
             </Link>
-            {/* <Link
-              to={USER_ROUTES.MESSAGES}
-              className="text-gray-700 hover:text-blue-600  transition"
-            >
-              Messages
-            </Link> */}
+           
           </nav>
 
           <div className="flex items-center space-x-6 relative">

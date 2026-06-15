@@ -20,7 +20,6 @@ const router = express.Router();
 router.post(
   "/apply",
   (req, res, next) => {
-    console.log("🚀 /api/application/apply route HIT");
     console.log("Headers:", req.headers);
     next();
   },
