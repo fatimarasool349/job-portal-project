@@ -22,6 +22,7 @@ import recommendationRoutes from "./src/routes/recommendation.routes.js";
 
 dotenv.config();
 connectDB();
+const PORT = process.env.PORT || 5000;
 
 
 const app = express();
@@ -70,9 +71,9 @@ app.use("/api/recommendations", recommendationRoutes);
 
 
 
-app.listen(5000, () => {
+app.listen(PORT, () => {
 
-  console.log("Server running on port 5000");
+  console.log(`Server running on port ${PORT}`);
 });
 
 

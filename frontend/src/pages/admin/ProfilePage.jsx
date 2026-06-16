@@ -2,6 +2,7 @@ import { useForm } from "react-hook-form";
 import ProfileInfoCard from "../../components/adminComponents/profilePage/ProfileInfoCard.jsx";
 import ChangePasswordCard from "../../components/adminComponents/profilePage/ChangePasswordCard.jsx";
 import DangerZone from "../../components/adminComponents/profilePage/DangerZone.jsx";
+import Swal from "sweetalert2";
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import { useEffect } from "react";
@@ -10,7 +11,7 @@ import { useDispatch } from "react-redux";
 import { loginSuccess } from "../../redux/slices/authSlice.js";
 import { getImageUrl } from "../../utils/getImageUrl.js";
 import defaultImage from "../../assets/Images/default_img.png";
-import API from "../../api/axiosConfig.js"
+import API from "../../api/axiosConfig.js";
 
 export default function ProfilePage() {
   const [deactivated, setDeactivated] = useState(false);
@@ -38,22 +39,26 @@ export default function ProfilePage() {
     }
   }, [user, reset]);
 
-  const handleDeactivate = () => {
-    if (!deactivated) {
-      if (window.confirm("Are you sure you want to deactivate your account?")) {
-        setDeactivated(true);
-        alert("Account has been deactivated (demo).");
-      }
-    } else {
-      if (window.confirm("Do you want to reactivate your account?")) {
-        setDeactivated(false);
-        alert("Account has been reactivated (demo).");
-      }
+  const handleDeactivate = async () => {
+    const result = await Swal.fire({
+      title: deactivated ? "Reactivate Account?" : "Deactivate Account?",
+      text: "Are you sure?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Yes",
+    });
+
+    if (result.isConfirmed) {
+      setDeactivated(!deactivated);
+
+      Swal.fire(
+        "Success!",
+        deactivated ? "Account reactivated." : "Account deactivated.",
+        "success",
+      );
     }
   };
 
-  console.log("ID:", user?.id);
-  console.log("WRONG ID:", user?._id);
   const onSubmit = async (data) => {
     try {
       const formData = new FormData();
@@ -83,10 +88,7 @@ export default function ProfilePage() {
         return;
       }
 
-      const res = await API.put(
-        `/auth/update-profile/${userId}`,
-        formData
-      );
+      const res = await API.put(`/auth/update-profile/${userId}`, formData);
 
       console.log("Updated:", res.data.user);
 
@@ -97,30 +99,27 @@ export default function ProfilePage() {
         }),
       );
 
-      alert("Profile updated!");
+      await Swal.fire({
+        icon: "success",
+        title: "Success",
+        text: "Profile updated successfully!",
+      });
     } catch (error) {
       const message = error.response?.data?.message;
 
       if (!message) return;
 
-      // current password error
       if (message.toLowerCase().includes("current password")) {
         setError("currentPassword", {
           type: "manual",
           message,
         });
-      }
-
-      // email error
-      else if (message.toLowerCase().includes("email")) {
+      } else if (message.toLowerCase().includes("email")) {
         setError("email", {
           type: "manual",
           message,
         });
-      }
-
-      // fallback
-      else {
+      } else {
         setError("root", {
           type: "manual",
           message,
