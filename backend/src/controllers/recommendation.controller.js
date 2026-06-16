@@ -1,4 +1,3 @@
-console.log("🔥 Recommendation API HIT");
 import UserActivity from "../models/user.activity.model.js";
 import Job from "../models/job.model.js";
 
@@ -46,10 +45,7 @@ export const getRecommendations = async (req, res) => {
     const keywords = interest[userType];
 
     const jobs = await Job.find().populate("company");
-    console.log("TOTAL JOBS:", jobs.length);
-    console.log("TOTAL JOBS:", jobs.length);
-    console.log("USER TYPE:", userType);
-    console.log("KEYWORDS:", keywords);
+   
     
 
     const recommended = jobs.filter((job) => {

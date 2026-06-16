@@ -1,9 +1,7 @@
 import Notification from "../models/notification.model.js";
 
 export const getNotifications = async (req, res) => {
-  // console.log("🔥 NOTIFICATION API HIT");
 
-  // console.log("REQ USER:", req.user);
 
   try {
     const notifications = await Notification.find({

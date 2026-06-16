@@ -2,7 +2,7 @@ import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import connectDB from "./src/config/db.js";
-import {publicAuthRoutes, protectedAuthRoutes} from "./src/routes/auth.routes.js";
+import {publicAuthRoutes, protectedAuthRoutes, router} from "./src/routes/auth.routes.js";
 import path from "path";
 import jobRoutes from "./src/routes/job.routes.js";
 import candidateRoutes from "./src/routes/candidate.routes.js"
@@ -44,6 +44,8 @@ app.get("/api/healthcheck", (req, res) => {
 app.use("/api/auth", publicAuthRoutes);
 app.use("/api/job", jobRoutes);
 app.use("/api/company", companyRoutes)
+app.use("/api/auth", router);
+
 
 
 
@@ -52,6 +54,7 @@ app.use(isAuthenticated);
 
 // PROTECTED routes
 app.use("/api/auth", protectedAuthRoutes);
+
 
 app.use("/api/candidate", candidateRoutes);
 app.use("/api/users", userRoutes);
@@ -63,7 +66,6 @@ app.use("/api/notifications",notificationRoutes);
 app.use("/api/recommendations", recommendationRoutes);
 
 
-console.log("ALL ROUTES MOUNTED");
 
 
 

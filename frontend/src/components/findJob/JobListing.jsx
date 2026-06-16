@@ -15,7 +15,6 @@ function JobListing({ jobs }) {
   }, [jobs]);
 
   function getMinSalary(salary) {
-    // console.log("salary value:", salary, typeof salary);
 
     if (!salary) return 0;
 
@@ -39,7 +38,6 @@ function JobListing({ jobs }) {
 
   // Sorting
   const sortedJobs = useMemo(() => {
-    // console.log("SORT BY:", sortBy);
     let sorted = [...jobs];
 
     if (sortBy === "Highest Salary") {
@@ -69,9 +67,7 @@ function JobListing({ jobs }) {
       {/* Header */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          {/* <h1 className="text-2xl font-bold text-slate-900 dark:text-white">
-            Job Search Results
-          </h1> */}
+         
           <p className="text-sm text-slate-500 dark:text-slate-400">
             Showing {sortedJobs.length} job openings
           </p>
@@ -100,36 +96,6 @@ function JobListing({ jobs }) {
         ))}
       </div>
 
-      {/* Pagination */}
-      {/* <div className="mt-6 flex items-center justify-center gap-2">
-        <button
-          disabled={currentPage === 1}
-          onClick={() => setCurrentPage((prev) => prev - 1)}
-          className="px-4 py-2 border rounded-lg disabled:opacity-50"
-        >
-          Prev
-        </button>
-
-        {[...Array(totalPages)].map((_, index) => (
-          <button
-            key={index}
-            onClick={() => setCurrentPage(index + 1)}
-            className={`px-4 py-2 rounded-lg ${
-              currentPage === index + 1 ? "bg-blue-600 text-white" : "border"
-            }`}
-          >
-            {index + 1}
-          </button>
-        ))}
-
-        <button
-          disabled={currentPage === totalPages}
-          onClick={() => setCurrentPage((prev) => prev + 1)}
-          className="px-4 py-2 border rounded-lg disabled:opacity-50"
-        >
-          Next
-        </button>
-      </div> */}
       <Pagination
         currentPage={currentPage}
         totalPages={totalPages}

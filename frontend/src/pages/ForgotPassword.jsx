@@ -1,13 +1,14 @@
-import  { useState } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { Link , useLocation} from "react-router-dom";
-import forgotPassword from "./../assets/icons/forgotPassword.svg"
-import backArrow from "./../assets/icons/backArrow.svg"
-import forwordArrow from "./../assets/icons/forwardArrow.svg"
-import {FaEnvelope} from "react-icons/fa";
+import { Link, useLocation } from "react-router-dom";
+import forgotPasswordImg from "./../assets/icons/forgotPassword.svg";
+import backArrow from "./../assets/icons/backArrow.svg";
+import forwordArrow from "./../assets/icons/forwardArrow.svg";
+import { FaEnvelope } from "react-icons/fa";
+import { forgotPassword } from "./../api/authApi";
+import toast from "react-hot-toast";
 
 function ForgotPassword() {
-
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
   const role = searchParams.get("role") || "jobseeker";
@@ -19,10 +20,17 @@ function ForgotPassword() {
   } = useForm();
   const [success, setSuccess] = useState(false);
 
-  const onSubmit = (data) => {
-    console.log("Reset link sent to:", data.email);
-    setSuccess(true);
-    reset(); 
+  const onSubmit = async (data) => {
+    try {
+      const response = await forgotPassword(data.email);
+
+      setSuccess(true);
+    toast.success(response.message || "Reset link sent successfully");
+
+      reset();
+    } catch (error) {
+      toast.error(error.response?.data?.message || "Failed to send reset link");
+    }
   };
 
   return (
@@ -30,7 +38,6 @@ function ForgotPassword() {
       <div className="w-full max-w-md ">
         {/* Forgot Password Card */}
         <div className="bg-white dark:bg-slate-900 rounded-xl shadow-xl shadow-slate-200/50 dark:shadow-none border border-slate-100 dark:border-slate-800 p-8">
-
           {/* Success Message */}
           {/* {success && (
             <div className="mb-6 flex items-center gap-3 p-4 bg-green-50 dark:bg-green-900/20 border border-green-100 dark:border-green-800 rounded-lg">
@@ -46,7 +53,11 @@ function ForgotPassword() {
           {/* Header */}
           <div className="text-center mb-8">
             <div className="inline-flex items-center justify-center w-16 h-16 bg-primary/10 rounded-full mb-4">
-             <img src={forgotPassword} alt="" className="material-symbols-outlined text-primary !text-3xl" />
+              <img
+                src={forgotPasswordImg}
+                alt=""
+                className="material-symbols-outlined text-primary !text-3xl"
+              />
             </div>
             <h2 className="text-2xl font-bold text-slate-900 dark:text-white">
               Forgot Password
@@ -66,26 +77,26 @@ function ForgotPassword() {
                 Email address
               </label>
               <div className="relative mt-1">
-              <FaEnvelope className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
-                
+                <FaEnvelope className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+
                 <input
                   id="email"
                   type="email"
                   placeholder="name@email.com"
-                  className={`w-full pl-10 pr-4 py-3 dark:bg-blue-600 rounded-lg text-slate-900 border border-gray-300 dark:text-white focus:ring-2 focus:outline-none focus:ring-blue-600 transition-all duration-200 placeholder:text-slate-400`
-                    }
+                  className={`w-full pl-10 pr-4 py-3 dark:bg-blue-600 rounded-lg text-slate-900 border border-gray-300 dark:text-white focus:ring-2 focus:outline-none focus:ring-blue-600 transition-all duration-200 placeholder:text-slate-400`}
                   {...register("email", {
                     required: "Email is required",
                     pattern: {
-                      value:
-                        /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/,
+                      value: /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/,
                       message: "Invalid email address",
                     },
                   })}
                 />
               </div>
               {errors.email && (
-                <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>
+                <p className="text-red-500 text-sm mt-1">
+                  {errors.email.message}
+                </p>
               )}
             </div>
 
@@ -94,24 +105,29 @@ function ForgotPassword() {
               className="w-full bg-blue-600 hover:bg-/90 text-white font-bold py-3 px-4 rounded-lg transition-all duration-200 flex items-center justify-center gap-2 group"
             >
               <span>Send Reset Link</span>
-             <img src={forwordArrow} alt="arrow" className="material-symbols-outlined !text-lg group-hover:translate-x-1 transition-transform" />
+              <img
+                src={forwordArrow}
+                alt="arrow"
+                className="material-symbols-outlined !text-lg group-hover:translate-x-1 transition-transform"
+              />
             </button>
           </form>
 
           {/* Back to Login */}
           <div className="mt-8 text-center text-blue-600">
-            <Link to={`/login/${role}`}
+            <Link
+              to={`/login/${role}`}
               className="text-sm font-semibold text-primary hover:text-primary/80 transition-colors inline-flex items-center gap-1 group"
             >
-              <img src={backArrow} alt="back tp login" className="material-symbols-outlined !text-base group-hover:-translate-x-1 transition-transform"/>
-                
-              
+              <img
+                src={backArrow}
+                alt="back tp login"
+                className="material-symbols-outlined !text-base group-hover:-translate-x-1 transition-transform"
+              />
               Back to Login
             </Link>
           </div>
         </div>
-
-   
       </div>
     </main>
   );

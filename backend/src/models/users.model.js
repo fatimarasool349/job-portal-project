@@ -40,6 +40,13 @@ const userSchema = new mongoose.Schema(
       ref: "Company",
       default: null,
     },
+    resetPasswordToken: {
+      type: String,
+    },
+
+    resetPasswordExpires: {
+      type: Date,
+    },
   },
 
   { timestamps: true },

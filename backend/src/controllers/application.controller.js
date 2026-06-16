@@ -45,7 +45,6 @@ export const applyJob = async (req, res) => {
     const resumeText = await extractPdfText(req.file.path);
     const resumeClean = normalize(resumeText);
     const jobClean = normalize(job.requirements.join(" "));
-    console.log(resumeText);
 
     const jobSkills = job.requirements
       .join(" ")
@@ -129,12 +128,7 @@ export const applyJob = async (req, res) => {
       });
     }
 
-    // console.log("RECRUITER ID:", company.recruiterId);
-    // console.log("APPLICANT ID:", req.user.id);
-    // console.log("JOB COMPANY:", job.company);
-    // console.log("COMPANY:", company);
-    // console.log("RECRUITER ID:", company?.recruiterId);
-    // console.log("LOGIN USER:", req.user.id);
+  
 
     const notifications = [
       {
@@ -163,11 +157,7 @@ export const applyJob = async (req, res) => {
       message: "Application submitted successfully",
       application,
 
-      // aiAnalysis: {
-      //   matchScore,
-      //   matchedSkills,
-      //   missingSkills,
-      // },
+     
     });
   } catch (error) {
     console.error("APPLY ERROR:", error);

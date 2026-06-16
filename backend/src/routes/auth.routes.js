@@ -4,12 +4,14 @@ import {
   login,
   profileUpdate,
   getUserById,
+  resetPassword,
+  forgotPassword,
 } from "../controllers/auth.controller.js";
 import { upload } from "../middleware/upload.js";
 import { isAuthenticated } from "../middleware/authMiddleware.js";
-
 const publicAuthRoutes = express.Router();
 const protectedAuthRoutes = express.Router();
+const router = express.Router();
 
 console.log("AUTH ROUTES LOADED");
 
@@ -28,5 +30,7 @@ protectedAuthRoutes.get("/me", (req, res) => {
     role: req.user.role,
   });
 });
+router.post("/forgot-password", forgotPassword);
 
-export {publicAuthRoutes, protectedAuthRoutes};
+router.post("/reset-password/:token", resetPassword);
+export {publicAuthRoutes, protectedAuthRoutes, router};

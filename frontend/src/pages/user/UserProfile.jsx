@@ -72,8 +72,6 @@ function UserProfile() {
 
  
 
-  // console.log("ID:", user?.id);
-  // console.log("WRONG ID:", user?._id);
   const onSubmit = async (data) => {
     try {
       const formData = new FormData();
