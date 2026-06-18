@@ -45,20 +45,16 @@ export default function UserApplicationDetail() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2 space-y-6">
           <JobDescriptionCard job={data.job} />
-
-          <NotesCard notes={data.coverLetter} />
+          {data.status !== "selected" && data.status !== "withdrawn" && (
+            <WithdrawButton publicId={data.publicId} />
+          )}
+          {/* <NotesCard notes={data.coverLetter} /> */}
         </div>
 
         <aside className="space-y-6">
           <ApplicationStatusCard data={data} />
 
           <CompanyOverviewCard company={data.company} />
-
-          {data.status !== "selected" && data.status !== "withdrawn" && (
-            <WithdrawButton
-              publicId={data.publicId}
-            />
-          )}
         </aside>
       </div>
     </main>

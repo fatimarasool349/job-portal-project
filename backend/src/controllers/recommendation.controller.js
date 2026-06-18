@@ -3,8 +3,7 @@ import Job from "../models/job.model.js";
 
 export const getRecommendations = async (req, res) => {
   try {
-    console.log("USER ID:", req.user.id); 
-    const userId = req.user.id; 
+    const userId = req.user.id;
 
     const activities = await UserActivity.find({ userId });
 
@@ -12,57 +11,50 @@ export const getRecommendations = async (req, res) => {
       return res.json([]);
     }
 
-    const titles = activities.map((a) => a.jobTitle.toLowerCase());
+    const userKeywords = extractKeywords(activities.map((activity) => activity.jobTitle));
 
-    const interest = {
-      frontend: ["react", "frontend","flutter", "ui", "html", "css", "javascript"],
-      backend: ["node", "backend", "api", "express", "mongodb", "aws"],
-    };
-
-    let frontendScore = 0;
-    let backendScore = 0;
-
-    titles.forEach((title) => {
-      if (
-        title.includes("react") ||
-        title.includes("frontend") ||
-        title.includes("flutter") 
-      ) {
-        frontendScore++;
-      }
-
-      if (
-        title.includes("node") ||
-        title.includes("backend") ||
-        title.includes("api")
-      ) {
-        backendScore++;
-      }
-    });
-
-    const userType = frontendScore >= backendScore ? "frontend" : "backend";
-
-    const keywords = interest[userType];
+    if (userKeywords.length === 0) {
+      return res.json([]);
+    }
 
     const jobs = await Job.find().populate("company");
-   
-    
 
-    const recommended = jobs.filter((job) => {
-      const text = (
-        job.title +
-        " " +
-        job.description 
-      ).toLowerCase();
+    const scoredJobs = jobs
+      .map((job) => {
+        const text = `${job.title} ${job.description}`.toLowerCase();
+        const score = userKeywords.filter((k) => text.includes(k)).length;
+        return { job, score };
+      })
+      .filter(({ score }) => score > 0)          
+      .sort((a, b) => b.score - a.score)        
+      .map(({ job }) => job);                     
 
-      return keywords.some((k) => text.includes(k));
-    });
+    console.log("RECOMMENDED JOBS:", scoredJobs.length);
+    return res.json(scoredJobs);
 
-    console.log("RECOMMENDED JOBS:", recommended.length);
-
-    return res.json(recommended);
   } catch (err) {
     console.error("FULL ERROR:", err);
     res.status(500).json({ message: err.message });
   }
 };
+
+function extractKeywords(titles) {
+  const stopWords = new Set([
+    "and", "or", "the", "a", "an", "in", "for", "of",
+    "to", "with", "at", "by", "on", "is", "are", "job", "jobs",
+  ]);
+
+  const keywordCount = {};
+
+  titles.forEach((title) => {
+    const words = title.toLowerCase().split(/\s+/);
+    words.forEach((word) => {
+      const cleaned = word.replace(/[^a-z0-9]/g, ""); // remove symbols
+      if (cleaned.length > 2 && !stopWords.has(cleaned)) {
+        keywordCount[cleaned] = (keywordCount[cleaned] || 0) + 1;
+      }
+    });
+  });
+
+  return Object.keys(keywordCount).filter((k) => keywordCount[k] >= 1);
+}

@@ -32,6 +32,7 @@ export const applyJob = async (req, res) => {
       coverLetter,
       candidate,
     } = req.body;
+    console.log("Github:", github);
     // find job to get recruiter
     const job = await Job.findOne({ slug: jobSlug }).populate("company");
     if (!job) {
@@ -288,7 +289,7 @@ export const updateApplicationStatus = async (req, res) => {
       }
     }
 
-    // ❗ VALIDATION FIRST (IMPORTANT FIX)
+    // VALIDATION FIRST (IMPORTANT FIX)
     if (["rejected", "hired"].includes(application.status)) {
       return res.status(400).json({
         message: "Final status cannot be modified",
