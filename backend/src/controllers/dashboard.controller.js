@@ -14,7 +14,6 @@ export const getDashboardData = async (req, res) => {
     const isRecruiter = role === "recruiter";
     const filter = isAdmin ? {} : { company: companyId };
 
-    // Monthly Jobs
     const jobsPerMonth = await Job.aggregate([
       {
         $match: isAdmin ? {} : { company: companyId },
@@ -28,7 +27,6 @@ export const getDashboardData = async (req, res) => {
       { $sort: { _id: 1 } },
     ]);
 
-    // Monthly Applications
     const jobIds = await Job.find(
       isAdmin ? {} : { company: companyId },
     ).distinct("_id");
@@ -46,14 +44,13 @@ export const getDashboardData = async (req, res) => {
       { $sort: { _id: 1 } },
     ]);
 
-    // Jobs by Category (Pie Chart)
     const jobsByCategory = await Job.aggregate([
       {
         $match: isAdmin ? {} : { company: companyId },
       },
       {
         $group: {
-          _id: "$jobType", // make sure this field exists
+          _id: "$jobType", 
           count: { $sum: 1 },
         },
       },
@@ -69,7 +66,7 @@ export const getDashboardData = async (req, res) => {
         $group: {
           _id: "$jobType", // make sure this field exists
           openings: { $sum: 1 },
-          avgSalary: { $avg: "$salary" }, // make sure salary exists
+          avgSalary: { $avg: "$salary" },
         },
       },
       {
@@ -97,7 +94,6 @@ export const getDashboardData = async (req, res) => {
       },
     ]);
 
-    // 🟢 LAST MONTH CATEGORY DATA
     const lastMonthData = await Job.aggregate([
       {
         $match: {

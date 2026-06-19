@@ -92,8 +92,9 @@ function ApplyForm() {
       formData.append("phone", data.phone);
       formData.append("portfolio", data.portfolio || "");
       formData.append("linkedin", data.linkedin || "");
+      formData.append("github", data.github || "");
       formData.append("coverLetter", data.coverLetter || "");
-      formData.append("resume", data.resume[0]); // 👈 IMPORTANT
+      formData.append("resume", data.resume[0]); // 👈 IMPORTANTyy
 
       await dispatch(applyJob(formData)).unwrap();
 

@@ -12,6 +12,7 @@ export default function DangerZone({ onDeactivate, deactivated }) {
         </p>
       </div>
       <button
+        type = "button"
         onClick={onDeactivate}
         className={`px-6 py-2 border border-red-200 dark:border-red-900 text-red-600 dark:text-red-400 hover:bg-red-600 hover:text-white rounded-xl transition-all font-semibold text-sm ${
           deactivated ? "opacity-50 cursor-not-allowed" : ""

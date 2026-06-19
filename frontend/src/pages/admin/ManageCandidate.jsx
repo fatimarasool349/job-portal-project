@@ -30,11 +30,7 @@ function ManageCandidate() {
     fetchCandidates();
   }, [fetchCandidates]);
 
-  // const roleFilteredCandidates = useMemo(() => {
-  //   return canViewAll
-  //     ? candidates
-  //     : candidates.filter((c) => c.recruiter_id.toString() === recruiterId);
-  // }, [candidates, canViewAll, recruiterId]);
+  
 
   const filteredCandidates = useMemo(() => {
     return candidates.filter((c) => {

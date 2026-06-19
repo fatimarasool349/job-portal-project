@@ -60,7 +60,6 @@ export const updateRecruiter = async (req, res) => {
 
     console.log("UPDATED USER:", updated);
 
-    // ✅ ADD EMAIL HERE (after update)
     if (updated) {
       await sendEmail(
         updated.email,

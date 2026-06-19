@@ -42,20 +42,17 @@ function Dashboard() {
 
   return (
     <div className="p-8 flex-1">
-      {/* Stats */}
       <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
         {filteredStats.map((item, index) => (
           <StatsCards key={index} {...item} />
         ))}
       </section>
 
-      {/* Bottom Section */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <RecentActivity activities={filteredActivities} />
 
         <div className="space-y-8">
           <QuickAction actions={filteredActions} />
-          {/* <StorageWidget /> */}
         </div>
       </div>
     </div>
