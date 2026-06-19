@@ -1,9 +1,6 @@
 import { FaRegSave } from "react-icons/fa";
 
 const handleSaveAll = () => {
-  console.log("Resume File:", resumeFile);
-  console.log("Skills:", skills);
-  console.log("Applications:", applications);
   alert("All changes saved successfully!");
   // Here you can call your API to save all changes
 };

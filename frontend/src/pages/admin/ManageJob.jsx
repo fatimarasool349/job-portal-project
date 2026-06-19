@@ -19,7 +19,7 @@ function ManageJobs() {
   const [showModal, setShowModal] = useState(false);
   const [editingJob, setEditingJob] = useState(null);
 
-  const { recruiterId, recruiterCompanyId, canAdd, canDelete, canEdit, canViewAll } =
+  const { recruiterCompanyId, canAdd, canDelete, canEdit, canViewAll } =
     useRole();
 
   const fetchJobs = async () => {
@@ -63,10 +63,10 @@ function ManageJobs() {
 
   const handleDeleteJob = useCallback(
     async (id) => {
-      if (!canDelete) return;
+      if (!canDelete) {return;}
 
       const confirmDelete = window.confirm("Delete this job?");
-      if (!confirmDelete) return;
+      if (!confirmDelete) {return;}
 
       try {
         await deleteJob(id);
@@ -75,7 +75,7 @@ function ManageJobs() {
         console.log("DELETE ERROR:", error);
       }
     },
-    [canDelete]
+    [canDelete],
   );
 
   const handleAddJob = () => {
@@ -89,7 +89,7 @@ function ManageJobs() {
   };
 
   const roleFilteredJobs = useMemo(() => {
-    if (canViewAll) return jobs;
+    if (canViewAll) {return jobs;}
     return jobs.filter(
       (job) => job.company?._id === recruiterCompanyId
     );

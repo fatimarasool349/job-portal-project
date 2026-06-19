@@ -48,10 +48,10 @@ function ManageCompany() {
   // DELETE
   const handleDelete = useCallback(
     async (id) => {
-      if (!canDelete) return;
+      if (!canDelete) {return;}
 
       const confirm = window.confirm("Delete this company?");
-      if (!confirm) return;
+      if (!confirm) {return;}
 
       await deleteCompany(id);
       fetchCompanies();

@@ -1,12 +1,10 @@
 import { useNavigate } from "react-router-dom";
 import { USER_ROUTES } from "../../constants/routes";
-import { useParams } from "react-router-dom";
 
 function SearchResults({ results }) {
   const navigate = useNavigate();
-  const { slug } = useParams();
 
-  if (results.length === 0) return null;
+  if (results.length === 0) {return null;}
 
   return (
     <div className="mt-6">

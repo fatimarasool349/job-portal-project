@@ -11,7 +11,7 @@ import { MdDelete } from "react-icons/md";
 function JobApplicationTable({ applications, role }) {
   const dispatch = useDispatch();
   const openLink = (url) => {
-    if (!url) return;
+    if (!url) {return;}
     window.open(url, "_blank");
   };
 

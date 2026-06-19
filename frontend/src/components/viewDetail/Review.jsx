@@ -1,7 +1,5 @@
 import Star from "./../../components/ViewDetail/Star";
-import RatingBar from "./../../components/ViewDetail/RatingBar";
 import { Link } from "react-router-dom";
-import API from "../../api/axiosConfig";
 import { getCompanyReviews } from "../../api/reviewApi";
 import { useEffect, useState } from "react";
 import { USER_ROUTES } from "../../constants/routes";
@@ -17,9 +15,7 @@ export default function Reviews({ company, job }) {
   useEffect(() => {
     const fetchReviews = async () => {
       try {
-        const res = await getCompanyReviews(company?._id);
-
-        const data = res.data;
+        const data = await getCompanyReviews(company?._id);
 
         setReviews({
           overallRating: data?.averageRating || 0,
@@ -27,15 +23,20 @@ export default function Reviews({ company, job }) {
           ratingBar: data?.ratingBar || [],
           list: data?.reviews || [],
         });
-      } catch (error) {
-        console.log(error);
+      } catch (_error) {
+        setReviews({
+          overallRating: 0,
+          total: 0,
+          ratingBar: [],
+          list: [],
+        });
       }
     };
 
     if (company?._id) {
       fetchReviews();
     }
-  }, [company]);
+  }, [company?._id]);
 
   if (!company) {
     return (

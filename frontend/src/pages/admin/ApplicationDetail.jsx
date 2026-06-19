@@ -2,23 +2,13 @@ import Header from "../../components/adminComponents/applicationDetail/Header";
 import CandidateCard from "../../components/adminComponents/applicationDetail/CandidateCard";
 import JobDetails from "../../components/adminComponents/applicationDetail/JobDetails";
 import Documents from "../../components/adminComponents/applicationDetail/Documents";
-import { updateApplicationStatus } from "../../redux/slices/applicationSlice.js";
-import { ApplicationData } from "../../constants/index.js";
-import { useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import { ADMIN_ROUTES } from "../../constants/routes.js";
 import AISidePanel from "../../components/adminComponents/applicationDetail/AISidePanel.jsx";
 
 function ApplicationDetail() {
-  const dispatch = useDispatch();
-
-  const navigate = useNavigate();
   const { publicId } = useParams();
-  console.log("URL publicId:", publicId);
   const application = useSelector((state) => {
-    console.log("Redux applications:", state.applications.applications);
-
     return state.applications.applications.find((a) => a.publicId === publicId);
   });
 

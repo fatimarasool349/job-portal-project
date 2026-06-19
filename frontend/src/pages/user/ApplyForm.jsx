@@ -15,9 +15,6 @@ import { useSelector } from "react-redux";
 import { PUBLIC_ROUTES, USER_ROUTES } from "../../constants/routes";
 
 import { useEffect, useState } from "react";
-import axios from "axios";
-
-import { jobData, companyData } from "../../constants";
 
 function ApplyForm() {
   const { slug } = useParams();
@@ -31,8 +28,6 @@ function ApplyForm() {
   );
 
   const user = useSelector((state) => state.auth.user);
-  const role = useSelector((state) => state.auth.user?.role);
-  const safeRole = role?.toLowerCase().replace(" ", "") || "user";
 
   const token = useSelector((state) => state.auth.token);
 
@@ -70,8 +65,6 @@ function ApplyForm() {
   }, [slug, setValue, user]);
 
   const file = watch("resume");
-  const loginPath = PUBLIC_ROUTES.LOGIN.replace(":role", safeRole);
-  console.log("Redirecting to:", loginPath);
 
   const onSubmit = async (data) => {
     if (!user || !token) {
@@ -102,7 +95,7 @@ function ApplyForm() {
       formData.append("coverLetter", data.coverLetter || "");
       formData.append("resume", data.resume[0]); // 👈 IMPORTANT
 
-      const result =await dispatch(applyJob(formData)).unwrap();
+      await dispatch(applyJob(formData)).unwrap();
 
       Swal.fire({
         icon: "success",
@@ -111,7 +104,6 @@ function ApplyForm() {
       }).then(() => {
         navigate(-1);
       });
-      console.log(result.aiAnalysis);
     } catch (error) {
       const isAlreadyApplied = error.toLowerCase().includes("already");
 

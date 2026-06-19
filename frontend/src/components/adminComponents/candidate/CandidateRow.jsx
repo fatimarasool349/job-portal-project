@@ -5,7 +5,6 @@ import { FaPhoneAlt } from "react-icons/fa";
 import { memo } from "react";
 import {getImageUrl} from "../../../utils/getImageUrl";
 import { getStatusStyle } from "../../../constants";
-import { statusColors } from "../../../constants";
 const CandidateRow = memo(({ candidate, onEdit, onDelete, role }) => {
   return (
     <tr className="hover:bg-slate-50 transition">

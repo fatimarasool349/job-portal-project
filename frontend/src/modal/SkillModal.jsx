@@ -7,7 +7,7 @@ function SkillModel({ show, onClose, onAdd, newSkill, setNewSkill }) {
     }
   }, [show]);
 
-  if (!show) return null;
+  if (!show) {return null;}
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black/30 z-50">
       <div className="bg-white dark:bg-slate-900 p-6 rounded-xl shadow-lg w-80">
@@ -20,7 +20,7 @@ function SkillModel({ show, onClose, onAdd, newSkill, setNewSkill }) {
           placeholder="Enter skill name"
           className="w-full p-2 mb-4 border rounded-lg dark:bg-slate-800 dark:text-white"
           onKeyDown={(e) => {
-            if (e.key === "Enter") onAdd();
+            if (e.key === "Enter") {onAdd();}
           }}
         />
         <div className="flex justify-end gap-2">

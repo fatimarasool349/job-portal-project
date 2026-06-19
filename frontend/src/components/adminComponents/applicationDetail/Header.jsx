@@ -15,7 +15,6 @@ function Header({ application }) {
   const isLocked = ["rejected", "hired"].includes(application.status);
   const isAccepted = application.status === "selected";
   const isInterviewDone = application.status === "interview completed";
-  const canGoToHired = application.status === "selected";
 
   const handleStatusChange = (e) => {
     dispatch(

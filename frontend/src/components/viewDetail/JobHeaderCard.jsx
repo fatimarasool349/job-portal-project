@@ -5,7 +5,7 @@ import { FaBuilding } from "react-icons/fa";
 import { getImageUrl } from "../../utils/getImageUrl";
 
 function JobHeaderCard({ job }) {
-  if (!job) return <div className="text-center py-6 text-gray-500">No job selected</div>;
+  if (!job) {return <div className="text-center py-6 text-gray-500">No job selected</div>;}
 
   const company = job.company || {};
   return (

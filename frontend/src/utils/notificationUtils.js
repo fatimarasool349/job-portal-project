@@ -1,16 +1,17 @@
+import { createElement } from "react";
 import { Check, Info, AlertTriangle, XCircle } from "lucide-react";
 
-export const getNotificationIcon = (type) => {
+export const getNotificationIconElement = (type, className = "text-gray-600") => {
   switch (type) {
     case "success":
-      return Check;
+      return createElement(Check, { className });
     case "info":
-      return Info;
+      return createElement(Info, { className });
     case "warning":
-      return AlertTriangle;
+      return createElement(AlertTriangle, { className });
     case "error":
-      return XCircle;
+      return createElement(XCircle, { className });
     default:
-      return Info;
+      return createElement(Info, { className });
   }
 };

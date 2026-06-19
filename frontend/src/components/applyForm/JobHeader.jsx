@@ -6,7 +6,7 @@ import { FaBuilding, FaRegClock } from "react-icons/fa";
 function JobHeader({ job,company}) {
   const navigate = useNavigate();
 
-  if (!job) return null; 
+  if (!job) {return null;} 
 
   return (
     <div className="mb-8">

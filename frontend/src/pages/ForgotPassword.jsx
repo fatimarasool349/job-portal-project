@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useLocation } from "react-router-dom";
 import forgotPasswordImg from "./../assets/icons/forgotPassword.svg";
@@ -18,14 +17,11 @@ function ForgotPassword() {
     formState: { errors },
     reset,
   } = useForm();
-  const [success, setSuccess] = useState(false);
-
   const onSubmit = async (data) => {
     try {
       const response = await forgotPassword(data.email);
 
-      setSuccess(true);
-    toast.success(response.message || "Reset link sent successfully");
+      toast.success(response.message || "Reset link sent successfully");
 
       reset();
     } catch (error) {

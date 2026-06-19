@@ -3,12 +3,10 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import RatingBar from "../../components/ViewDetail/RatingBar";
 import RatingStar from "../../components/reviewForm/RatingStar";
-import { createReview, getCompanyReviews } from "../../api/reviewApi";
-import { getJobById, getJobBySlug } from "../../api/jobApi";
-import { getCompanyById } from "../../api/companyApi";
+import { createReview } from "../../api/reviewApi";
+import { getJobBySlug } from "../../api/jobApi";
 import LoginPopup from "../../components/common/LoginPopup";
 import { toast } from "react-hot-toast";
-
 
 export default function Review() {
   const { slug } = useParams();
@@ -37,8 +35,8 @@ export default function Review() {
         setJob(res);
 
         setCategoryRatings(res.company?.ratingBar || []);
-      } catch (err) {
-        console.log(err);
+      } catch (_err) {
+        toast.error("Unable to load review form");
       }
     };
 
@@ -92,7 +90,7 @@ export default function Review() {
     }
   };
 
-  if (!company) return <div>Loading...</div>;
+  if (!company) {return <div>Loading...</div>;}
 
   return (
     <main className="max-w-4xl mx-auto px-4 py-12">

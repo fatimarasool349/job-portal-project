@@ -1,9 +1,7 @@
-import { getNotificationIcon } from "../../../utils/notificationUtils";
+import { getNotificationIconElement } from "../../../utils/notificationUtils";
 
 function NotificationItems({ notification }) {
   const { title, message, type, createdAt, isRead } = notification;
-
-  const Icon = getNotificationIcon(type);
 
   return (
     <div
@@ -11,7 +9,7 @@ function NotificationItems({ notification }) {
       ${isRead ? "bg-white" : "bg-blue-50 border-blue-200"}`}
     >
       <div className="mt-1">
-        <Icon className="text-gray-600" />
+        {getNotificationIconElement(type, "text-gray-600")}
       </div>
 
       <div className="flex-1">

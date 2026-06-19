@@ -197,11 +197,11 @@ export default function SignUp() {
                   required: "Password is required",
                   validate: (value) => {
                     if (value.length < 8)
-                      return "Password must be at least 8 characters";
+                      {return "Password must be at least 8 characters";}
                     if (!/[A-Z]/.test(value))
-                      return "Password must include at least one uppercase letter";
+                      {return "Password must include at least one uppercase letter";}
                     if (!/[@$!%*?&]/.test(value))
-                      return "Password must include at least one special character";
+                      {return "Password must include at least one special character";}
                     return true;
                   },
                 })}

@@ -10,7 +10,7 @@ function ManageJobApplications() {
   const [statusFilter, setStatusFilter] = useState("All");
   const [roleFilter, setRoleFilter] = useState("All");
   const [search, setSearch] = useState("");
-  const { role, recruiterId, canViewAll } = useRole();
+  const { role, canViewAll } = useRole();
   
 const dispatch = useDispatch();
 

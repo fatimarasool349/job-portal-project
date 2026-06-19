@@ -1,7 +1,7 @@
 import { useForm } from "react-hook-form";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { FaEnvelope, FaLock } from "react-icons/fa";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { PUBLIC_ROUTES, ADMIN_ROUTES, AUTH_STATUS_ROUTES } from "../constants/routes";
 import toast from "react-hot-toast";
 
@@ -167,11 +167,11 @@ function LoginPage() {
                   required: "Password is required",
                   validate: (value) => {
                     if (value.length < 8)
-                      return "Password must be at least 8 characters";
+                      {return "Password must be at least 8 characters";}
                     if (!/[A-Z]/.test(value))
-                      return "Password must include at least one uppercase letter";
+                      {return "Password must include at least one uppercase letter";}
                     if (!/[@$!%*?&]/.test(value))
-                      return "Password must include at least one special character";
+                      {return "Password must include at least one special character";}
                     return true;
                   },
                 })}

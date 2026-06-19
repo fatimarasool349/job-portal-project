@@ -1,6 +1,6 @@
 import { FaEnvelope, FaPhone } from "react-icons/fa";
 function CandidateCard({ data }) {
-  if (!data) return null;
+  if (!data) {return null;}
   const fullName = `${data.firstName} ${data.lastName}`;
   const initials = fullName
     .split(" ")

@@ -10,7 +10,7 @@ function InterviewScheduleModal({ isOpen, onClose, onSave }) {
     notes: "",
   });
 
-  if (!isOpen) return null;
+  if (!isOpen) {return null;}
 
   const handleChange = (e) => {
     setForm({

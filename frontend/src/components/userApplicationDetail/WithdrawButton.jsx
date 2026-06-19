@@ -18,7 +18,7 @@ export default function WithdrawButton({ publicId }) {
       confirmButtonText: "Yes, Withdraw",
     });
 
-    if (!result.isConfirmed) return;
+    if (!result.isConfirmed) {return;}
 
     try {
 

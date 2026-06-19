@@ -1,5 +1,5 @@
 export const formatDate = (date) => {
-  if (!date) return "";
+  if (!date) {return "";}
 
   return new Date(date).toLocaleDateString("en-US", {
     month: "short",

@@ -16,7 +16,7 @@ function ChatInput({setMessages, currentUserId, chatUserId}) {
 }, [currentUserId, chatUserId]);
 
  const handleSend = async () => {
-  if (!text.trim() && !file) return;
+  if (!text.trim() && !file) {return;}
 
   const newMsg = await sendMessage({
     text,

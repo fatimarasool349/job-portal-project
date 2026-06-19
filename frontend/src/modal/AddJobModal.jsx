@@ -72,7 +72,7 @@ useEffect(() => {
     }
   };
 
-  if (role) fetchCompanies();
+  if (role) {fetchCompanies();}
 }, [role]);
 
   // Prefill when editing
