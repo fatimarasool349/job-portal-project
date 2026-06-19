@@ -1,7 +1,13 @@
+import {
+  getUserRole,
+  getRecruiterId,
+  getCompanyId,
+} from "../utils/authStorage";
+
 export const useRole = () => {
-  const role = localStorage.getItem("role")?.trim().toLowerCase() || "recruiter";
-  const recruiterId = localStorage.getItem("recruiter_id");
-  const recruiterCompanyId = localStorage.getItem("companyId")
+  const role = getUserRole();
+  const recruiterId = getRecruiterId();
+  const recruiterCompanyId = getCompanyId();
 
   const isAdmin = role === "admin";
   const isRecruiter = role === "recruiter";

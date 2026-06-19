@@ -1,22 +1,11 @@
 import axios from "axios";
-
-const AUTH_STORAGE_KEYS = [
-  "token",
-  "role",
-  "recruiter_id",
-  "companyId",
-  "status",
-  "auth",
-  "persist:root",
-];
+import {
+  getAuthToken,
+  getUserRole,
+  clearAuthStorage,
+} from "../utils/authStorage";
 
 let isRedirectingOn401 = false;
-
-const clearAuthStorage = () => {
-  AUTH_STORAGE_KEYS.forEach((key) => {
-    localStorage.removeItem(key);
-  });
-};
 
 const shouldSkip401Redirect = (pathname = "") => {
   return (
@@ -28,7 +17,7 @@ const shouldSkip401Redirect = (pathname = "") => {
 };
 
 const getRoleAwareLoginPath = () => {
-  const rawRole = localStorage.getItem("role");
+  const rawRole = getUserRole();
   const normalizedRole = rawRole?.trim()?.toLowerCase()?.replaceAll(" ", "");
   return `/login/${normalizedRole || "jobseeker"}`;
 };
@@ -40,7 +29,7 @@ const API = axios.create({
 
 API.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem("token");
+    const token = getAuthToken();
 
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
