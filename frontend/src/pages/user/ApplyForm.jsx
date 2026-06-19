@@ -15,9 +15,7 @@ import { useSelector } from "react-redux";
 import { PUBLIC_ROUTES, USER_ROUTES } from "../../constants/routes";
 
 import { useEffect, useState } from "react";
-import axios from "axios";
 
-import { jobData, companyData } from "../../constants";
 
 function ApplyForm() {
   const { slug } = useParams();
@@ -101,7 +99,7 @@ function ApplyForm() {
       formData.append("linkedin", data.linkedin || "");
       formData.append("github", data.github || "");
       formData.append("coverLetter", data.coverLetter || "");
-      formData.append("resume", data.resume[0]); 
+      formData.append("resume", data.resume[0]); // 👈 IMPORTANTyy
 
       const result =await dispatch(applyJob(formData)).unwrap();
 
