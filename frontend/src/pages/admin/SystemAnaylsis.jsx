@@ -25,20 +25,17 @@ function SystemAnalysis() {
 
   return (
     <div className="p-6 space-y-6">
-      {/* Stats */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {filteredStats.map((item, index) => (
           <StatsCards key={index} {...item} />
         ))}
       </div>
 
-      {/* Charts */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <BarChartCard data={charts.jobsPerMonth}  />
         <LineChartCard data={charts.applicationsPerMonth} />
       </div>
 
-      {/* Other */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <PieChartCard data={charts.jobsByCategory} />
         <CategoriesTable data={charts.topCategories} />

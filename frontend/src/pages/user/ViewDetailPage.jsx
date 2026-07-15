@@ -54,8 +54,8 @@ function ViewDetailPage() {
   }
 }, [job]);
 
-  if (loading) return <div>Loading...</div>;
-  if (!job) return <div>Job not found</div>;
+  if (loading) {return <div>Loading...</div>;}
+  if (!job) {return <div>Job not found</div>;}
 
   return (
     <div className="relative flex h-auto min-h-screen w-full flex-col">

@@ -1,24 +1,15 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { searchJobs } from "../api/jobApi";
 
 export function useSearch(job, location) {
   const [results, setResults] = useState([]);
   const [error, setError] = useState("");
 
-  useEffect(() => {
-    const delay = setTimeout(() => {
-      handleSearch();
-    }, 500);
-
-    return () => clearTimeout(delay);
-  }, [job, location]);
-
-  const handleSearch = async () => {
+  const handleSearch = useCallback(async () => {
     try {
       const searchJob = job.trim();
       const searchLocation = location.trim();
 
-      // Empty search
       if (!searchJob && !searchLocation) {
         setResults([]);
         setError("");
@@ -27,7 +18,6 @@ export function useSearch(job, location) {
 
       const jobs = await searchJobs(searchJob, searchLocation);
 
-      // No results found
       if (!jobs || jobs.length === 0) {
         if (searchLocation && searchJob) {
           setError(`No jobs found for "${searchJob}" in "${searchLocation}"`);
@@ -47,7 +37,7 @@ export function useSearch(job, location) {
       }));
 
       setResults(formattedJobs);
-      setError(""); // clear error if success
+      setError("");
 
       return formattedJobs;
     } catch (error) {
@@ -58,7 +48,15 @@ export function useSearch(job, location) {
 
       return [];
     }
-  };
+  }, [job, location]);
+
+  useEffect(() => {
+    const delay = setTimeout(() => {
+      handleSearch();
+    }, 500);
+
+    return () => clearTimeout(delay);
+  }, [handleSearch]);
 
   return { results, error, handleSearch };
 }

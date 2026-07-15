@@ -17,7 +17,7 @@ function QuickAction({ actions }) {
   }
 
   const visibleActions = actions.filter((action) => {
-    if (!action.for) return false;
+    if (!action.for) {return false;}
 
     const allowedRoles = Array.isArray(action.for) ? action.for : [action.for];
 

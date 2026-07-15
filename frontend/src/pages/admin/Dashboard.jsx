@@ -17,7 +17,7 @@ function Dashboard() {
   const actions = useSelector((state) => state.dashboard.actions);
   const activities = useSelector((state) => state.dashboard.activities);
   const filteredStats = stats.filter((states) => {
-    if (!states.for) return true;
+    if (!states.for) {return true;}
 
     const allowedRoles = Array.isArray(states.for) ? states.for : [states.for];
 
@@ -29,33 +29,30 @@ function Dashboard() {
   }, [dispatch]);
 
   const filteredActions = actions.filter((item) => {
-    if (!item.for) return true;
+    if (!item.for) {return true;}
     const allowedRoles = Array.isArray(item.for) ? item.for : [item.for];
     return allowedRoles.map((roles) => roles.toLowerCase()).includes(role);
   });
 
   const filteredActivities = activities.filter((item) => {
-    if (!item.for) return true;
+    if (!item.for) {return true;}
     const allowedRoles = Array.isArray(item.for) ? item.for : [item.for];
     return allowedRoles.map((roles) => roles.toLowerCase()).includes(role);
   });
 
   return (
     <div className="p-8 flex-1">
-      {/* Stats */}
       <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
         {filteredStats.map((item, index) => (
           <StatsCards key={index} {...item} />
         ))}
       </section>
 
-      {/* Bottom Section */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <RecentActivity activities={filteredActivities} />
 
         <div className="space-y-8">
           <QuickAction actions={filteredActions} />
-          {/* <StorageWidget /> */}
         </div>
       </div>
     </div>

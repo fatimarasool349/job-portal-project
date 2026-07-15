@@ -45,13 +45,12 @@ function ManageCompany() {
     await fetchCompanies();
   };
 
-  // DELETE
   const handleDelete = useCallback(
     async (id) => {
-      if (!canDelete) return;
+      if (!canDelete) {return;}
 
       const confirm = window.confirm("Delete this company?");
-      if (!confirm) return;
+      if (!confirm) {return;}
 
       await deleteCompany(id);
       fetchCompanies();
@@ -59,26 +58,22 @@ function ManageCompany() {
     [canDelete]
   );
 
-  // EDIT
   const handleEdit = (company) => {
     setEditingCompany(company);
     setShowModal(true);
   };
 
-  // ADD
   const handleAdd = () => {
     setEditingCompany(null);
     setShowModal(true);
   };
 
-  // FILTER
   const filteredCompanies = useMemo(() => {
     return companies.filter((c) =>
       c.name?.toLowerCase().includes(search.toLowerCase())
     );
   }, [companies, search]);
 
-  // PAGINATION
   const pageSize = 10;
   const { currentPage, paginatedData, setCurrentPage } =
     usePagination(filteredCompanies, pageSize);

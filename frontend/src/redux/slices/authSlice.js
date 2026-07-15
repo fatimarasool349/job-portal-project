@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { loadAuth } from "../../utils/authHelper";
+import { removeAuthCache } from "../../utils/authStorage";
 
 const savedAuth = loadAuth();
 
@@ -54,7 +55,7 @@ const authSlice = createSlice({
       state.role = null;
       state.status = null;
       state.isAuthenticated = false;
-        localStorage.removeItem("auth"); 
+      removeAuthCache();
     },
   },
 });

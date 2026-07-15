@@ -49,9 +49,9 @@ function ChangePasswordCard({ register, errors, disabled }) {
             disabled={disabled}
             type="password"
             {...register("newPassword", {
-              validate: (value, formValues) => {
+              validate: (value) => {
                 // 👇 if user is NOT trying to change password → skip validation
-                if (!value || value.length === 0) return true;
+                if (!value || value.length === 0) {return true;}
 
                 if (value.length < 8) {
                   return "Password must be at least 8 characters";
@@ -89,9 +89,9 @@ function ChangePasswordCard({ register, errors, disabled }) {
                 const newPass = formValues.newPassword;
 
                 // 👇 If user is NOT changing password → skip validation
-                if (!newPass || newPass.length === 0) return true;
+                if (!newPass || newPass.length === 0) {return true;}
 
-                if (!value) return "Please confirm your password";
+                if (!value) {return "Please confirm your password";}
 
                 return value === newPass || "Passwords do not match";
               },

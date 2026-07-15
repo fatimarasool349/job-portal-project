@@ -1,4 +1,4 @@
-const getStatusStyle = (status) => {
+export const getStatusStyle = (status) => {
   switch (status) {
     case "Active":
       return "bg-green-100 text-green-700";

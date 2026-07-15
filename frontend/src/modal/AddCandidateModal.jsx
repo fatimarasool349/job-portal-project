@@ -25,7 +25,7 @@ function AddCandidateModal({ onClose, existingData, setData }) {
     }
   };
 
-  if (!existingData) return null;
+  if (!existingData) {return null;}
 
   return (
     <div className="fixed inset-0 bg-black/40 flex justify-center items-center z-50">

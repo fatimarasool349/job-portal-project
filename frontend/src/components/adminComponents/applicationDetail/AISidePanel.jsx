@@ -1,19 +1,19 @@
 import React from "react";
 
 function AISidePanel({ application }) {
-  if (!application) return null;
+  if (!application) {return null;}
 
   const score = application.matchScore || 0;
 
   const getLabel = () => {
-    if (score >= 70) return "Strong Match";
-    if (score >= 40) return "Moderate Match ";
+    if (score >= 70) {return "Strong Match";}
+    if (score >= 40) {return "Moderate Match ";}
     return "Weak Match ";
   };
 
   const getColor = () => {
-    if (score >= 70) return "text-blue-800 bg-blue-50";
-    if (score >= 40) return "text-blue-600 bg-blue-50";
+    if (score >= 70) {return "text-blue-800 bg-blue-50";}
+    if (score >= 40) {return "text-blue-600 bg-blue-50";}
     return "text-gray-600 bg-gray-50";
   };
 

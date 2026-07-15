@@ -2,7 +2,7 @@ import { GrView } from "react-icons/gr";
 import { MdOutlineFileDownload } from "react-icons/md";
 
 function Documents({ resume }) {
-  const resumeUrl = resume ? `http://localhost:5000/${resume}` : "/resume.pdf";
+  const resumeUrl = resume ? `${import.meta.env.VITE_RESUME_URL}${resume}` : "/resume.pdf";
   const fileName = resume
   ? resume.split(/[/\\]/).pop()
   : "Resume.pdf";

@@ -1,51 +1,65 @@
 import axios from "axios";
+import {
+  getAuthToken,
+  getUserRole,
+  clearAuthStorage,
+} from "../utils/authStorage";
 
-// Create axios instance
+let isRedirectingOn401 = false;
+
+const shouldSkip401Redirect = (pathname = "") => {
+  return (
+    pathname.startsWith("/login/") ||
+    pathname.startsWith("/signup/") ||
+    pathname.startsWith("/forgot-password") ||
+    pathname.startsWith("/reset-password")
+  );
+};
+
+const getRoleAwareLoginPath = () => {
+  const rawRole = getUserRole();
+  const normalizedRole = rawRole?.trim()?.toLowerCase()?.replaceAll(" ", "");
+  return `/login/${normalizedRole || "jobseeker"}`;
+};
+
 const API = axios.create({
-  baseURL: "http://localhost:5000/api",
-
+  baseURL: import.meta.env.VITE_API_BASE_URL || "http://localhost:5000/api",
+  timeout: 15000,
 });
 
-// Add request interceptor to attach token to all requests
 API.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem("token");
-    
+    const token = getAuthToken();
+
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
-      console.log("✅ Token attached to request:", config.url);
     }
 
-    // 🔥 Detect FormData
-    if (config.data instanceof FormData) {
-      config.headers["Content-Type"] = "multipart/form-data";
-    } else {
+    if (!(config.data instanceof FormData)) {
       config.headers["Content-Type"] = "application/json";
     }
-    
+
     return config;
   },
-  (error) => {
-    return Promise.reject(error);
-  }
+  (error) => Promise.reject(error),
 );
 
-// Add response interceptor to handle token expiration
 API.interceptors.response.use(
-  (response) => {
-    return response;
-  },
+  (response) => response,
   (error) => {
     if (error.response?.status === 401) {
-      // Token expired or invalid
-    //   localStorage.removeItem("token");
-    //   localStorage.removeItem("role");
-    //   localStorage.removeItem("recruiter_id");
-    //   // Redirect to login
-    //   window.location.href = "/login";
+      const currentPath = window.location.pathname;
+
+      if (!isRedirectingOn401 && !shouldSkip401Redirect(currentPath)) {
+        isRedirectingOn401 = true;
+        const loginPath = getRoleAwareLoginPath();
+
+        clearAuthStorage();
+        window.location.replace(loginPath);
+      }
     }
     return Promise.reject(error);
-  }
+  },
 );
 
 export default API;

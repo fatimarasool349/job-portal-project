@@ -1,6 +1,5 @@
 import { useState, useMemo, useEffect } from "react";
 import JobCard from "./JobCard.jsx";
-import { jobData as initialJobs, companyData } from "../../constants/index.js"; // replace with API later
 import Pagination from "../common/Pagination.jsx";
 
 function JobListing({ jobs }) {
@@ -16,7 +15,7 @@ function JobListing({ jobs }) {
 
   function getMinSalary(salary) {
 
-    if (!salary) return 0;
+    if (!salary) {return 0;}
 
     // If number → return directly
     if (typeof salary === "number") {
@@ -25,9 +24,9 @@ function JobListing({ jobs }) {
 
     // If string → clean it
     if (typeof salary === "string") {
-      const cleanStr = salary.replace(/[\$,]/g, "").toLowerCase();
+      const cleanStr = salary.replace(/[$,]/g, "").toLowerCase();
 
-      if (cleanStr.includes("negotiable")) return 0;
+      if (cleanStr.includes("negotiable")) {return 0;}
 
       const match = cleanStr.match(/\d+/);
       return match ? Number(match[0]) : 0;
@@ -38,7 +37,7 @@ function JobListing({ jobs }) {
 
   // Sorting
   const sortedJobs = useMemo(() => {
-    let sorted = [...jobs];
+    const sorted = [...jobs];
 
     if (sortBy === "Highest Salary") {
       sorted.sort((a, b) => getMinSalary(b.salary) - getMinSalary(a.salary));

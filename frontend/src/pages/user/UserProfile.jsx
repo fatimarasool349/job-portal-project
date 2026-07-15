@@ -31,18 +31,14 @@
 import { useForm } from "react-hook-form";
 import ProfileInfoCard from "../../components/adminComponents/profilePage/ProfileInfoCard.jsx";
 import ChangePasswordCard from "../../components/adminComponents/profilePage/ChangePasswordCard.jsx";
-import DangerZone from "../../components/adminComponents/profilePage/DangerZone.jsx";
-import { useState } from "react";
 import { useSelector } from "react-redux";
 import { useEffect } from "react";
-import axios from "axios";
 import { useDispatch } from "react-redux";
 import { loginSuccess } from "../../redux/slices/authSlice.js";
 import { getImageUrl } from "../../utils/getImageUrl.js";
 import defaultImage from "../../assets/Images/default_img.png";
-import API from "../../api/axiosConfig.js"
-import React from 'react'
-import toast from "react-hot-toast"
+import API from "../../api/axiosConfig.js";
+import toast from "react-hot-toast";
 
 function UserProfile() {
 
@@ -57,7 +53,6 @@ function UserProfile() {
   } = useForm();
   const avatarFile = watch("profileImage");
 
-  console.log("USER FROM REDUX:", user);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -97,7 +92,6 @@ function UserProfile() {
       const userId = user?._id;
 
       if (!userId) {
-        console.log("User ID missing");
         return;
       }
 
@@ -105,8 +99,6 @@ function UserProfile() {
         `/auth/update-profile/${userId}`,
         formData
       );
-
-      console.log("Updated:", res.data.user);
 
       dispatch(
         loginSuccess({
@@ -119,7 +111,7 @@ function UserProfile() {
     } catch (error) {
       const message = error.response?.data?.message;
 
-      if (!message) return;
+      if (!message) {return;}
 
       // current password error
       if (message.toLowerCase().includes("current password")) {
@@ -184,4 +176,4 @@ function UserProfile() {
   
 }
 
-export default UserProfile
+export default UserProfile;

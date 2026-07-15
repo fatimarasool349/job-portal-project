@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { useNavigate, Link, useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import logo from "../../assets/icons/logo.svg";
 import { CiLogout, CiBookmark } from "react-icons/ci";
 import { MdArrowDropDown } from "react-icons/md";
@@ -16,7 +16,6 @@ import { fetchNotifications } from "../../redux/slices/notificationSlice";
 function Header({ profileImage, user }) {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef();
-  const navigate = useNavigate();
   const location = useLocation();
   const dispatch = useDispatch();
 

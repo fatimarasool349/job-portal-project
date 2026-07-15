@@ -16,8 +16,8 @@ function DashboardNotificationPage() {
   };
 
   const filteredNotifications = notifications.filter((n) => {
-    if (filter === "unread") return !n.isRead;
-    if (filter === "read") return n.isRead;
+    if (filter === "unread") {return !n.isRead;}
+    if (filter === "read") {return n.isRead;}
     return true;
   });
 

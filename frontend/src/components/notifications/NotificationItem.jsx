@@ -1,4 +1,4 @@
-function NotificationItem({ notification,emptyMessage}) {
+function NotificationItem({ notification }) {
 
   const {
     type,

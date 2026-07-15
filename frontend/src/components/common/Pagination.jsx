@@ -6,7 +6,7 @@ export default function Pagination({
   setCurrentPage,
 }) {
   // hide if only 1 page
-  if (totalPages <= 1) return null;
+  if (totalPages <= 1) {return null;}
 
   return (
     <div className="mt-6 flex items-center justify-center gap-2 flex-wrap">

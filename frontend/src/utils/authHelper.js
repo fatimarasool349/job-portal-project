@@ -1,12 +1,12 @@
 export const loadAuth = () => {
   try {
     const data = localStorage.getItem("auth");
-    if (!data) return null;
+    if (!data) {return null;}
 
     const parsed = JSON.parse(data);
 
-    if (!parsed || typeof parsed !== "object") return null;
-    if (!parsed.user || typeof parsed.user !== "object") return null;
+    if (!parsed || typeof parsed !== "object") {return null;}
+    if (!parsed.user || typeof parsed.user !== "object") {return null;}
 
     return {
       user: parsed.user,

@@ -218,13 +218,13 @@ export const experienceLevels = [
   "Director/VP",
 ];
 export const clearFilters = () => {
-  setFilters({
+  return {
     keyword: "",
     location: "",
     jobType: [],
     experience: "All levels",
     salary: 0,
-  });
+  };
 };
 
 // initialUserData

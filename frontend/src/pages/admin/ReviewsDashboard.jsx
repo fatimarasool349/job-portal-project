@@ -1,55 +1,50 @@
-import { useState, useMemo, useEffect } from "react";
+import { useState, useEffect } from "react";
 import ReviewTable from "../../components/adminComponents/reviewdashboard/ReviewTable";
 import ReviewModal from "../../modal/ReviewModal";
-import { userReviews } from "../../constants/index.js";
 import { useRole } from "../../hooks/useRole";
 import Pagination from "../../components/adminComponents/common/Pagination";
 import { usePagination } from "../../hooks/usePagination";
 import { getAllReviews, getRecruiterReviews } from "../../api/reviewApi";
+
 function ReviewsDashboard() {
   const [reviews, setReviews] = useState([]);
   const [selectedReview, setSelectedReview] = useState(null);
-  const { role, recruiterCompanyId, canViewAll } = useRole();
-
+  const { recruiterCompanyId, canViewAll } = useRole();
 
   useEffect(() => {
     const fetchReviews = async () => {
-       try {
+      try {
         const res = canViewAll
           ? await getAllReviews()
           : await getRecruiterReviews();
 
-        console.log("API:", res.data);
-        setReviews(res.data);
-      } catch (err) {
-        console.log(err);
+        setReviews(Array.isArray(res) ? res : []);
+      } catch (_err) {
+        setReviews([]);
       }
     };
 
     fetchReviews();
   }, [canViewAll]);
 
-    const filteredReviews = canViewAll
+  const filteredReviews = canViewAll
     ? reviews
     : reviews.filter((r) => r.company?._id === recruiterCompanyId);
 
   const { currentPage, paginatedData, setCurrentPage } = usePagination(
     filteredReviews,
-    10
+    10,
   );
 
   useEffect(() => {
     setCurrentPage(1);
   }, [reviews, canViewAll]);
-  const pageSize = 10;
-  const handleFlag = (id) => {
-    console.log("Flag review:", id);
-  };
 
-  const handleVerify = (id) => {
-    console.log("Verify review:", id);
-  };
-  console.log("PAGINATED:", paginatedData);
+  const pageSize = 10;
+
+  const handleFlag = (_id) => undefined;
+
+  const handleVerify = (_id) => undefined;
 
   return (
     <div className="p-8 flex-1">

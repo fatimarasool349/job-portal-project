@@ -1,7 +1,7 @@
 import { MdCheckCircleOutline, MdRadioButtonChecked } from "react-icons/md";
 
 function Description({ job }) {
-  if (!job) return <div className="text-gray-500 py-4">No job description available</div>;
+  if (!job) {return <div className="text-gray-500 py-4">No job description available</div>;}
 
   return (
     <section className="prose prose-slate dark:prose-invert max-w-none">

@@ -1,6 +1,6 @@
 import ChatItem from "./ChatItem";
 
-function ChatList({ chats, activeChat, setActiveChat, role }) {
+function ChatList({ chats, activeChat, setActiveChat }) {
   return (
     <div className="flex-1 overflow-y-auto">
       {chats.map((chat) => (

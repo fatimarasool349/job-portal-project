@@ -33,7 +33,7 @@ function AsideFilters() {
             Filters
           </h3>
           <button
-            onClick={clearFilters}
+            onClick={() => setFilters(clearFilters())}
             className="text-xs font-semibold text-blue-600 hover:underline"
           >
             Clear all

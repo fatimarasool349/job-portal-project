@@ -1,8 +1,6 @@
 import { useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
-import AsideFilters from "../../components/findJob/AsideFilters";
 import JobListing from "../../components/findJob/JobListing";
-import { jobData, companyData } from "../../constants";
 import { getAllJobs } from "../../api/jobApi";
 
 function FindJob() {
@@ -34,10 +32,10 @@ function FindJob() {
 
           let score = 0;
 
-          if (title === searchJob) score += 3;
-          if (title.includes(searchJob)) score += 2;
-          if (companyName.includes(searchJob)) score += 2;
-          if (searchLocation && loc.includes(searchLocation)) score += 1;
+          if (title === searchJob) {score += 3;}
+          if (title.includes(searchJob)) {score += 2;}
+          if (companyName.includes(searchJob)) {score += 2;}
+          if (searchLocation && loc.includes(searchLocation)) {score += 1;}
           return { ...job, score };
         })
         .filter((item) => item.score > 0)

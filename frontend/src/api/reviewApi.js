@@ -1,51 +1,51 @@
 import API from "./axiosConfig";
 
 export const createReview = async (formData) => {
-  const token = localStorage.getItem("token");
-
-  return API.post("/reviews", formData, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
+  const res = await API.post("/reviews", formData);
+  return res.data;
 };
 
 export const getAllReviews = async () => {
-  return API.get("/reviews");
+  const res = await API.get("/reviews");
+  return res.data;
 };
 
 export const getCompanyReviews = async (companyId) => {
-  return API.get(`/reviews/company/${companyId}`);
-  const res = await getCompanyReviews(companyId);
-
-  setReviews(res.data.reviews);
-  setAvgRating(res.data.averageRating);
+  const res = await API.get(`/reviews/company/${companyId}`);
+  return res.data;
 };
 
 export const getReviewById = async (id) => {
-  return API.get(`/reviews/${id}`);
+  const res = await API.get(`/reviews/${id}`);
+  return res.data;
 };
 
 export const verifyReview = async (id) => {
-  return API.patch(`/reviews/${id}/verify`);
+  const res = await API.patch(`/reviews/${id}/verify`);
+  return res.data;
 };
 
 export const flagReview = async (id) => {
-  return API.patch(`/reviews/${id}/flag`);
+  const res = await API.patch(`/reviews/${id}/flag`);
+  return res.data;
 };
 
 export const deleteReview = async (id) => {
-  return API.delete(`/reviews/${id}`);
+  const res = await API.delete(`/reviews/${id}`);
+  return res.data;
 };
 
 export const getUserReviews = async (userId) => {
-  return API.get(`/reviews/user/${userId}`);
+  const res = await API.get(`/reviews/user/${userId}`);
+  return res.data;
 };
 
 export const getRecruiterReviews = async () => {
-  return API.get("/reviews/recruiter");
-  
+  const res = await API.get("/reviews/recruiter");
+  return res.data;
 };
+
 export const getReviewByUUID = async (reviewId) => {
-  return API.get(`/reviews/uuid/${reviewId}`);
+  const res = await API.get(`/reviews/uuid/${reviewId}`);
+  return res.data;
 };

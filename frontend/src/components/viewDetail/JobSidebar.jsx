@@ -1,15 +1,14 @@
 import { IoMdArrowRoundForward } from "react-icons/io";
 import { FaRegBookmark } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
-import { companyData } from "../../constants";
 import {FiExternalLink} from "react-icons/fi"
 import { Link } from "react-router-dom";
 import { getImageUrl } from "../../utils/getImageUrl";
-import { ADMIN_ROUTES, USER_ROUTES } from "../../constants/routes";
+import { USER_ROUTES } from "../../constants/routes";
 
 function JobSidebar({ job }) {
   const navigate = useNavigate();
-  if (!job) return null; 
+  if (!job) {return null;} 
  
   const handleSaveJob = () => {
     const savedJobs = JSON.parse(localStorage.getItem("savedJobs")) || [];
@@ -21,7 +20,7 @@ function JobSidebar({ job }) {
     }
 
     savedJobs.push(job);
-    if (!job?.company) return null;
+    if (!job?.company) {return null;}
 
     localStorage.setItem("savedJobs", JSON.stringify(savedJobs));
     alert("Job saved successfully!");

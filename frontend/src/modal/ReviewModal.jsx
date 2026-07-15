@@ -4,7 +4,7 @@ import { FaBuilding } from "react-icons/fa";
 
 
 function ReviewModal({ review, onClose, onVerify, onFlag }) {
-  if (!review) return null;
+  if (!review) {return null;}
 
   return (
     <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50 p-4">

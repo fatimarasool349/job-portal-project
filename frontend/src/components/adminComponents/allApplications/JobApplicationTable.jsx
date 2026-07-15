@@ -11,7 +11,7 @@ import { MdDelete } from "react-icons/md";
 function JobApplicationTable({ applications, role }) {
   const dispatch = useDispatch();
   const openLink = (url) => {
-    if (!url) return;
+    if (!url) {return;}
     window.open(url, "_blank");
   };
 
@@ -81,8 +81,8 @@ function JobApplicationTable({ applications, role }) {
                 <td className="px-6 py-4 text-sm text-slate-600">
                   <div className="flex gap-3 text-gray-500">
                     <button
-                      onClick={() => openLink(app.resume)}
-                      title="Resume"
+                      onClick={() => openLink(app.github)}
+                      title="GitHub"
                       className="hover:text-blue-600 hover:scale-110 transition-all"
                     >
                       <FaFileAlt size={18} />

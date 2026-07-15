@@ -6,8 +6,6 @@ import {
   deleteApplicationApi,
   updateApplicationStatusApi,
 } from "../../api/applicationApi";
-import axios from "axios";
-import { AiFillAccountBook } from "react-icons/ai";
 export const applyJob = createAsyncThunk(
   "apply",
   async (formData, { rejectWithValue }) => {
@@ -63,12 +61,10 @@ const applicationSlice = createSlice({
 
       .addCase(applyJob.fulfilled, (state, action) => {
         state.applications.unshift(action.payload.application);
-          state.aiAnalysis = action.payload.aiAnalysis;
+        state.aiAnalysis = action.payload.aiAnalysis;
 
       })
-      .addCase(applyJob.rejected, (state, action) => {
-        // Handle rejection if needed
-      })
+      .addCase(applyJob.rejected, () => {})
 
       .addCase(fetchAllApplications.fulfilled, (state, action) => {
         state.applications = action.payload;

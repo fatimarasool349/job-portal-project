@@ -2,19 +2,17 @@ import { useState, useMemo, useCallback, useEffect } from "react";
 import CandidateTable from "../../components/adminComponents/candidate/CandidateTable";
 import CandidateFilters from "../../components/adminComponents/candidate/CandidateFilters";
 import Pagination from "../../components/adminComponents/common/Pagination";
-import { initialCandidates } from "../../constants/index.js";
 import AddCandidateModal from "../../modal/AddCandidateModal";
 import { useRole } from "../../hooks/useRole";
 import { usePagination } from "../../hooks/usePagination";
-import { getAllJobseekers, deleteJobseeker, updateJobseeker } from "../../api/userApi";
+import { getAllJobseekers, deleteJobseeker } from "../../api/userApi";
 
 function ManageCandidate() {
   const [statusFilter, setStatusFilter] = useState("All");
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(false);
   const [candidates, setCandidates] = useState([]);
-  const { role, recruiterId, canAdd, canEdit, canDelete, canViewAll } =
-    useRole();
+  const { role, canAdd, canEdit, canDelete } = useRole();
 
   const fetchCandidates = useCallback(async () => {
     try {
@@ -32,11 +30,7 @@ function ManageCandidate() {
     fetchCandidates();
   }, [fetchCandidates]);
 
-  // const roleFilteredCandidates = useMemo(() => {
-  //   return canViewAll
-  //     ? candidates
-  //     : candidates.filter((c) => c.recruiter_id.toString() === recruiterId);
-  // }, [candidates, canViewAll, recruiterId]);
+  
 
   const filteredCandidates = useMemo(() => {
     return candidates.filter((c) => {
@@ -70,13 +64,13 @@ function ManageCandidate() {
   }, []);
   const handleDeleteCandidate = useCallback(
     async (id) => {
-      if (!canDelete) return;
+      if (!canDelete) {return;}
 
       const confirmDelete = window.confirm(
         "Are you sure you want to delete this candidate?",
       );
 
-      if (!confirmDelete) return;
+      if (!confirmDelete) {return;}
 
       try {
         await deleteJobseeker(id);
@@ -86,7 +80,7 @@ function ManageCandidate() {
         console.error(err);
       }
     },
-    [canDelete, deleteJobseeker],
+    [canDelete],
   );
   return (
     <section className="p-8 flex-1">

@@ -2,8 +2,6 @@ import { useState, useEffect } from "react";
 import { FaArrowRight } from "react-icons/fa";
 import { getAllJobs } from "../../api/jobApi";
 import { getRecommendedJobs } from "../../api/recommendedJobApi";
-
-import { jobData, companyData } from "../../constants/index.js";
 import JobCard from "./JobCard.jsx";
 
 function JobFeatures({ type = "featured" }) {

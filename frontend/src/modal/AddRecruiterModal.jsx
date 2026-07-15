@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import axios from "axios";
 import API from "../api/axiosConfig";
 import { updateRecruiter } from "../api/recruiterApi";
 

@@ -26,7 +26,7 @@ function ResumeSection() {
     }
   };
   const formatDate = (date) => {
-    if (!date) return "";
+    if (!date) {return "";}
     return date.toLocaleDateString("en-US", {
       year: "numeric",
       month: "short",

@@ -6,7 +6,7 @@ import {
 } from "lucide-react";
 
 function AIApplicationResult({ application }) {
-  if (!application) return null;
+  if (!application) {return null;}
 
   const score = application.matchScore || 0;
 
@@ -35,16 +35,16 @@ function AIApplicationResult({ application }) {
     ) || [];
 
   const getScoreTextColor = () => {
-    if (score >= 70) return "text-blue-600";
-    if (score >= 40) return "text-blue-500";
+    if (score >= 70) {return "text-blue-600";}
+    if (score >= 40) {return "text-blue-500";}
     return "text-gray-600";
   };
 
   const getMessage = () => {
     if (score >= 70)
-      return "Your resume aligns well with this position.";
+      {return "Your resume aligns well with this position.";}
     if (score >= 40)
-      return "You meet several requirements but could improve a few key skills.";
+      {return "You meet several requirements but could improve a few key skills.";}
     return "Consider strengthening the missing skills before applying.";
   };
 

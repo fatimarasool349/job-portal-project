@@ -19,8 +19,6 @@ function HeroSection() {
 
     if (data && data.length > 0) {
       navigate(`${USER_ROUTES.FIND_JOBS}?job=${job}&location=${location}`);
-    } else {
-      setError("No jobs found. Try different keywords.");
     }
   };
 

@@ -2,7 +2,6 @@ import CandidateRow from "./CandidateRow";
 
 function CandidateTable({
   filteredCandidates,
-  setCandidates,
   onEditCandidate,
   onDeleteCandidate,
   role,

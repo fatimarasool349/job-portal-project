@@ -2,7 +2,6 @@ import API from "./axiosConfig.js";
 
 export const getAllCompanies = async () => {
   const res = await API.get("/company");
-  console.log("API RESPONSE:", res.data);
   return res.data;
 };
 

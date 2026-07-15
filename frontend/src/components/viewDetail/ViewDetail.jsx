@@ -1,29 +1,48 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import Description from "./Description";
 import Company from "./Company";
 import Reviews from "./Review";
 import JobSidebar from "./JobSidebar.jsx";
-import { getTabs ,companyData} from "../../constants/index.js";
-import {getCompanyReviews} from "../../api/reviewApi.js"
+import { getTabs } from "../../constants/index.js";
+import { getCompanyReviews } from "../../api/reviewApi.js";
 
-function ViewDetail({ job  }) {
+function ViewDetail({ job }) {
   const [activeTab, setActiveTab] = useState("description");
-
-
-  if (!job) {
-    return <div className="text-center py-10 text-gray-500">No job data available</div>;
-  }
   const [companyReviewData, setCompanyReviewData] = useState(null);
 
+  useEffect(() => {
+    if (!job?.company?._id) {
+      setCompanyReviewData(null);
+      return;
+    }
 
-useEffect(() => {
-  const loadReviews = async () => {
-    const res = await getCompanyReviews(job.company._id);
-    setCompanyReviewData(res.data);
-  };
+    let isMounted = true;
 
-  loadReviews();
-}, [job.company._id]);
+    const loadReviews = async () => {
+      try {
+        const data = await getCompanyReviews(job.company._id);
+        if (isMounted) {
+          setCompanyReviewData(data);
+        }
+      } catch (_error) {
+        if (isMounted) {
+          setCompanyReviewData(null);
+        }
+      }
+    };
+
+    loadReviews();
+
+    return () => {
+      isMounted = false;
+    };
+  }, [job?.company?._id]);
+
+  if (!job) {
+    return (
+      <div className="text-center py-10 text-gray-500">No job data available</div>
+    );
+  }
 
   const tabs = getTabs(job, companyReviewData?.total || 0);
 

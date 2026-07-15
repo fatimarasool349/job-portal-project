@@ -1,16 +1,16 @@
 import { useState, useEffect } from "react";
 import ChatMessages from "./ChatMessages";
 import ChatInput from "./ChatInput";
-import { chats, getMessages } from "../../../constants";
+import { getMessages } from "../../../constants";
 import ChatHeader from "./ChatHeader";
 
-function ChatWindow({ activeChat, setActiveChat, role }) {
+function ChatWindow({ activeChat, role }) {
   const [messages, setMessages] = useState([]);
 
   const currentUserId = 0;
   useEffect(() => {
     const loadMessages = async () => {
-      if (!activeChat) return;
+      if (!activeChat) {return;}
       const data = await getMessages(currentUserId, activeChat.id);
       setMessages(data);
     };

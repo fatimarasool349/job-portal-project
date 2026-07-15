@@ -1,7 +1,7 @@
-import { useRef, useState, useEffect } from "react";
+import { useState } from "react";
 import skillIcon from "./../../assets/icons/skill.svg";
 import close from "./../../assets/icons/close.svg";
-import { initialSkills,colors} from "../../constants";
+import { initialSkills } from "../../constants";
 import SkillModel from "../../modal/SkillModal";
 
 function SkillsSection() {
@@ -13,7 +13,7 @@ function SkillsSection() {
   // Add new skill
   const handleAddSkill = () => {
     const trimmedSkill = newSkill.trim();
-    if (!trimmedSkill) return;
+    if (!trimmedSkill) {return;}
     // Prevent duplicates
     if (
       skills.some(
@@ -54,7 +54,7 @@ function SkillsSection() {
             key={index}
             className={`flex items-center gap-2 px-3 py-1.5 rounded-full text-sm font-medium
               ${
-                skill.colors === "text-blue-600"
+                skill.color === "text-blue-600"
                   ? "bg-blue-600/10 text-blue-600 border border-blue-600/20"
                   : "bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-700"
               }`}

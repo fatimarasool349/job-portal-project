@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect, useMemo } from "react";
+import { useState, useCallback, useEffect } from "react";
 import RecruiterTable from "../../components/adminComponents/recruiter/RecruiterTable.jsx";
 import RecruiterFilter from "../../components/adminComponents/recruiter/RecruiterFilter.jsx";
 import AddRecruiterModal from "../../modal/AddRecruiterModal.jsx";
@@ -54,7 +54,7 @@ function ManageRecruiter() {
   // 🔹 TOGGLE STATUS (API)
   const handleToggleStatus = useCallback(
     async (id, currentStatus) => {
-      if (!canEdit) return;
+      if (!canEdit) {return;}
 
       const newStatus =
         currentStatus === "Active" ? "Inactive" : "Active";
@@ -77,10 +77,10 @@ function ManageRecruiter() {
   // 🔹 DELETE (API)
   const handleDeleteRecruiter = useCallback(
     async (id) => {
-      if (!canDelete) return;
+      if (!canDelete) {return;}
 
       const confirmDelete = window.confirm("Are you sure?");
-      if (!confirmDelete) return;
+      if (!confirmDelete) {return;}
 
       try {
         await deleteRecruiter(id);

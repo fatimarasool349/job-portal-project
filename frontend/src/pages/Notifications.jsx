@@ -19,8 +19,6 @@ function Notifications() {
     (state) => state.notifications,
   );
 
-  const { user } = useSelector((state) => state.auth);
-
   useEffect(() => {
     const loadNotifications = async () => {
       await dispatch(markNotificationsAsRead());

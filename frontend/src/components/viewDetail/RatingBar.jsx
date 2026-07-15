@@ -12,7 +12,7 @@ function RatingBar({ bar, setBar }) {
               setBar ? "cursor-pointer" : ""
             }`}
             onClick={(e) => {
-              if (!setBar) return; // do nothing if read-only
+              if (!setBar) {return;} // do nothing if read-only
 
               const rect = e.currentTarget.getBoundingClientRect();
               const percent = (e.clientX - rect.left) / rect.width;

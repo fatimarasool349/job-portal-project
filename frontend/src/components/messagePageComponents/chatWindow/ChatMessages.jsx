@@ -6,14 +6,12 @@ const formatDateLabel = (dateStr) => {
   const yesterday = new Date();
   yesterday.setDate(today.getDate() - 1);
   const isYesterday = yesterday.toDateString() === msgDate.toDateString();
-  if (isToday) return "Today";
-  if (isYesterday) return "Yesterday";
+  if (isToday) {return "Today";}
+  if (isYesterday) {return "Yesterday";}
   return msgDate.toLocaleDateString();
 };
 
 function ChatMessages({ messages }) {
-  let lastDate = null;
-
   if (!messages || messages.length === 0) {
     return (
       <div className="flex-1 flex items-center justify-center text-gray-400">
@@ -24,12 +22,12 @@ function ChatMessages({ messages }) {
 
   return (
     <div className="flex-1 overflow-y-auto p-6 space-y-4">
-      {messages.map((msg) => {
+      {messages.map((msg, index) => {
         const msgDateObj = new Date(msg.date);
-        const msgDateStr = msgDateObj.toDateString(); // only date part
-
-        const showDate = msgDateStr !== lastDate;
-        lastDate = msgDateStr;
+        const msgDateStr = msgDateObj.toDateString();
+        const prevDateStr =
+          index > 0 ? new Date(messages[index - 1].date).toDateString() : null;
+        const showDate = msgDateStr !== prevDateStr;
 
         return (
           <div key={msg.id}>
