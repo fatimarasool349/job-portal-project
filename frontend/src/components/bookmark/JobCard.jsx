@@ -38,7 +38,7 @@ const isBookmarked = savedJobs.some(savedJob => savedJob._id === job._id);
       </div>
       <div className="mt-6 flex items-center justify-between">
         <Link
-          to={`${USER_ROUTES.JOBS}/${job._id}`}
+          to={USER_ROUTES.JOB_DETAIL.replace(":slug", job.slug)}
           className="flex items-center gap-1.5 text-sm font-semibold text-blue-600 hover:underline"
         >
           View Details

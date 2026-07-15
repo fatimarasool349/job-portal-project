@@ -19,11 +19,11 @@ export const getAuthToken = () => localStorage.getItem(AUTH_STORAGE_KEYS.TOKEN);
 
 /**
  * Get user role from localStorage
- * @returns {string} User role (defaults to 'recruiter')
+ * @returns {string} User role (defaults to 'jobseeker')
  */
 export const getUserRole = () =>
   localStorage.getItem(AUTH_STORAGE_KEYS.ROLE)?.trim().toLowerCase() ||
-  "recruiter";
+  "jobseeker";
 
 /**
  * Get recruiter ID from localStorage
