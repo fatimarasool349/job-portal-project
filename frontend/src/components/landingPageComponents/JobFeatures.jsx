@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { FaArrowRight } from "react-icons/fa";
+import { useSelector } from "react-redux";
 import { getAllJobs } from "../../api/jobApi";
 import { getRecommendedJobs } from "../../api/recommendedJobApi";
 import JobCard from "./JobCard.jsx";
@@ -8,6 +9,7 @@ function JobFeatures({ type = "featured" }) {
   const [jobs, setJobs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [expanded, setExpanded] = useState(false);
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
 
   const visibleJobs = expanded ? jobs : jobs.slice(0, 3);
 
@@ -15,6 +17,11 @@ function JobFeatures({ type = "featured" }) {
     const fetchJobs = async () => {
       try {
         setLoading(true);
+
+        if (type === "recommended" && !isAuthenticated) {
+          setJobs([]);
+          return;
+        }
 
         let res;
 
@@ -33,7 +40,7 @@ function JobFeatures({ type = "featured" }) {
     };
 
     fetchJobs();
-  }, [type]);
+  }, [type, isAuthenticated]);
 
   return (
     <section className="py-24 bg-white dark:bg-slate-900">

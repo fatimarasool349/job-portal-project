@@ -12,6 +12,7 @@ import { IoNotificationsOutline } from "react-icons/io5";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { fetchNotifications } from "../../redux/slices/notificationSlice";
+import { getUserRole } from "../../utils/authStorage";
 
 function Header({ profileImage, user }) {
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -19,11 +20,16 @@ function Header({ profileImage, user }) {
   const location = useLocation();
   const dispatch = useDispatch();
 
-  const role = localStorage.getItem("userRole") || "jobseeker";
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+  const role = getUserRole();
   const { notifications } = useSelector((state) => state.notifications);
   const unreadCount = notifications?.filter((n) => n.isRead === false).length;
 
   useEffect(() => {
+    if (!isAuthenticated) {
+      return;
+    }
+
     dispatch(fetchNotifications());
 
     const interval = setInterval(() => {
@@ -40,7 +46,7 @@ function Header({ profileImage, user }) {
       document.removeEventListener("mousedown", handleClickOutside);
       clearInterval(interval);
     };
-  }, [dispatch]);
+  }, [dispatch, isAuthenticated]);
 
  
   return (
